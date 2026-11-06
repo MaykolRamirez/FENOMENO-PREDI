@@ -9,8 +9,8 @@ Tablero público que estima **cuántas viviendas y personas de Tumbes y Piura pu
 Proyecto integrador del Programa de Extensión Universitaria: Ciencia del Dato (PEU-CD), INEI, 2026.
 **Autores:** Marcia, Christopher, Maykol y Luz Ángela.
 
-- **Tablero 3D:** https://maykolramirez.github.io/FENOMENO-PREDI/
-- **Mapa 2D (sin aceleración gráfica), panel por distrito y metadatos:** https://maykolramirez.github.io/FENOMENO-PREDI/mapa2d.html
+- **Tablero 3D:** https://marciashapiama.github.io/iapn-inei/
+- **Mapa 2D (sin aceleración gráfica), panel por distrito y metadatos:** https://marciashapiama.github.io/iapn-inei/mapa2d.html
 
 > «Expuesto» significa que está dentro o cerca de una zona inundable o de agua detectada por satélite. **No equivale a afectados ni damnificados**: esas cifras las registra INDECI/COEN. Un escenario de 1 en 100 años **no anuncia una inundación este año**. Los avisos del tablero **no son oficiales**: los oficiales son de SENAMHI, ENFEN e INDECI.
 
@@ -29,7 +29,7 @@ Proyecto integrador del Programa de Extensión Universitaria: Ciencia del Dato (
 ## Cómo está organizado el repositorio
 
 ```
-FENOMENO-PREDI/
+iapn-inei/
 ├── dashboard/            El tablero publicado (index.html = 3D, mapa2d.html = 2D) y sus datos en dashboard/data/
 ├── src/                  Código que descarga, calcula y arma el tablero (lo corre GitHub Actions cada día)
 ├── data/                 Datos descargados y calculados (exposición, huellas de radar, normales, modelo, validación)
@@ -60,10 +60,11 @@ Los datos confidenciales del INEI (viviendas por manzana) **no están en este re
 | Datos | [01 Auditoría técnica y de datos](docs/1_datos/01_AUDITORIA_TECNICA_Y_DATOS.md) | Arquitectura, fuentes y licencias, errores corregidos y actualización del 4/11 |
 | Datos | [07 Refuerzo](docs/1_datos/07_REFUERZO.md) | Padrón ESCALE de colegios y verificación de pobreza e IDH |
 | Datos | [11 Cruce de habitantes](docs/1_datos/11_CRUCE_HABITANTES.md) | Cómo cruzar la data de habitantes del INEI (personas, sexo y edad) |
-| Datos | [17 Viviendas del Censo 2025](docs/1_datos/17_VIVIENDAS_INEI_MATERIALES.md) | Un solo cálculo: viviendas en la zona inundable, materiales precarios y viviendas dentro del agua del radar |
+| Datos | [17 Viviendas y personas del Censo 2025](docs/1_datos/17_VIVIENDAS_INEI_MATERIALES.md) | Viviendas y personas (sexo y edad) en la zona inundable, materiales precarios, centros poblados rurales y radar |
 | Modelo | [02 Plan de machine learning](docs/2_modelo/02_PLAN_MACHINE_LEARNING.md) | Modelo de alerta por distrito y su evaluación |
 | Modelo | [08 Diseño del modelo de viviendas](docs/2_modelo/08_DISENO_MODELO_VIVIENDAS.md) | Primer diseño de la pregunta del profesor |
 | Modelo | [10 Modelo de viviendas afectadas](docs/2_modelo/10_MODELO_VIVIENDAS_AFECTADAS.md) | Etiqueta real del SINPAD (INDECI), variables, 6 modelos y validación 2012-2025 |
+| Modelo | [19 Variable dependiente desde el SINPAD](docs/2_modelo/19_VARIABLE_DEPENDIENTE_SINPAD.md) | El modelo de alerta usa el SINPAD 2003-2025 en lugar de DesInventar: trazabilidad, auditoría y resultados |
 | Modelo | [Modelo de inundación](docs/2_modelo/modelo_inundacion.md) | Documento original del modelo de alerta |
 | Validación | [06 Validación y viabilidad](docs/3_validacion/06_VALIDACION_Y_VIABILIDAD_EXPANSION.md) | Validación contra INDECI y costo de expandir |
 | Validación | [09 El radar frente a las noticias](docs/3_validacion/09_PRUEBA_DETECTOR_NOTICIAS.md) | Tres pruebas (6 lugares recientes, 13 eventos verificados, cultivos inundados) y la capa de inundaciones reportadas del tablero |
@@ -78,17 +79,18 @@ Los datos confidenciales del INEI (viviendas por manzana) **no están en este re
 | Presentación | [Informe final](docs/6_presentacion/informe_final/INFORME_FINAL_PROYECTO_INTEGRADOR.md) · `.docx` | Informe para la evaluación del curso |
 | Presentación | `docs/6_presentacion/presentacion/` | Presentaciones en LaTeX (avance, validación, de dónde sale el agua) |
 | Presentación | `docs/6_presentacion/avance_latex/` | Informe de avance en LaTeX |
+| Presentación | `docs/6_presentacion/Guia_didactica_modelo.pdf` | Guía didáctica del modelo de alerta, variable por variable (con la Y del SINPAD) |
 
 ## Instalación desde cero
 
 Requisitos: Python 3.11 o superior (probado con 3.11 en Actions y 3.14 en Windows) y git.
 
 ```bash
-git clone https://github.com/MaykolRamirez/FENOMENO-PREDI.git
+git clone https://github.com/MarciaShapiama/iapn-inei.git
 ```
 
 ```bash
-cd FENOMENO-PREDI
+cd iapn-inei
 ```
 
 ```bash
@@ -129,7 +131,8 @@ Pasos sueltos útiles:
 |---|---|
 | `python src/reparar_poblacion.py` | Verifica y corrige la alineación del ráster de población (idempotente) |
 | `python src/ubigeo.py` | Descarga la tabla UBIGEO y la empata con los distritos |
-| `python src/modelo_inundacion.py` | Reentrena y evalúa el modelo de emergencias |
+| `python src/etiqueta_sinpad.py` | Arma la variable dependiente del modelo de alerta desde el SINPAD (INDECI), con huella SHA-256 y conteos por filtro (`--descargar` vuelve a bajar los CSV oficiales) |
+| `python src/modelo_inundacion.py` | Reentrena y evalúa el modelo de emergencias (Y del SINPAD; `--fuente desinventar` para la versión anterior) |
 | `python src/ml_evaluacion.py` | Bootstrap por años, calibración y falsos negativos |
 | `python src/auditoria.py` | Regenera `docs/evidencia/auditoria_cifras.json` |
 | `python src/aviso_lluvia.py` | Recalcula el aviso de lluvia por distrito |
@@ -143,6 +146,7 @@ Pasos sueltos útiles:
 | `python herramientas/pruebas/prueba_aviso_pasado.py` | Aviso de lluvia y caudal frente a eventos con noticias y emergencias de SINPAD 2003-2026 |
 | `python herramientas/pruebas/prueba_aviso_pronostico_real.py` | Aviso con los pronósticos reales hechos 1-3 días antes de cada evento (necesita red) |
 | `python herramientas/pruebas/validacion_indeci.py` | Validación externa con registros INDECI 2003-2024 |
+| `python herramientas/pruebas/auditoria_sinpad.py` | Auditoría de la variable dependiente del SINPAD: eventos verificados, comparación con DesInventar y distribución de Y |
 | `python herramientas/pruebas/viabilidad_expansion.py` | Estima el costo de expandir a otros departamentos |
 | `python herramientas/figuras/figuras_presentacion.py` | Figuras de la presentación |
 
@@ -185,7 +189,7 @@ Son 38 pruebas: unitarias (anillos, Otsu, referencia del radar, reintentos, esta
 1. Ejecute `python src/etl.py local` y `python -m pytest -q`. Las pruebas deben pasar.
 2. Haga commit de `src/`, `dashboard/`, `data/`, `docs/` y `tests/`.
 3. Haga `git push` a `main`. `pages.yml` publica automáticamente. También puede lanzarlo a mano en *Actions → Publicar tablero → Run workflow*.
-4. Compruebe el sitio con `IAPN_URL_SITIO=https://maykolramirez.github.io/FENOMENO-PREDI python -m pytest tests/test_sitio.py` (el workflow «Pruebas» usa automáticamente la cuenta dueña del repositorio).
+4. Compruebe el sitio con `IAPN_URL_SITIO=https://marciashapiama.github.io/iapn-inei python -m pytest tests/test_sitio.py` (el workflow «Pruebas» usa automáticamente la cuenta dueña del repositorio).
 
 ## Solución de fallos
 

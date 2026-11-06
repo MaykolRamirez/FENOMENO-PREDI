@@ -1,0 +1,161 @@
+{
+ "fuentes": {
+  "edades": "WorldPop 2026, población por edad y sexo, 100 m",
+  "cultivos": "ESA WorldCover 2021 v200, clase 40 (tierras de cultivo), 10 m",
+  "vias": "OpenStreetMap: vías troncales, primarias, secundarias y terciarias"
+ },
+ "capas": {
+  "2017": {
+   "nombre": "El Niño costero 2017",
+   "ninos_0a4": 93,
+   "ninos_0a4_por_departamento": {
+    "Piura": 93,
+    "Tumbes": 1
+   },
+   "mayores_65": 116,
+   "mayores_65_por_departamento": {
+    "Piura": 115,
+    "Tumbes": 1
+   },
+   "cultivo_ha": 2487,
+   "vias_km": {
+    "Terciaria": 19.4,
+    "Primaria": 7.1,
+    "Secundaria": 4.9,
+    "Troncal (red nacional)": 0.8
+   },
+   "vias_km_total": 32.2,
+   "puentes": 4,
+   "puentes_nombres": [
+    "Antigua Carretera Panamericana Norte",
+    "Carretera Panamericana Norte",
+    "PI-815"
+   ]
+  },
+  "2023": {
+   "nombre": "Ciclón Yaku 2023",
+   "ninos_0a4": 6,
+   "ninos_0a4_por_departamento": {
+    "Piura": 5,
+    "Tumbes": 0
+   },
+   "mayores_65": 6,
+   "mayores_65_por_departamento": {
+    "Piura": 5,
+    "Tumbes": 0
+   },
+   "cultivo_ha": 678,
+   "vias_km": {
+    "Primaria": 6.5,
+    "Terciaria": 5.0,
+    "Secundaria": 0.5
+   },
+   "vias_km_total": 12.0,
+   "puentes": 2,
+   "puentes_nombres": [
+    "Antigua Carretera Panamericana Norte"
+   ]
+  },
+  "vivo": {
+   "nombre": "Últimos 24 días",
+   "ninos_0a4": 3,
+   "ninos_0a4_por_departamento": {
+    "Piura": 3,
+    "Tumbes": 0
+   },
+   "mayores_65": 3,
+   "mayores_65_por_departamento": {
+    "Piura": 2,
+    "Tumbes": 0
+   },
+   "cultivo_ha": 2,
+   "vias_km": {
+    "Terciaria": 0.2,
+    "Secundaria": 0.1
+   },
+   "vias_km_total": 0.3,
+   "puentes": 0,
+   "puentes_nombres": []
+  },
+  "rp10": {
+   "nombre": "Zona inundable: crecida de 1 en 10 años",
+   "ninos_0a4": 25319,
+   "ninos_0a4_por_departamento": {
+    "Piura": 23760,
+    "Tumbes": 1558
+   },
+   "mayores_65": 22067,
+   "mayores_65_por_departamento": {
+    "Piura": 20877,
+    "Tumbes": 1189
+   },
+   "cultivo_ha": 48112,
+   "vias_km": {
+    "Terciaria": 403.1,
+    "Secundaria": 130.3,
+    "Primaria": 103.0,
+    "Troncal (red nacional)": 51.4,
+    "Autopista": 11.2
+   },
+   "vias_km_total": 699.0,
+   "puentes": 213,
+   "puentes_nombres": [
+    "Antigua Carretera Panamericana Norte",
+    "Avenida Andrés Avelino Cáceres",
+    "Avenida Bolognesi",
+    "Avenida Francia",
+    "Avenida Grau",
+    "Avenida Guardia Civil",
+    "Avenida José Gálvez",
+    "Avenida Las Casuarinas",
+    "Avenida Luis Antonio Eguiguren",
+    "Avenida Luis Felipe Agurto",
+    "Avenida Progreso",
+    "Avenida Ramón Castilla",
+    "Avenida Sánchez Cerro",
+    "Avenida Tumbes Norte",
+    "Avenida las Flores"
+   ]
+  },
+  "rp100": {
+   "nombre": "Zona inundable: crecida de 1 en 100 años",
+   "ninos_0a4": 36239,
+   "ninos_0a4_por_departamento": {
+    "Piura": 34026,
+    "Tumbes": 2213
+   },
+   "mayores_65": 32161,
+   "mayores_65_por_departamento": {
+    "Piura": 30423,
+    "Tumbes": 1737
+   },
+   "cultivo_ha": 52678,
+   "vias_km": {
+    "Terciaria": 465.9,
+    "Secundaria": 163.6,
+    "Primaria": 148.5,
+    "Troncal (red nacional)": 68.4,
+    "Autopista": 11.7
+   },
+   "vias_km_total": 858.1,
+   "puentes": 229,
+   "puentes_nombres": [
+    "Antigua Carretera Panamericana Norte",
+    "Avenida Andrés Avelino Cáceres",
+    "Avenida Bolognesi",
+    "Avenida Francia",
+    "Avenida Grau",
+    "Avenida Guardia Civil",
+    "Avenida José Gálvez",
+    "Avenida Las Casuarinas",
+    "Avenida Luis Antonio Eguiguren",
+    "Avenida Luis Felipe Agurto",
+    "Avenida Progreso",
+    "Avenida Ramón Castilla",
+    "Avenida Sánchez Cerro",
+    "Avenida Tumbes Norte",
+    "Avenida las Flores"
+   ]
+  }
+ }
+}

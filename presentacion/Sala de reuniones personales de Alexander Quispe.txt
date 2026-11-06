@@ -1,0 +1,569 @@
+17:19:31 --> 17:19:36
+marci shapiama: Básicamente hay un punto metodológico, o sea, lo que pasa es que.
+
+17:19:36 --> 17:19:42
+marci shapiama: Justo. Ya estamos haciendo el Teseo con Huanca Huancabamba.
+
+17:19:36 --> 17:19:38
+aula02: Y.
+
+17:19:38 --> 17:19:39
+aula02: Que ya no.
+
+17:19:42 --> 17:19:47
+marci shapiama: El satélite tiene un rezago de 3 a 6 días. Entonces.
+
+17:19:46 --> 17:19:47
+Alexander Quispe: Mhm.
+
+17:19:47 --> 17:20:00
+marci shapiama: Digamos que satélite en ese momento está en guancamanga. Toma la foto, pero está seco. No, no, no detecta ningún tipo de inundación pasa de acá a 5 días y digamos de que mañana hay una lluvia bien fuerte.
+
+17:19:47 --> 17:19:50
+aula02: Digamos que se Felipe en este momento.
+
+17:19:51 --> 17:19:52
+aula02: Toma la foto, pero está.
+
+17:19:57 --> 17:19:59
+aula02: Y damos de la mañana allí.
+
+17:20:00 --> 17:20:02
+marci shapiama: Pero.
+
+17:20:00 --> 17:20:02
+aula02: Pero.
+
+17:20:02 --> 17:20:04
+marci shapiama: Pasados días se seca.
+
+17:20:02 --> 17:20:04
+aula02: Pasa 2 días seca.
+
+17:20:04 --> 17:20:05
+aula02: Cuando pasa un aire.
+
+17:20:04 --> 17:20:09
+marci shapiama: Y cuando pasa, normalmente es el satélite. Da la vuelta a la Tierra, llega y está seco en el radar.
+
+17:20:05 --> 17:20:08
+aula02: Satélites que dan la vuelta a la tierra llegan, se cumplen.
+
+17:20:08 --> 17:20:09
+aula02: En el radar.
+
+17:20:09 --> 17:20:11
+aula02: No.
+
+17:20:09 --> 17:20:15
+marci shapiama: No. Este no se actualiza de manera diaria.
+
+17:20:11 --> 17:20:12
+aula02: Sí.
+
+17:20:15 --> 17:20:21
+marci shapiama: Es, es es esa por ahí. Es un punto que podemos como mejorar. No.
+
+17:20:16 --> 17:20:18
+aula02: Eso que por ahí que es un poco de.
+
+17:20:19 --> 17:20:21
+aula02: Mejorar tu vida.
+
+17:20:21 --> 17:20:24
+marci shapiama: Para que nos pueda ayudar, como.
+
+17:20:21 --> 17:20:22
+aula02: ¿para qué?
+
+17:20:22 --> 17:20:24
+aula02: Pueda ayudar con.
+
+17:20:22 --> 17:20:27
+Alexander Quispe: Pero, ¿y están seguros que es así. O sea, eso dicen, la metodología del del ra del satélite.
+
+17:20:27 --> 17:20:29
+marci shapiama: Sí, Sí, Sí, Sí, Sí.
+
+17:20:27 --> 17:20:29
+aula02: Mhm: Sí.
+
+17:20:27 --> 17:20:33
+maykol: Si, si, Professor, el satelite pasa por el numero punto de tres asadillas.
+
+17:20:33 --> 17:20:34
+marci shapiama: Mhm.
+
+17:20:32 --> 17:20:35
+Alexander Quispe: Mhm: Interesante.
+
+17:20:34 --> 17:20:52
+marci shapiama: Sí, así es sí, O sea, es muy con. Es muy dis distinto a su trabajo, porque trabajo, todos los datos, la edad. Este, la Nasa, con la temperatura de la Tierra no es ahí, está más actualizado. El nuestro se se se podría hacer, pero con una licencia que cuesta como 1 000 dólares cada.
+
+17:20:52 --> 17:20:56
+marci shapiama: Tres días. Entonces por ahí, como que no tenemos los medios, no para poder hacerlo.
+
+17:20:57 --> 17:21:00
+Alexander Quispe: Ya. Entonces, ¿qué están? ¿qué están testeando ahora.
+
+17:20:59 --> 17:21:09
+marci shapiama: Ahora es ahora. Bueno, nuestro objetivo, en todo caso, va Acá va a cambiar, no como el satélite no nos sirve como.
+
+17:21:08 --> 17:21:10
+Alexander Quispe: Mhm.
+
+17:21:09 --> 17:21:25
+marci shapiama: Para poder anticipar. Entonces, ahora nuestro objetivo central con el modelo es predecirnos la probabilidad de que ocurra una emergencia por por inundación o lluvias intensas entre una a 4 semanas antes a nivel de distrito.
+
+17:21:19 --> 17:21:20
+aula02: In Britain?
+
+17:21:25 --> 17:21:31
+marci shapiama: O semana, pero también digamos que lo hemos testeado con el pasado.
+
+17:21:24 --> 17:21:26
+aula02: Pedro?
+
+17:21:31 --> 17:21:36
+marci shapiama: No porque se supone que este las noticias.
+
+17:21:33 --> 17:21:35
+aula02: Let me see here.
+
+17:21:37 --> 17:21:46
+marci shapiama: Cómo le explico a ver, o sea, las no las las noticias nos ha ayudado bastante para poder testear, pero nosotros no podemos. Este, digamos.
+
+17:21:46 --> 17:22:01
+marci shapiama: Guiarnos por las noticias. No debemos ser antes de las noticias, entonces éste le hemos testeado y hay veces de que, como dan falsas alarmas por la temperatura del del clima, esas no hay nada, ¿no? Y se crea una falsa alarma dentro de el radar.
+
+17:21:51 --> 17:21:54
+aula02: Alarma.
+
+17:22:02 --> 17:22:17
+marci shapiama: No. Entonces por ahí también, como que estamos trabajando en ello, para poder sostener ello. Pero el aumento de hacer deseo con el pasado. Ya tenemos ciertas evidencias que sí sí tiene este sentido, no nuestro nuestro procedimiento.
+
+17:22:17 --> 17:22:20
+marci shapiama: Ahora vamos a leer el radar.
+
+17:22:20 --> 17:22:23
+marci shapiama: A ver el tablero.
+
+17:22:22 --> 17:22:24
+aula02: Program.
+
+17:22:25 --> 17:22:30
+aula02: Ay, un temito con un compartido de pantalles. Ay, son? Si, se.
+
+17:22:31 --> 17:22:33
+Alexander Quispe: Ya a ver.
+
+17:22:31 --> 17:22:32
+aula02: See?
+
+17:22:35 --> 17:22:36
+Alexander Quispe: Mhm.
+
+17:22:34 --> 17:22:35
+aula02: No.
+
+17:22:38 --> 17:22:41
+aula02: Thank you very much, you guys.
+
+17:22:42 --> 17:22:47
+marci shapiama: Entra, selecciona.
+
+17:22:47 --> 17:22:52
+marci shapiama: Selecciona inscripciones potencialmente expuestas.
+
+17:22:49 --> 17:22:50
+aula02: No.
+
+17:22:52 --> 17:22:53
+marci shapiama: Bien, profesor.
+
+17:22:50 --> 17:22:52
+aula02: Me va a senar one over.
+
+17:22:54 --> 17:22:56
+marci shapiama: No cualquiera nada más.
+
+17:22:58 --> 17:22:59
+marci shapiama: Ahí.
+
+17:22:59 --> 17:23:01
+marci shapiama: Sí.
+
+17:23:01 --> 17:23:03
+marci shapiama: Perdón.
+
+17:23:05 --> 17:23:22
+marci shapiama: Y el profesor Mire. Bueno, el mapa sigue siendo básicamente el el mismo. Solamente hemos cambiado la forma de detección. Nada más. Como le como le expliqué, no tenemos ese rezago de de 3 a 6 años aproximadamente. Entonces, visualmente, el mapa de por sí no nos va a ayudar.
+
+17:23:10 --> 17:23:11
+Alexander Quispe: Mhm.
+
+17:23:12 --> 17:23:13
+aula02: Only.
+
+17:23:15 --> 17:23:17
+aula02: Okay.
+
+17:23:17 --> 17:23:18
+aula02: Moment.
+
+17:23:18 --> 17:23:20
+aula02: I don't know.
+
+17:23:22 --> 17:23:28
+marci shapiama: Sino, nos estamos guiando en la procrastinación del clima.
+
+17:23:20 --> 17:23:23
+aula02: Sino estamos guiando en.
+
+17:23:23 --> 17:23:27
+aula02: La transformación del clima.
+
+17:23:29 --> 17:23:34
+marci shapiama: Para poder hacer nuestro modelo de telas slides.
+
+17:23:28 --> 17:23:29
+aula02: Para poder andar.
+
+17:23:41 --> 17:23:42
+marci shapiama: Ya.
+
+17:23:43 --> 17:23:44
+aula02: Mhm.
+
+17:23:52 --> 17:23:53
+marci shapiama: Ya ahí.
+
+17:23:50 --> 17:23:52
+aula02: Mira ahí.
+
+17:23:54 --> 17:23:57
+marci shapiama: Ya. Eso es lo que vamos a intentar.
+
+17:23:52 --> 17:23:55
+aula02: Eso es lo que vamos a intentar.
+
+17:23:55 --> 17:23:58
+aula02: Pero ahorita como esto está planteando.
+
+17:23:57 --> 17:24:12
+marci shapiama: Ahorita, estamos ahorita, Está planteado así no como le como le expliqué, no, o sea, como el satélite, no nos sirve para poder anticiparnos, o sea, ahora nuestro objetivo central con el modelo es predecir no la probabilidad posible de.
+
+17:24:12 --> 17:24:23
+marci shapiama: Si que se presenta alguna emergencia mediante una indulación, no o lluvias este extremas intensas. Pero rezago, es de una a 4 semanas antes.
+
+17:24:10 --> 17:24:14
+aula02: Si se presenta alguna emergencia mediante una licitación.
+
+17:24:14 --> 17:24:17
+aula02: O lluvias extremas, densas.
+
+17:24:17 --> 17:24:21
+aula02: Pero no sabemos de una a 4 semanas antes.
+
+17:24:27 --> 17:24:30
+Alexander Quispe: Ya, y eso lo dijo Claudio, que era eficiente.
+
+17:24:29 --> 17:24:34
+marci shapiama: Me lo empezamos corriendo y hasta hasta ahora, con la actualización.
+
+17:24:34 --> 17:24:38
+marci shapiama: Sí sí nos da como que buenos resultados, o sea.
+
+17:24:33 --> 17:24:35
+aula02: Sí, Sí, no es bueno.
+
+17:24:36 --> 17:24:40
+Alexander Quispe: Ya, pero explica es que no entiendo cuál es a qué cosa es, lle qué cosas lle.
+
+17:24:40 --> 17:24:43
+marci shapiama: Claro en este caso.
+
+17:24:38 --> 17:24:40
+aula02: Claro en esta Casa.
+
+17:24:43 --> 17:24:44
+marci shapiama: Y.
+
+17:24:44 --> 17:24:53
+marci shapiama: La verdad. El objetivo, que es lleno, si es que, por ejemplo, si hubo o no una emergencia registrada dentro del distrito.
+
+17:24:43 --> 17:24:44
+aula02: La verdad, los testigos.
+
+17:24:45 --> 17:24:46
+aula02: Es bueno.
+
+17:24:53 --> 17:24:58
+marci shapiama: De una a 4 semanas. Creo que está ca retrocede.
+
+17:24:51 --> 17:24:53
+aula02: De una.
+
+17:24:55 --> 17:24:57
+aula02: Importante.
+
+17:24:58 --> 17:25:01
+marci shapiama: La variable dependiente.
+
+17:25:01 --> 17:25:03
+marci shapiama: No la otra atrás.
+
+17:25:04 --> 17:25:06
+marci shapiama: No, no.
+
+17:25:09 --> 17:25:12
+marci shapiama: No es atrás atrás.
+
+17:25:16 --> 17:25:18
+aula02: Me gustan.
+
+17:25:21 --> 17:25:29
+marci shapiama: Diciendo, o sea, la variable objetivo, es lleno si es una variable. Este.
+
+17:25:19 --> 17:25:22
+aula02: Entonces y comenzaba diciendo.
+
+17:25:29 --> 17:25:31
+marci shapiama: De 2 clasificaciones.
+
+17:25:28 --> 17:25:29
+aula02: Entonces la gente.
+
+17:25:30 --> 17:25:32
+aula02: La sopa. Sí, hubo o no.
+
+17:25:31 --> 17:25:46
+marci shapiama: Las o C Max, si hubo o no hubo una emergencia realizada en el distrito, no en el tiempo de una a 4 semanas. Entonces eso está con eso. Está cons construido con los registros históricos que hemos sacado de.
+
+17:25:35 --> 17:25:36
+aula02: En el tiempo de.
+
+17:25:46 --> 17:25:48
+marci shapiama: Imbécil.
+
+17:25:49 --> 17:25:51
+marci shapiama: Entonces este.
+
+17:25:50 --> 17:25:53
+Alexander Quispe: Y si crees variable a que a nivel de distrito.
+
+17:25:53 --> 17:25:55
+marci shapiama: Sí.
+
+17:25:56 --> 17:25:59
+Alexander Quispe: Y ahí les dice: si ha habido ahí una inundación.
+
+17:25:59 --> 17:26:01
+marci shapiama: Ajá Exacto.
+
+17:26:02 --> 17:26:04
+Alexander Quispe: Y cuántos distritos tienen.
+
+17:26:04 --> 17:26:14
+marci shapiama: Avanza. Como solamente estamos enfocados en tumbes y Piura. Hemos Hemos testeado de los 15 distritos. Hasta ahora funciona en 9.
+
+17:26:04 --> 17:26:06
+aula02: Como solamente estamos enfocados.
+
+17:26:07 --> 17:26:08
+aula02: Hemos de.
+
+17:26:08 --> 17:26:10
+Alexander Quispe: Mhm.
+
+17:26:15 --> 17:26:17
+marci shapiama: No lo está. Creo.
+
+17:26:17 --> 17:26:19
+marci shapiama: Pasa al final. Creo.
+
+17:26:20 --> 17:26:28
+Alexander Quispe: Pero miren antes de que ustedes me digan que funciona el modelo. Yo tengo que entender lo que han metido al modelo ya regresa a tu regreso al Slide, principal.
+
+17:26:20 --> 17:26:22
+marci shapiama: Ahh: Creo que.
+
+17:26:31 --> 17:26:37
+Alexander Quispe: Ya ahí. Observo que tiene la probabilidad de emergencia en las próximas 4 semanas.
+
+17:26:39 --> 17:26:43
+Alexander Quispe: O sea, ya es 1.
+
+17:26:43 --> 17:26:51
+Alexander Quispe: Pero ¿cómo mide eso? Quiá? Imagínate que yo tengo el distrito. ¿ves el Distrito. No sé, dame un nombre, un distrito en Tumbe, en tumbes o Bureau.
+
+17:26:51 --> 17:26:53
+Alexander Quispe: ¿por qué estamos viendo cury tumbe, no o no?
+
+17:26:52 --> 17:26:54
+marci shapiama: Sí, Bien hecho. Un mes.
+
+17:26:53 --> 17:26:56
+Alexander Quispe: Y a un distrito en tu me dame un distrito.
+
+17:26:57 --> 17:26:59
+marci shapiama: Bueno, 1 de Saru mía.
+
+17:26:59 --> 17:27:05
+Alexander Quispe: Ya en tu investigación. Ahora, en semilla. Cuándo va a ser eso Uno.
+
+17:27:05 --> 17:27:13
+Alexander Quispe: Y cuándo es 0. Imagínate que estamos hoy. O imagínate que estamos septiembre del 20 26 cuando es único antecero.
+
+17:27:14 --> 17:27:21
+marci shapiama: Cuándo es 1 y cuándo es 0. Uno es cuando hay emergencia y 0 es cuando no hay emergencia.
+
+17:27:21 --> 17:27:30
+Alexander Quispe: O sea, entonces va a ser 1, si es que yo observo que el Indeci ha marcado que ha habido una emergencia en ese lugar.
+
+17:27:21 --> 17:27:22
+marci shapiama: Por eso.
+
+17:27:28 --> 17:27:30
+marci shapiama: Mhm.
+
+17:27:30 --> 17:27:31
+marci shapiama: Sí.
+
+17:27:30 --> 17:27:34
+Alexander Quispe: Ahora el Indeci hace los reportes semanales mensuales o diarios.
+
+17:27:37 --> 17:27:41
+marci shapiama: No, Eso Sí, no lo tengo. No lo tengo. Mapeado.
+
+17:27:40 --> 17:27:44
+Alexander Quispe: Y entonces, si no tienen mapeo, ¿cómo han corrido la regresión.
+
+17:27:48 --> 17:27:50
+marci shapiama: Diario.
+
+17:27:50 --> 17:27:53
+marci shapiama: Ese formato. Los reportes diarios.
+
+17:27:56 --> 17:27:59
+Alexander Quispe: Me revisan es diario o semanal, mensual.
+
+17:27:58 --> 17:28:14
+aula02: Profesor Lindesi informa todos los días en base a la Cohen, que es el Centro de Operaciones de Emergencia Nacional, y lo publica todos los días, ¿no? Y por ejemplo, cuando ocurre un evento grande, como en este caso, el fenómeno del niño.
+
+17:28:00 --> 17:28:02
+Alexander Quispe: Mhm.
+
+17:28:02 --> 17:28:03
+Alexander Quispe: Ya verdad.
+
+17:28:06 --> 17:28:07
+Alexander Quispe: Ya.
+
+17:28:12 --> 17:28:13
+Alexander Quispe: Ajá.
+
+17:28:14 --> 17:28:23
+aula02: Saca informes de emergencia que se actualizan de manera continua, o sea, en en sí, no solamente como que saca el.
+
+17:28:14 --> 17:28:15
+Alexander Quispe: Mhm.
+
+17:28:23 --> 17:28:33
+aula02: La información diaria, sino también los informes se actualizan, ya sea de maneras semanales o mensuales, porque ya está viendo como un fenómeno.
+
+17:28:33 --> 17:28:46
+Alexander Quispe: Ya lo Ca: Entonces usted, genial, gracias por el dato. Entonces ustedes podrían crear esa variable a nivel diario, pero no creo que todos los días registran, se ha inundado. Si ahí estuvo inundado. Hoy día, otros van a declarar que está inundado.
+
+17:28:46 --> 17:28:51
+Alexander Quispe: No necesariamente no. O sea, cómo pasa? Imagínate que tienes un distrito.
+
+17:28:50 --> 17:28:51
+marci shapiama: Mhm.
+
+17:28:51 --> 17:28:52
+Alexander Quispe: Se ha inundado.
+
+17:28:52 --> 17:28:54
+Alexander Quispe: En septiembre, la segunda semana.
+
+17:28:54 --> 17:28:57
+Alexander Quispe: Quiero observar ese mismo distrito en la cuarta semana.
+
+17:28:57 --> 17:29:00
+Alexander Quispe: Si ya no está inundado, ¿qué va a aparecer 0.
+
+17:29:02 --> 17:29:08
+Alexander Quispe: El el el decir, registrarse como 0 como 1. ¿cómo lo registra.
+
+17:29:08 --> 17:29:12
+aula02: Sí. Profesor: una consulta.
+
+17:29:10 --> 17:29:12
+Alexander Quispe: Mhm.
+
+17:29:12 --> 17:29:29
+aula02: Justo ahorita. Es bueno con el empleado, o sea, los registros, si bien son diarios, pero algo que nos recomienda es agruparlo por semanas, porque un un aviso con varios días de anticipación es mucho más útil para predecir con anticipación un fenómeno que está es.
+
+17:29:17 --> 17:29:18
+Alexander Quispe: Ya.
+
+17:29:20 --> 17:29:21
+Alexander Quispe: Ajá.
+
+17:29:26 --> 17:29:28
+Alexander Quispe: Claro.
+
+17:29:29 --> 17:29:39
+aula02: Dar como que diariamente un este, un registro que va a ser como que demasiado ruido para un evento se incluso puede puede ser una mala predicción.
+
+17:29:39 --> 17:29:50
+Alexander Quispe: Ya chévere, entonces lo yo Ta: Bien, yo también pienso, lo mismo, que creen la variable a nivel de semana. Ya. Si ustedes crean la variable a nivel de semana, entonces.
+
+17:29:52 --> 17:29:55
+Alexander Quispe: La pregunta es nuevamente: ¿cómo van a saber cuando ya no hay lluvia.
+
+17:29:57 --> 17:29:58
+Alexander Quispe: ¿quién le va a avisar.
+
+17:30:00 --> 17:30:02
+Alexander Quispe: ¿te dientes? Sí.
+
+17:30:03 --> 17:30:04
+maykol: Okay.
+
+17:30:12 --> 17:30:29
+Alexander Quispe: Siéntense, razonen entre los 4. Y en vez de que me estén lanzando, o sea, ideas que de repente no ustedes mismos no las tienen claras, piensen cómo van a construir esa variable? Cuándo va a ser 1, cuándo va a ser 0? Y me tiene que mostrar una distribución de esa variable. Mira Alex, acá tenemos la serie tiempo de todos los distritos.
+
+17:30:12 --> 17:30:14
+aula02: Es.
+
+17:30:29 --> 17:30:41
+Alexander Quispe: De cómo se llama ese lugar de tumbes y Piura. Y acá es 1. Cuando ha habido un accidente, Cohen, porque el Coen ha registrado en esta página web, en este Pdf, en estos registros. Y hemos declarado eso como 1.
+
+17:30:30 --> 17:30:32
+marci shapiama: Mhm.
+
+17:30:41 --> 17:30:47
+Alexander Quispe: Y es 0. Cuando el C o E ha decidido sacarlo de zona de de de de emergencia o de restricción.
+
+17:30:48 --> 17:30:49
+Alexander Quispe: Se entiende.
+
+17:30:47 --> 17:30:49
+marci shapiama: Sí. Profesor.
+
+17:30:49 --> 17:30:50
+maykol: Okay.
+
+17:30:50 --> 17:30:58
+Alexander Quispe: Ya siéntense, piensen, lean los documentos, y lo primero que van a hacer es definir bien esa variable y me cuentan en una hora que encuentran ya.
+
+17:30:59 --> 17:31:01
+Alexander Quispe: Chao, nos vemos.
+
+17:30:59 --> 17:31:00
+maykol: Right.
+
+17:31:00 --> 17:31:01
+aula02: Okay, profesor

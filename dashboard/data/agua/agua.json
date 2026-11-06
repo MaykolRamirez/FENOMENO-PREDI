@@ -1,0 +1,417 @@
+{
+ "generado": "2026-11-04 01:28 UTC",
+ "umbral_agua_db": -18.0,
+ "umbral_tierra_db": -15.0,
+ "pendiente_max": 10.0,
+ "dias": 30,
+ "zonas": {
+  "tumbes": {
+   "nombre": "Tumbes",
+   "escenas": [
+    {
+     "fecha": "2026-10-06",
+     "orbita": 40,
+     "nueva_ha": 0.0,
+     "permanente_ha": 2.2,
+     "archivo": "tumbes_2026-10-06_40.png"
+    },
+    {
+     "fecha": "2026-10-09",
+     "orbita": 91,
+     "nueva_ha": 0.0,
+     "permanente_ha": 1.0,
+     "archivo": "tumbes_2026-10-09_91.png"
+    },
+    {
+     "fecha": "2026-10-12",
+     "orbita": 40,
+     "nueva_ha": 0.0,
+     "permanente_ha": 4.8,
+     "archivo": "tumbes_2026-10-12_40.png"
+    },
+    {
+     "fecha": "2026-10-18",
+     "orbita": 40,
+     "nueva_ha": 0.0,
+     "permanente_ha": 2.7,
+     "archivo": "tumbes_2026-10-18_40.png"
+    },
+    {
+     "fecha": "2026-10-21",
+     "orbita": 91,
+     "nueva_ha": 0.0,
+     "permanente_ha": 1.1,
+     "archivo": "tumbes_2026-10-21_91.png"
+    },
+    {
+     "fecha": "2026-10-24",
+     "orbita": 40,
+     "nueva_ha": 0.0,
+     "permanente_ha": 5.8,
+     "archivo": "tumbes_2026-10-24_40.png"
+    },
+    {
+     "fecha": "2026-10-30",
+     "orbita": 40,
+     "nueva_ha": 0.0,
+     "permanente_ha": 2.3,
+     "archivo": "tumbes_2026-10-30_40.png"
+    },
+    {
+     "fecha": "2026-11-02",
+     "orbita": 91,
+     "nueva_ha": 4.8,
+     "permanente_ha": 0.8,
+     "archivo": "tumbes_2026-11-02_91.png"
+    }
+   ]
+  },
+  "piura": {
+   "nombre": "Piura",
+   "escenas": [
+    {
+     "fecha": "2026-10-06",
+     "orbita": 40,
+     "nueva_ha": 5.1,
+     "permanente_ha": 10.0,
+     "archivo": "piura_2026-10-06_40.png"
+    },
+    {
+     "fecha": "2026-10-09",
+     "orbita": 91,
+     "nueva_ha": 7.7,
+     "permanente_ha": 84.4,
+     "archivo": "piura_2026-10-09_91.png"
+    },
+    {
+     "fecha": "2026-10-12",
+     "orbita": 40,
+     "nueva_ha": 1.7,
+     "permanente_ha": 13.6,
+     "archivo": "piura_2026-10-12_40.png"
+    },
+    {
+     "fecha": "2026-10-18",
+     "orbita": 40,
+     "nueva_ha": 5.9,
+     "permanente_ha": 7.9,
+     "archivo": "piura_2026-10-18_40.png"
+    },
+    {
+     "fecha": "2026-10-21",
+     "orbita": 91,
+     "nueva_ha": 3.1,
+     "permanente_ha": 76.8,
+     "archivo": "piura_2026-10-21_91.png"
+    },
+    {
+     "fecha": "2026-10-24",
+     "orbita": 40,
+     "nueva_ha": 0.0,
+     "permanente_ha": 13.9,
+     "archivo": "piura_2026-10-24_40.png"
+    },
+    {
+     "fecha": "2026-10-30",
+     "orbita": 40,
+     "nueva_ha": 3.3,
+     "permanente_ha": 7.7,
+     "archivo": "piura_2026-10-30_40.png"
+    },
+    {
+     "fecha": "2026-11-02",
+     "orbita": 91,
+     "nueva_ha": 1.1,
+     "permanente_ha": 61.8,
+     "archivo": "piura_2026-11-02_91.png"
+    }
+   ]
+  },
+  "lambayeque": {
+   "nombre": "Lambayeque",
+   "escenas": [
+    {
+     "fecha": "2026-10-06",
+     "orbita": 40,
+     "nueva_ha": 0.0,
+     "permanente_ha": 11.2,
+     "archivo": "lambayeque_2026-10-06_40.png"
+    },
+    {
+     "fecha": "2026-10-07",
+     "orbita": 142,
+     "nueva_ha": 0.7,
+     "permanente_ha": 79.6,
+     "archivo": "lambayeque_2026-10-07_142.png"
+    },
+    {
+     "fecha": "2026-10-09",
+     "orbita": 91,
+     "nueva_ha": 3.8,
+     "permanente_ha": 43.9,
+     "archivo": "lambayeque_2026-10-09_91.png"
+    },
+    {
+     "fecha": "2026-10-12",
+     "orbita": 40,
+     "nueva_ha": 0.0,
+     "permanente_ha": 7.3,
+     "archivo": "lambayeque_2026-10-12_40.png"
+    },
+    {
+     "fecha": "2026-10-13",
+     "orbita": 142,
+     "nueva_ha": 0.9,
+     "permanente_ha": 84.1,
+     "archivo": "lambayeque_2026-10-13_142.png"
+    },
+    {
+     "fecha": "2026-10-18",
+     "orbita": 40,
+     "nueva_ha": 0.0,
+     "permanente_ha": 72.1,
+     "archivo": "lambayeque_2026-10-18_40.png"
+    },
+    {
+     "fecha": "2026-10-19",
+     "orbita": 142,
+     "nueva_ha": 0.7,
+     "permanente_ha": 78.9,
+     "archivo": "lambayeque_2026-10-19_142.png"
+    },
+    {
+     "fecha": "2026-10-21",
+     "orbita": 91,
+     "nueva_ha": 3.1,
+     "permanente_ha": 44.2,
+     "archivo": "lambayeque_2026-10-21_91.png"
+    },
+    {
+     "fecha": "2026-10-24",
+     "orbita": 40,
+     "nueva_ha": 0.0,
+     "permanente_ha": 67.2,
+     "archivo": "lambayeque_2026-10-24_40.png"
+    },
+    {
+     "fecha": "2026-10-25",
+     "orbita": 142,
+     "nueva_ha": 2.3,
+     "permanente_ha": 86.0,
+     "archivo": "lambayeque_2026-10-25_142.png"
+    },
+    {
+     "fecha": "2026-10-30",
+     "orbita": 40,
+     "nueva_ha": 0.0,
+     "permanente_ha": 48.6,
+     "archivo": "lambayeque_2026-10-30_40.png"
+    },
+    {
+     "fecha": "2026-10-31",
+     "orbita": 142,
+     "nueva_ha": 0.0,
+     "permanente_ha": 78.2,
+     "archivo": "lambayeque_2026-10-31_142.png"
+    },
+    {
+     "fecha": "2026-11-02",
+     "orbita": 91,
+     "nueva_ha": 4.0,
+     "permanente_ha": 44.3,
+     "archivo": "lambayeque_2026-11-02_91.png"
+    }
+   ]
+  },
+  "trujillo": {
+   "nombre": "Trujillo",
+   "escenas": [
+    {
+     "fecha": "2026-10-07",
+     "orbita": 142,
+     "nueva_ha": 3.7,
+     "permanente_ha": 5137.4,
+     "archivo": "trujillo_2026-10-07_142.png"
+    },
+    {
+     "fecha": "2026-10-10",
+     "orbita": 18,
+     "nueva_ha": 2.6,
+     "permanente_ha": 174.0,
+     "archivo": "trujillo_2026-10-10_18.png"
+    },
+    {
+     "fecha": "2026-10-13",
+     "orbita": 142,
+     "nueva_ha": 8.5,
+     "permanente_ha": 4856.1,
+     "archivo": "trujillo_2026-10-13_142.png"
+    },
+    {
+     "fecha": "2026-10-16",
+     "orbita": 18,
+     "nueva_ha": 2.3,
+     "permanente_ha": 184.0,
+     "archivo": "trujillo_2026-10-16_18.png"
+    },
+    {
+     "fecha": "2026-10-19",
+     "orbita": 142,
+     "nueva_ha": 0.0,
+     "permanente_ha": 5533.5,
+     "archivo": "trujillo_2026-10-19_142.png"
+    },
+    {
+     "fecha": "2026-10-22",
+     "orbita": 18,
+     "nueva_ha": 3.3,
+     "permanente_ha": 138.2,
+     "archivo": "trujillo_2026-10-22_18.png"
+    },
+    {
+     "fecha": "2026-10-25",
+     "orbita": 142,
+     "nueva_ha": 2.2,
+     "permanente_ha": 5159.3,
+     "archivo": "trujillo_2026-10-25_142.png"
+    },
+    {
+     "fecha": "2026-10-28",
+     "orbita": 18,
+     "nueva_ha": 0.0,
+     "permanente_ha": 124.0,
+     "archivo": "trujillo_2026-10-28_18.png"
+    },
+    {
+     "fecha": "2026-10-31",
+     "orbita": 142,
+     "nueva_ha": 3.1,
+     "permanente_ha": 2072.6,
+     "archivo": "trujillo_2026-10-31_142.png"
+    }
+   ]
+  },
+  "lima": {
+   "nombre": "Lima",
+   "escenas": [
+    {
+     "fecha": "2026-10-08",
+     "orbita": 69,
+     "nueva_ha": 0.0,
+     "permanente_ha": 10.8,
+     "archivo": "lima_2026-10-08_69.png"
+    },
+    {
+     "fecha": "2026-10-10",
+     "orbita": 18,
+     "nueva_ha": 0.0,
+     "permanente_ha": 33.6,
+     "archivo": "lima_2026-10-10_18.png"
+    },
+    {
+     "fecha": "2026-10-15",
+     "orbita": 171,
+     "nueva_ha": 0.0,
+     "permanente_ha": 105.4,
+     "archivo": "lima_2026-10-15_171.png"
+    },
+    {
+     "fecha": "2026-10-16",
+     "orbita": 18,
+     "nueva_ha": 0.0,
+     "permanente_ha": 19.0,
+     "archivo": "lima_2026-10-16_18.png"
+    },
+    {
+     "fecha": "2026-10-20",
+     "orbita": 69,
+     "nueva_ha": 0.0,
+     "permanente_ha": 11.4,
+     "archivo": "lima_2026-10-20_69.png"
+    },
+    {
+     "fecha": "2026-10-22",
+     "orbita": 18,
+     "nueva_ha": 0.0,
+     "permanente_ha": 18.0,
+     "archivo": "lima_2026-10-22_18.png"
+    },
+    {
+     "fecha": "2026-10-27",
+     "orbita": 171,
+     "nueva_ha": 0.0,
+     "permanente_ha": 149.8,
+     "archivo": "lima_2026-10-27_171.png"
+    },
+    {
+     "fecha": "2026-10-28",
+     "orbita": 18,
+     "nueva_ha": 0.0,
+     "permanente_ha": 19.9,
+     "archivo": "lima_2026-10-28_18.png"
+    },
+    {
+     "fecha": "2026-11-01",
+     "orbita": 69,
+     "nueva_ha": 0.0,
+     "permanente_ha": 11.2,
+     "archivo": "lima_2026-11-01_69.png"
+    }
+   ]
+  },
+  "huaraz": {
+   "nombre": "Huaraz",
+   "escenas": [
+    {
+     "fecha": "2026-10-08",
+     "orbita": 69,
+     "nueva_ha": 0.0,
+     "permanente_ha": 25.9,
+     "archivo": "huaraz_2026-10-08_69.png"
+    },
+    {
+     "fecha": "2026-10-10",
+     "orbita": 18,
+     "nueva_ha": 0.0,
+     "permanente_ha": 15.3,
+     "archivo": "huaraz_2026-10-10_18.png"
+    },
+    {
+     "fecha": "2026-10-16",
+     "orbita": 18,
+     "nueva_ha": 0.0,
+     "permanente_ha": 18.8,
+     "archivo": "huaraz_2026-10-16_18.png"
+    },
+    {
+     "fecha": "2026-10-20",
+     "orbita": 69,
+     "nueva_ha": 2.7,
+     "permanente_ha": 27.8,
+     "archivo": "huaraz_2026-10-20_69.png"
+    },
+    {
+     "fecha": "2026-10-22",
+     "orbita": 18,
+     "nueva_ha": 0.0,
+     "permanente_ha": 11.2,
+     "archivo": "huaraz_2026-10-22_18.png"
+    },
+    {
+     "fecha": "2026-10-28",
+     "orbita": 18,
+     "nueva_ha": 0.0,
+     "permanente_ha": 19.6,
+     "archivo": "huaraz_2026-10-28_18.png"
+    },
+    {
+     "fecha": "2026-11-01",
+     "orbita": 69,
+     "nueva_ha": 0.7,
+     "permanente_ha": 26.6,
+     "archivo": "huaraz_2026-11-01_69.png"
+    }
+   ]
+  }
+ }
+}

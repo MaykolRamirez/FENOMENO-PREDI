@@ -1,0 +1,44 @@
+# Descarga automática de datos (tarea R1 · automatización).
+# Corre todos los días a las 8:20 a. m. de Lima (13:20 UTC) en los servidores de GitHub,
+# sin depender de ninguna computadora del equipo. También se puede lanzar a mano desde
+# la pestaña Actions -> "Descarga de datos" -> "Run workflow".
+# Cada corrida deja una copia fechada (vintage) en data/vintages: es la constancia de qué
+# información existía cada día.
+name: Descarga de datos
+
+on:
+  schedule:
+    - cron: "20 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  descargar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instalar librerías
+        run: pip install -q pandas requests
+      - name: BCRPData (objetivo y predictoras, una serie por vez)
+        run: cd src && python descarga_bcrp.py
+      - name: Temperatura del mar (NOAA e ICEN)
+        run: cd src && python temperatura_mar.py
+        continue-on-error: true
+      - name: Electricidad del SEIN (COES)
+        run: cd src && python coes.py
+        continue-on-error: true
+      - name: Tabla de predictoras y disponibilidad
+        run: cd src && python predictoras.py
+      - name: Guardar en el repositorio
+        run: |
+          git config user.name "Descarga automática IAPN"
+          git config user.email "actions@users.noreply.github.com"
+          git add data resultados/disponibilidad_predictoras.csv resultados/coes_diagnostico.txt
+          git diff --cached --quiet && echo "Sin cambios" && exit 0
+          git commit -m "Descarga automática de datos $(date -u +%Y-%m-%d)"
+          git push

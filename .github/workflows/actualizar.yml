@@ -1,0 +1,43 @@
+# Actualiza los datos todos los días a las 8:20 a. m. de Lima (13:20 UTC) en los servidores de GitHub.
+# Cada día se agregan archivos nuevos en data/historico/ y nunca se borran: así se forma el histórico.
+name: Actualizar datos
+
+on:
+  schedule:
+    - cron: "21 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: actualizar
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -q -r requirements.txt
+      - run: pip install -q -r requirements-dev.txt
+      - name: ETL diario (mar, índices, lluvia y ríos, tablero, metadatos; registra fallos y conserva lo último válido)
+        run: python -u src/etl.py diario
+        timeout-minutes: 60
+      - name: Último comunicado oficial del ENFEN
+        run: pip install -q pdfplumber && python -u src/exposicion_extra.py --solo-enfen
+        continue-on-error: true
+      - name: Pruebas de consistencia antes de guardar
+        run: python -m pytest -q tests/test_datos.py tests/test_unidades.py tests/test_eventos.py
+      - name: Guardar
+        run: |
+          git config user.name "Actualización automática"
+          git config user.email "actions@users.noreply.github.com"
+          git add data dashboard/data
+          git diff --cached --quiet && echo "Sin cambios" && exit 0
+          git commit -m "Actualiza datos $(date -u +%Y-%m-%d)"
+          git pull --rebase --autostash origin main
+          git push

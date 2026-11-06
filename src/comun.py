@@ -110,7 +110,7 @@ def registrar_version(archivos: list[Path], manifiesto: Path, etiqueta: str) -> 
             if not a.exists():
                 continue
             h = sha256(a)
-            rel = a.as_posix().split("/iapn-inei/")[-1] if "/iapn-inei/" in a.as_posix() else a.name
+            rel = a.as_posix().split("/FENOMENO-PREDI/")[-1] if "/FENOMENO-PREDI/" in a.as_posix() else a.name
             cambio = "nuevo" if rel not in previas else ("igual" if previas[rel] == h else "modificado")
             fila = {"fecha": ahora_lima(), "etiqueta": etiqueta, "archivo": rel, "bytes": a.stat().st_size,
                     "sha256": h, "cambio": cambio}

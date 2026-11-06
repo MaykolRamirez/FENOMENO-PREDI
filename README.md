@@ -9,8 +9,8 @@ Tablero público que estima **cuántas viviendas y personas de Tumbes y Piura pu
 Proyecto integrador del Programa de Extensión Universitaria: Ciencia del Dato (PEU-CD), INEI, 2026.
 **Autores:** Marcia, Christopher, Maykol y Luz Ángela.
 
-- **Tablero 3D:** https://marciashapiama.github.io/iapn-inei/
-- **Mapa 2D (sin aceleración gráfica), panel por distrito y metadatos:** https://marciashapiama.github.io/iapn-inei/mapa2d.html
+- **Tablero 3D:** https://maykolramirez.github.io/FENOMENO-PREDI/
+- **Mapa 2D (sin aceleración gráfica), panel por distrito y metadatos:** https://maykolramirez.github.io/FENOMENO-PREDI/mapa2d.html
 
 > «Expuesto» significa que está dentro o cerca de una zona inundable o de agua detectada por satélite. **No equivale a afectados ni damnificados**: esas cifras las registra INDECI/COEN. Un escenario de 1 en 100 años **no anuncia una inundación este año**. Los avisos del tablero **no son oficiales**: los oficiales son de SENAMHI, ENFEN e INDECI.
 
@@ -29,7 +29,7 @@ Proyecto integrador del Programa de Extensión Universitaria: Ciencia del Dato (
 ## Cómo está organizado el repositorio
 
 ```
-iapn-inei/
+FENOMENO-PREDI/
 ├── dashboard/            El tablero publicado (index.html = 3D, mapa2d.html = 2D) y sus datos en dashboard/data/
 ├── src/                  Código que descarga, calcula y arma el tablero (lo corre GitHub Actions cada día)
 ├── data/                 Datos descargados y calculados (exposición, huellas de radar, normales, modelo, validación)
@@ -84,11 +84,11 @@ Los datos confidenciales del INEI (viviendas por manzana) **no están en este re
 Requisitos: Python 3.11 o superior (probado con 3.11 en Actions y 3.14 en Windows) y git.
 
 ```bash
-git clone https://github.com/MarciaShapiama/iapn-inei.git
+git clone https://github.com/MaykolRamirez/FENOMENO-PREDI.git
 ```
 
 ```bash
-cd iapn-inei
+cd FENOMENO-PREDI
 ```
 
 ```bash
@@ -185,7 +185,7 @@ Son 38 pruebas: unitarias (anillos, Otsu, referencia del radar, reintentos, esta
 1. Ejecute `python src/etl.py local` y `python -m pytest -q`. Las pruebas deben pasar.
 2. Haga commit de `src/`, `dashboard/`, `data/`, `docs/` y `tests/`.
 3. Haga `git push` a `main`. `pages.yml` publica automáticamente. También puede lanzarlo a mano en *Actions → Publicar tablero → Run workflow*.
-4. Compruebe el sitio con `IAPN_URL_SITIO=https://marciashapiama.github.io/iapn-inei python -m pytest tests/test_sitio.py` (el workflow «Pruebas» usa automáticamente la cuenta dueña del repositorio).
+4. Compruebe el sitio con `IAPN_URL_SITIO=https://maykolramirez.github.io/FENOMENO-PREDI python -m pytest tests/test_sitio.py` (el workflow «Pruebas» usa automáticamente la cuenta dueña del repositorio).
 
 ## Solución de fallos
 

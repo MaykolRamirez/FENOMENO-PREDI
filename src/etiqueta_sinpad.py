@@ -120,6 +120,32 @@ def leer() -> pd.DataFrame:
     return pd.concat(partes, ignore_index=True)
 
 
+INICIO_ETIQUETA = "2003-01-06"   # primera semana con registros del SINPAD
+
+
+def agregar_etiqueta(b: pd.DataFrame) -> pd.DataFrame:
+    """Agrega a la base distrito-semana la variable dependiente del SINPAD, sin quitar filas ni cambiar claves.
+
+    emergencias      registros de agua del SINPAD en el distrito esa semana
+    emergencia_sem   E(d, t) = 1 si hay al menos un registro esa semana
+    emergencia_1a4   Y(d, t) = 1 si hay registro en alguna de las semanas t+1 a t+4 (lo que predice el modelo)
+    Fuera de las semanas con etiqueta (antes del 6/1/2003 o después del 29/12/2025) quedan vacías.
+    El distrito se identifica con clave + provincia: hay dos «Salitral» (Morropón y Sullana)."""
+    s = pd.read_csv(SEMANAL, parse_dates=["semana"])
+    b = b.drop(columns=["emergencias", "emergencia_sem", "emergencia_1a4"], errors="ignore").copy()
+    b["semana"] = pd.to_datetime(b["semana"])
+    b["_prov"] = b["provincia"].map(normal)
+    b = b.merge(s[["clave", "prov_n", "semana", "eventos"]].rename(columns={"prov_n": "_prov"}),
+                on=["clave", "_prov", "semana"], how="left")
+    dentro = (b["semana"] >= INICIO_ETIQUETA) & (b["semana"] <= FIN_ETIQUETA)
+    b["emergencias"] = b["eventos"].fillna(0).where(dentro)
+    b["emergencia_sem"] = (b["emergencias"] > 0).astype(float).where(dentro)
+    b = b.sort_values(["clave", "_prov", "semana"])
+    fut = b.groupby(["clave", "_prov"])["emergencia_sem"]
+    b["emergencia_1a4"] = pd.concat([fut.shift(-k) for k in range(1, 5)], axis=1).max(axis=1, skipna=False).where(dentro)
+    return b.drop(columns=["eventos", "_prov"]).reset_index(drop=True)
+
+
 def main(forzar: bool = False) -> dict:
     archivos = descargar(forzar)
     t = leer()

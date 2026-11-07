@@ -57,3 +57,15 @@ def test_y_binaria_y_sin_futuro():
             for i in range(len(d) - 4):
                 if pd.notna(d.loc[i, OBJETIVO]):
                     assert d.loc[i, OBJETIVO] == d.loc[i + 1:i + 4, "emergencia_sem"].max()
+
+
+def test_base_guarda_la_y_del_sinpad():
+    """El CSV base muestra la misma Y con la que aprende el modelo (SINPAD); DesInventar va aparte, con sufijo."""
+    from modelo_inundacion import BASE, OBJETIVO, cargar
+    b = pd.read_csv(BASE, parse_dates=["semana"])
+    assert {"emergencia_1a4_desinventar", "emergencia_sem_desinventar"} <= set(b.columns)
+    y = b.dropna(subset=[OBJETIVO])
+    assert y["semana"].min() == pd.Timestamp("2003-01-06")
+    assert y["semana"].max() <= pd.Timestamp(FIN_ETIQUETA)
+    m = b.merge(cargar("sinpad")[["ubigeo", "semana", OBJETIVO]], on=["ubigeo", "semana"], suffixes=("", "_modelo"))
+    assert len(m) > 0 and (m[OBJETIVO].fillna(-1) == m[OBJETIVO + "_modelo"].fillna(-1)).all()

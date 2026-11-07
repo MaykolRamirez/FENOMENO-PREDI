@@ -1,20 +1,24 @@
 """Base distrito-semana para predecir emergencias por inundación en Tumbes y Piura.
 
 Cada fila = un distrito en una semana (lunes a domingo). Columnas:
-    etiqueta     emergencia_sem       1 si DesInventar (fuente INDECI) registra inundación, lluvias, desborde o
-                                      avenida en el distrito esa semana
-                 emergencia_1a4       1 si la hay en alguna de las 4 semanas SIGUIENTES (lo que se quiere predecir)
+    etiqueta     (SINPAD del INDECI, 2003-2025; la construye src/etiqueta_sinpad.py)
+                 emergencias          registros de inundación o lluvia intensa del SINPAD en el distrito esa semana
+                 emergencia_sem       E = 1 si hay al menos uno esa semana
+                 emergencia_1a4       Y = 1 si los hay en alguna de las 4 semanas SIGUIENTES (lo que se quiere predecir)
+    DesInventar  las mismas columnas con el sufijo _desinventar (2001-2015). Solo se guardan para comparar;
+                 el modelo NO aprende con ellas (python src/modelo_inundacion.py --fuente desinventar)
     lluvia       lluvia_7d, lluvia_30d, lluvia_90d (mm) y sus anomalías frente al promedio 2001-2020 de esa semana
                  NASA POWER (precipitación corregida, satélite + reanálisis), punto en el centro del distrito
     ríos         caudal semanal del río más cercano (GloFAS v4 vía Open-Meteo) y su razón frente a la mediana
     mar          Niño 1+2 semanal (NOAA CPC)
     exposición   % del distrito en zona inundable 1 en 10 y 1 en 100 años, viviendas y personas expuestas (fijo)
-    historia     emergencias del distrito en los 5 años anteriores (memoria del lugar)
+    historia     emergencias_5anios_previos_desinventar: emergencias de DesInventar en los 5 años anteriores
 
 Nota de honestidad: las variables de cada semana usan solo información disponible hasta esa semana.
 
 Salidas: data/modelo/base_distrito_semana.csv (+ emergencias_desinventar.csv, lluvia_distritos.csv)
 Uso: python src/base_modelo.py
+     python src/base_modelo.py --solo-etiqueta   (sin red: solo vuelve a poner la etiqueta del SINPAD en la base)
 """
 from __future__ import annotations
 
@@ -260,12 +264,35 @@ def main() -> None:
     sem.loc[sem["semana"] > ultimo - pd.Timedelta(days=28), "emergencia_1a4"] = np.nan   # aún no se sabe
     sem.loc[sem["semana"] > ultimo, ["emergencia_sem", "emergencias_5anios_previos"]] = np.nan
     sem = sem[sem["semana"] >= "2001-04-01"]
+    print(f"  DesInventar: última emergencia registrada {ultimo.date()} (se guarda con sufijo _desinventar)")
+    guardar_con_sinpad(sem)
+
+
+DESINVENTAR = ["emergencias", "viv_afectadas", "viv_destruidas", "damnificados", "emergencia_sem", "emergencia_1a4",
+               "emergencias_5anios_previos"]
+
+
+def guardar_con_sinpad(sem: pd.DataFrame) -> None:
+    """La etiqueta del modelo es la del SINPAD. Las columnas de DesInventar quedan con sufijo _desinventar."""
+    from etiqueta_sinpad import agregar_etiqueta
+    sem = sem.rename(columns={c: c + "_desinventar" for c in DESINVENTAR if c in sem})
+    sem = agregar_etiqueta(sem)
+    sem["semana"] = sem["semana"].dt.strftime("%Y-%m-%d")
     sem.to_csv(CARPETA / "base_distrito_semana.csv", index=False, float_format="%.3f")
     con = sem.dropna(subset=["emergencia_1a4"])
-    print(f"Base: {len(sem):,} filas ({sem['clave'].nunique()} distritos × {sem['semana'].nunique()} semanas). "
-          f"Con etiqueta: {len(con):,}; semanas con emergencia: {int(con['emergencia_sem'].sum()):,} "
-          f"({100 * con['emergencia_sem'].mean():.1f} %). Última emergencia registrada: {ultimo.date()}")
+    print(f"Base: {len(sem):,} filas ({sem['ubigeo'].nunique()} distritos × {sem['semana'].nunique()} semanas). "
+          f"Y del SINPAD: {len(con):,} filas de {con['semana'].min()} a {con['semana'].max()}; "
+          f"Y = 1 en {100 * con['emergencia_1a4'].mean():.1f} %; semanas con registro: {int(con['emergencia_sem'].sum()):,}")
+
+
+def solo_etiqueta() -> None:
+    """Sin descargar nada: toma la base guardada y le vuelve a poner la etiqueta del SINPAD."""
+    sem = pd.read_csv(CARPETA / "base_distrito_semana.csv", parse_dates=["semana"])
+    if "emergencia_1a4_desinventar" in sem:
+        sem = sem.drop(columns=["emergencias", "emergencia_sem", "emergencia_1a4"], errors="ignore")
+    guardar_con_sinpad(sem)
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    solo_etiqueta() if "--solo-etiqueta" in sys.argv else main()

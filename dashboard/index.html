@@ -573,9 +573,10 @@ function prediccionVista(P){
     top.map(d=>`<tr><td><b>${d.distrito}</b> <span style="color:var(--ink-3)">${d.provincia}</span></td><td>${barra(d.prob_h1)}</td><td>${barra(d.prob_h2)}</td><td>${barra(d.prob_h3)}</td><td>${barra(d.prob_h4)}</td>`+
       `<td class="n">${fmtN(d.viviendas_si_ocurre,0)}${d.viviendas_rango_historico&&d.viviendas_rango_historico[0]!=null?`<br><span style="color:var(--ink-3)">antes: ${fmtN(d.viviendas_rango_historico[0],0)} a ${fmtN(d.viviendas_rango_historico[1],0)}</span>`:""}</td><td class="n">${fmtN(d.personas_si_ocurre,0)}</td></tr>`).join("")+"</table>";
   el.innerHTML=`<h2>Probabilidad de emergencia por plazo: 1 a 4 semanas</h2>
-    <p class="nota">Con los datos hasta la semana del ${fechaTxt(P.semana_base)}: probabilidad de que el SINPAD registre una emergencia por inundación o lluvia intensa en cada una de las cuatro semanas siguientes. Se entrenó con las emergencias de 2003 a 2025 y se probó año por año sin mirar el futuro.</p>
+    <p class="nota">Con los datos de lluvia y caudal hasta la semana del ${fechaTxt(P.semana_datos||P.semana_base)} (llegan con unos 6 días de retraso): probabilidad de que el SINPAD registre una emergencia por inundación o lluvia intensa en cada una de las cuatro semanas siguientes a la del ${fechaTxt(P.semana_base)}. Se entrenó con las emergencias de 2003 a 2025 y se probó año por año solo con lo que se sabía en cada momento.</p>
+    ${(P.limites||[]).length?`<p class="aviso">${P.limites[0]}</p>`:""}
     <h3 style="margin:10px 0 6px">¿Qué tan bien funciona en cada plazo?</h3>${calidad}
-    <p class="nota">PR-AUC: qué tan bien encuentra las semanas con emergencia (un modelo al azar saca la tasa). La climatología es la historia del distrito en ese mes. «Año por año» promedia cada año de prueba por separado: ahí se ve que el modelo es más fuerte a 1 y 2 semanas y que a 4 semanas empata con la climatología.</p>
+    <p class="nota">PR-AUC: qué tan bien encuentra las semanas con emergencia (un modelo al azar saca la tasa). La climatología es la historia del distrito en ese mes. «Año por año» promedia cada año de prueba por separado: ahí se ve que el modelo supera a la climatología a 1 semana (la diferencia es estadísticamente clara) y que de 2 a 4 semanas prácticamente empata con ella.</p>
     <h3 style="margin:14px 0 6px">Los 15 distritos con más probabilidad la próxima semana</h3>${lista}
     <p class="aviso">${P.como_leer}</p>`;
   el.hidden=false;

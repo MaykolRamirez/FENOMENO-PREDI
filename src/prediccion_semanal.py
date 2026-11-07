@@ -13,13 +13,16 @@ Datos (todo está en el repositorio):
     dashboard/data/viviendas_censo.json      viviendas y personas del Censo 2025 en la zona de 1 en 100 años
     data/exposicion/ubigeo_distritos.csv     superficie del distrito (para el % inundable)
 
-Variables (todas se conocen al terminar la semana t; ninguna mira la semana que se predice):
-    sin aviso   lluvia de 30 días, caudal frente a lo normal, Niño 1+2, época del año de la semana t+h (calendario),
-                frecuencia histórica de emergencias del distrito (solo años de entrenamiento)
-    con aviso   lo anterior + ¿hubo un día sobre el p95 o el p99 de lluvia del distrito en la semana t? (umbrales
-                2001-2020 como en herramientas/pruebas/prueba_aviso_pasado.py), lluvia de 7 días, ¿el río pasó su
-                p95 de caudal diario en la semana t? (distritos de la lista CUENCA de src/aviso_lluvia.py), % del
-                distrito en zona inundable, viviendas y personas del censo en esa zona, ¿hubo emergencia en la semana t?
+Variables (todas se conocen cuando se publica el aviso; ninguna mira la semana que se predice):
+    La lluvia (NASA POWER) y el caudal (GloFAS) llegan con unos 6 días de retraso. Por eso la fila de la semana t lleva
+    los datos de la semana t-1, la última completa. Los umbrales y normales se calculan solo con los años anteriores
+    al año de prueba (docs/3_validacion/23_TEST_DE_REALIDAD.md y 24_MEJORAS_TRAS_EL_TEST.md).
+    sin aviso   lluvia de 30 días, caudal frente a su mediana de esa semana del año, Niño 1+2, época del año de la
+                semana t+h (calendario), frecuencia histórica de emergencias del distrito (solo años de entrenamiento)
+    con aviso   lo anterior + ¿hubo un día sobre el p95 o el p99 de lluvia del distrito?, lluvia de 7 días, ¿el río
+                pasó su p95 de caudal diario? (distritos de la lista CUENCA de src/aviso_lluvia.py), % del distrito en
+                zona inundable, viviendas y personas del censo en esa zona.
+    «¿Hubo emergencia en la semana t?» queda solo como regla de referencia: el SINPAD se publica cada seis meses.
 
 Validación por años: para cada año A de 2008 a 2025 se entrena con los ejemplos cuya semana objetivo t+h es anterior al
 1 de enero de A y se prueba con los de A. Nunca se mezclan semanas de un mismo año.
@@ -37,6 +40,7 @@ import argparse
 import json
 import sys
 import unicodedata
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
@@ -63,8 +67,14 @@ INICIO, FIN_ETIQUETA = "2003-01-06", "2025-12-29"   # semanas con etiqueta confi
 PLAZOS = (1, 2, 3, 4)
 ANIOS_PRUEBA = list(range(2008, 2026))
 SIN_AVISO = ["log_lluvia_30d", "log_caudal_razon", "nino12", "sen_obj", "cos_obj", "hist_frec"]
+# «¿hubo emergencia en la semana t?» ya no es variable: el SINPAD se publica cada seis meses (no existe en tiempo real).
 CON_AVISO = SIN_AVISO + ["lluvia_sobre_p95", "lluvia_sobre_p99", "log_lluvia_7d", "caudal_sobre_p95", "pct_inundable",
-                         "log_censo_viviendas", "log_censo_personas", "emergencia_t"]
+                         "log_censo_viviendas", "log_censo_personas"]
+# La lluvia (NASA POWER) y el caudal (GloFAS) llegan con unos 6 días de retraso: la fila de la semana t lleva los datos
+# de la semana t-1, la última completa cuando se publica el aviso.
+DESFASE = ["log_lluvia_30d", "log_lluvia_7d", "nino12"]
+# Variables que dependen de umbrales o normales: se recalculan solo con los años anteriores al año de prueba.
+UMBRAL = ["lluvia_sobre_p95", "lluvia_sobre_p99", "caudal_sobre_p95", "log_caudal_razon"]
 
 
 def plano(x) -> str:
@@ -73,27 +83,36 @@ def plano(x) -> str:
 
 
 # ------------------------------------------------------------------------------------------------- 1. panel
-def senales_lluvia() -> pd.DataFrame:
-    """¿Hubo algún día de la semana con lluvia sobre el p95 o el p99 del distrito? Umbrales: días con >= 1 mm de
-    2001-2020 del mismo distrito (igual que herramientas/pruebas/prueba_aviso_pasado.py)."""
+@lru_cache(maxsize=1)
+def _lluvia_diaria() -> pd.DataFrame:
     ll = pd.read_csv(LLUVIA, parse_dates=["fecha"])
-    base = ll[ll.fecha.dt.year.between(2001, 2020) & (ll.lluvia >= 1)]
-    u = base.groupby("clave")["lluvia"].agg(p95=lambda x: np.percentile(x, 95), p99=lambda x: np.percentile(x, 99))
     ll["semana"] = ll.fecha.dt.to_period("W-SUN").dt.start_time
-    s = ll.groupby(["clave", "semana"])["lluvia"].max().rename("mm_max").reset_index().join(u, on="clave")
-    s["lluvia_sobre_p95"] = (s.mm_max > s.p95).astype(float).where(s.mm_max.notna())
-    s["lluvia_sobre_p99"] = (s.mm_max > s.p99).astype(float).where(s.mm_max.notna())
-    return s[["clave", "semana", "lluvia_sobre_p95", "lluvia_sobre_p99"]]
+    return ll
 
 
-def senales_caudal() -> pd.DataFrame:
-    """¿El río pasó su percentil 95 de caudal diario (2001-2020) algún día de la semana?"""
+@lru_cache(maxsize=1)
+def _caudal_diario() -> pd.DataFrame:
     q = pd.read_csv(CAUDAL, parse_dates=["fecha"])
-    p95 = q[q.fecha.dt.year.between(2001, 2020)].groupby("rio")["caudal"].quantile(0.95)
     q["semana"] = q.fecha.dt.to_period("W-SUN").dt.start_time
-    s = q.groupby(["rio", "semana"])["caudal"].max().rename("q_max").reset_index().join(p95.rename("q_p95"), on="rio")
-    s["caudal_sobre_p95"] = (s.q_max > s.q_p95).astype(float)
-    return s[["rio", "semana", "caudal_sobre_p95"]].rename(columns={"rio": "rio_cuenca"})
+    return q
+
+
+def senales(p: pd.DataFrame, hasta: int) -> pd.DataFrame:
+    """Columnas UMBRAL con umbrales y normales calculados SOLO con los años anteriores a `hasta`, desfasadas 1 semana.
+    ¿Hubo un día de la semana con lluvia sobre el p95 / p99 del distrito (días con >= 1 mm)? ¿El río pasó su p95 de
+    caudal diario? Caudal frente a su mediana de esa semana del año."""
+    ll, q = _lluvia_diaria(), _caudal_diario()
+    u = ll[(ll.fecha.dt.year < hasta) & (ll.lluvia >= 1)].groupby("clave")["lluvia"].quantile([.95, .99]).unstack()
+    qp95 = q[q.fecha.dt.year < hasta].groupby("rio")["caudal"].quantile(0.95)
+    med = p[p.semana.dt.year < hasta].groupby(["rio", "semana_anio"])["caudal"].median().rename("_m")
+    out = pd.DataFrame(index=p.index)
+    hay = p.mm_max.notna()
+    out["lluvia_sobre_p95"] = (p.mm_max > p.clave_lluvia.map(u[0.95])).astype(float).where(hay)
+    out["lluvia_sobre_p99"] = (p.mm_max > p.clave_lluvia.map(u[0.99])).astype(float).where(hay)
+    out["caudal_sobre_p95"] = (p.q_max > p.rio_cuenca.map(qp95)).astype(float)
+    mediana = p.join(med, on=["rio", "semana_anio"])["_m"]
+    out["log_caudal_razon"] = np.log((p.caudal / mediana.clip(lower=0.5)).clip(lower=0.05))
+    return out.groupby(p["clave"]).shift(1)
 
 
 def censo() -> pd.DataFrame:
@@ -102,23 +121,26 @@ def censo() -> pd.DataFrame:
     return c.rename(columns={"viviendas": "censo_viviendas", "personas": "censo_personas"}).astype({"ubigeo": str})
 
 
-def panel() -> pd.DataFrame:
+def panel(hasta: int | None = None) -> pd.DataFrame:
+    """Una fila por distrito y semana. Las variables de la semana t son las que se conocen al publicar el aviso
+    (datos hasta la semana t-1). `hasta`: año desde el que ya no se usan datos para umbrales (por defecto, todos)."""
     from aviso_lluvia import rio_de
+    from etiqueta_sinpad import normal
     b = pd.read_csv(BASE, parse_dates=["semana"], dtype={"ubigeo": str})
     b = b[["clave", "ubigeo", "departamento", "provincia", "distrito", "semana", "semana_anio", "lluvia_7d", "lluvia_30d",
-           "caudal_razon", "nino12", "km2_inundable_rp100", "personas_rp100"]].copy()
-    b = b[b.semana >= INICIO]
+           "rio", "caudal", "nino12", "km2_inundable_rp100", "personas_rp100"]].copy()
+    # SINPAD por distrito: la clave departamento+distrito repite «PIURASALITRAL» (Morropón y Sullana) -> + provincia
+    b["prov_n"] = b.provincia.map(normal)
     s = pd.read_csv(SINPAD, parse_dates=["semana"])
     s["viviendas"] = s.viv_afectadas.fillna(0) + s.viv_destruidas.fillna(0)
-    s = s.groupby(["clave", "semana"])[["eventos", "viviendas"]].sum().reset_index()
-    b = b.merge(s, on=["clave", "semana"], how="left")
-    dentro = b.semana <= FIN_ETIQUETA
+    s = s.groupby(["clave", "prov_n", "semana"])[["eventos", "viviendas"]].sum().reset_index()
+    b = b.merge(s, on=["clave", "prov_n", "semana"], how="left")
+    dentro = (b.semana >= INICIO) & (b.semana <= FIN_ETIQUETA)
     b["E"] = (b.eventos.fillna(0) > 0).astype(float).where(dentro)
     b["V"] = b.viviendas.fillna(0).where(dentro)
-    b = b.merge(senales_lluvia(), on=["clave", "semana"], how="left")
+    b = b.join(_lluvia_diaria().groupby(["clave", "semana"])["lluvia"].max().rename("mm_max"), on=["clave", "semana"])
     b["rio_cuenca"] = b.distrito.map(rio_de)
-    b = b.merge(senales_caudal(), on=["rio_cuenca", "semana"], how="left")
-    b["caudal_sobre_p95"] = b.caudal_sobre_p95.fillna(0.0).where(b.rio_cuenca.notna(), 0.0)
+    b = b.join(_caudal_diario().groupby(["rio", "semana"])["caudal"].max().rename("q_max"), on=["rio_cuenca", "semana"])
     sup = pd.read_csv(UBIGEO, dtype={"inei": str}).set_index("inei")["superficie"]
     b["pct_inundable"] = 100 * b.km2_inundable_rp100 / b.ubigeo.map(sup)
     b = b.merge(censo(), on="ubigeo", how="left")
@@ -126,11 +148,16 @@ def panel() -> pd.DataFrame:
     b[["censo_viviendas", "censo_personas"]] = b[["censo_viviendas", "censo_personas"]].fillna(0)
     b["log_lluvia_30d"] = np.log1p(b.lluvia_30d.clip(lower=0))
     b["log_lluvia_7d"] = np.log1p(b.lluvia_7d.clip(lower=0))
-    b["log_caudal_razon"] = np.log(b.caudal_razon.clip(lower=0.05))
     b["log_censo_viviendas"] = np.log1p(b.censo_viviendas)
     b["log_censo_personas"] = np.log1p(b.censo_personas)
-    b["emergencia_t"] = b.E
-    return b.sort_values(["clave", "semana"]).reset_index(drop=True)
+    b["emergencia_t"] = b.E          # solo para la regla de referencia; no se conoce en tiempo real
+    b["clave_lluvia"] = b.clave
+    repetida = b.groupby("clave")["prov_n"].transform("nunique") > 1
+    b.loc[repetida, "clave"] = b.loc[repetida, "clave"] + "_" + b.loc[repetida, "prov_n"]
+    b = b.sort_values(["clave", "semana"]).reset_index(drop=True)
+    b[DESFASE] = b.groupby("clave")[DESFASE].shift(1)
+    b[UMBRAL] = senales(b, hasta or int(b.semana.dt.year.max()) + 1)
+    return b
 
 
 def ejemplos(p: pd.DataFrame, h: int) -> pd.DataFrame:
@@ -209,7 +236,7 @@ def evaluar_anio(tr, te) -> dict[str, tuple[np.ndarray, np.ndarray]]:
     v_hist = te.v_media_evento.to_numpy()
     res = {}
     for nombre, p in {
-        "regla: emergencia en la semana t": regla(tr, te, "emergencia_t"),
+        "regla: emergencia en la semana t (no se conoce en tiempo real)": regla(tr, te, "emergencia_t"),
         "regla: mes del año": te.clim_mes.to_numpy(),
         "regla: lluvia sobre p95 en la semana t": regla(tr, te, "lluvia_sobre_p95"),
         "climatología distrito y mes": te.clim_distrito_mes.to_numpy(),
@@ -235,13 +262,17 @@ def top10(te: pd.DataFrame, esperado: np.ndarray) -> float:
 
 def correr(sin_anio: int | None = None) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     p = panel()
+    # umbrales y normales de cada año de prueba: solo con los años anteriores (sin mirar el futuro)
+    sen = {a: senales(p, a) for a in ANIOS_PRUEBA}
     filas, preds = [], []
     for h in PLAZOS:
-        e = ejemplos(p, h)
-        e = e[e.y.notna() & (e.semana_obj <= FIN_ETIQUETA)]
+        e0 = ejemplos(p, h)
+        e0 = e0[e0.y.notna() & (e0.semana_obj <= FIN_ETIQUETA)]
         for anio in ANIOS_PRUEBA:
             if anio == sin_anio:
                 continue
+            e = e0.copy()
+            e[UMBRAL] = sen[anio].loc[e.index]
             tr = e[e.semana_obj < pd.Timestamp(anio, 1, 1)]
             if sin_anio is not None:
                 tr = tr[tr.anio_obj != sin_anio]
@@ -286,12 +317,31 @@ def resumen(m: pd.DataFrame, pr: pd.DataFrame) -> pd.DataFrame:
 
 
 # ------------------------------------------------------------------------------------------ 4. predicción hoy
+NOMBRES = {"nino12": "Niño 1+2 (°C de anomalía)", "log_lluvia_30d": "lluvia de 30 días (log)",
+           "log_lluvia_7d": "lluvia de 7 días (log)", "log_caudal_razon": "caudal frente a lo normal (log)"}
+
+
+def fuera_de_rango(tr: pd.DataFrame, hoy: pd.DataFrame) -> list[dict]:
+    """Variables continuas cuyo valor de hoy supera el máximo del entrenamiento en algún distrito (extrapolación)."""
+    out = []
+    for c in NOMBRES:
+        mx, h = tr[c].max(), hoy[c].max()
+        if pd.notna(h) and h > mx:
+            out.append({"variable": NOMBRES[c], "hoy_max": round(float(h), 2), "max_entrenamiento": round(float(mx), 2),
+                        "distritos": int((hoy[c] > mx).sum())})
+    return out
+
 def prediccion_actual(res: pd.DataFrame, m: pd.DataFrame) -> dict:
-    """Entrena con todo lo etiquetado (semana objetivo hasta FIN_ETIQUETA) y predice desde la última semana con datos."""
+    """Entrena con todo lo etiquetado (semana objetivo hasta FIN_ETIQUETA) y predice las 4 semanas siguientes.
+    La semana base t es la siguiente a la última semana con lluvia completa: sus variables son las de esa semana."""
     p = panel()
-    ok = p.groupby("semana")["lluvia_30d"].apply(lambda s: s.notna().mean())
-    t = ok[ok >= 0.9].index.max()
-    salida = {"semana_base": str(t.date()), "distritos": {}}
+    ok = p.groupby("semana")["lluvia_7d"].apply(lambda s: s.notna().mean())
+    datos = ok[ok >= 0.9].index.max()
+    t = datos + pd.Timedelta(weeks=1)
+    if t not in set(p.semana):         # no hay fila para la semana siguiente: se usa la última (datos una semana más viejos)
+        t = datos
+        datos = t - pd.Timedelta(weeks=1)
+    salida = {"semana_base": str(t.date()), "semana_datos": str(datos.date()), "distritos": {}, "limites": []}
     j = json.load(open(CENSO, encoding="utf-8"))
     tot = j["escenarios"]["rp100"]
     pers_por_viv = tot["personas"] / tot["viviendas"]
@@ -301,6 +351,8 @@ def prediccion_actual(res: pd.DataFrame, m: pd.DataFrame) -> dict:
         hoy = e[e.semana == t].copy()
         tr, hoy = con_historia(tr, hoy)
         prob, _, _ = logistica(tr, hoy, CON_AVISO)
+        if h == 1:
+            salida["fuera_de_rango"] = fuera_de_rango(tr, hoy)
         vc, _, _ = viviendas_si_ocurre(tr, hoy, CON_AVISO)
         hist = tr[(tr.y == 1) & (tr.v > 0)].groupby("clave")["v"]
         q10, q90 = hist.quantile(0.1), hist.quantile(0.9)
@@ -308,6 +360,7 @@ def prediccion_actual(res: pd.DataFrame, m: pd.DataFrame) -> dict:
             d = salida["distritos"].setdefault(r.ubigeo, {"ubigeo": r.ubigeo, "departamento": r.departamento,
                                                           "provincia": r.provincia, "distrito": r.distrito})
             d[f"prob_h{h}"] = round(float(pr_), 4)
+            d[f"clim_h{h}"] = round(float(r.clim_distrito_mes), 4)     # referencia para la prueba prospectiva
             if h == 1:
                 ppv = (r.censo_personas / r.censo_viviendas) if r.censo_viviendas > 0 else pers_por_viv
                 lo, hi = q10.get(r.clave, np.nan), q90.get(r.clave, np.nan)
@@ -329,15 +382,20 @@ def prediccion_actual(res: pd.DataFrame, m: pd.DataFrame) -> dict:
                                     "anios_que_gana": int((mod.loc[h] > cli.loc[h]).sum()), "anios": int(mod.loc[h].size),
                                     "bss": round(float(cal.loc[h, "bss"]), 3),
                                     "top10_promedio": round(float(cal.loc[h, "top10_promedio"]), 2)} for h in PLAZOS]
+    if salida["fuera_de_rango"]:
+        salida["limites"].insert(0, "Fuera de lo visto en el entrenamiento (2003-2025): " + "; ".join(
+            f"{v['variable']} hoy {v['hoy_max']} (máximo histórico {v['max_entrenamiento']})" for v in salida["fuera_de_rango"])
+            + ". Las probabilidades de estas semanas son una extrapolación del modelo y no se pudieron validar.")
     salida["modelo"] = ("Regresión logística con variables del aviso (lluvia sobre p95/p99, lluvia de 7 y 30 días, caudal "
-                        "sobre p95, Niño 1+2, % inundable, censo, emergencia de la semana t, época, historia del distrito). "
-                        "Etiqueta: SINPAD (INDECI) 2003-2025.")
+                        "sobre p95, Niño 1+2, % inundable, censo, época, historia del distrito), con los datos de la semana "
+                        "anterior a la semana base. Etiqueta: SINPAD (INDECI) 2003-2025.")
     salida["como_leer"] = ("prob_hN = probabilidad de que el SINPAD registre una emergencia por inundación o lluvia intensa en "
                            "la semana objetivo hN. viviendas_si_ocurre: estimación si ocurre (modelo Gamma); el rango es el "
                            "10 % y 90 % de las viviendas afectadas en las emergencias pasadas del distrito. Personas = "
                            "viviendas × personas por vivienda del censo en la zona inundable del distrito. No es una alerta oficial.")
-    salida["limites"] = ["El SINPAD publica cada seis meses: la variable «emergencia en la semana t» no se conoce en tiempo real.",
-                         "La lluvia de NASA POWER llega con unos días de retraso; por eso la semana base puede ser anterior a hoy.",
+    salida["limites"] += ["La lluvia de NASA POWER llega con unos 6 días de retraso: el modelo usa la última semana completa "
+                         "(semana_datos) y se validó así, sin la información que no se tiene a tiempo.",
+                         "Supera a la climatología a 1 y 2 semanas; a 3 y 4 semanas empata (docs/3_validacion/24_MEJORAS_TRAS_EL_TEST.md).",
                          "Ver docs/2_modelo/21_MODELO_POR_PLAZO.md para la calidad por plazo."]
     return salida
 

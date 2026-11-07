@@ -66,3 +66,38 @@ def test_salida_json():
             assert 0 <= d[f"prob_h{h}"] <= 1
         assert d["viviendas_si_ocurre"] >= 0
     assert [c["h"] for c in j["calidad_por_plazo"]] == [1, 2, 3, 4]
+
+
+def test_umbrales_solo_con_anios_anteriores(panel):
+    """Los umbrales p95/p99 y la mediana del caudal para probar 2017 no cambian si se altera 2017 en adelante."""
+    p2 = panel.copy()
+    futuro = p2.semana >= "2017-01-01"
+    p2.loc[futuro, ["caudal"]] = 1e6
+    a = P.senales(panel, 2017)
+    b = P.senales(p2, 2017)
+    antes = panel.semana < "2016-12-26"
+    assert np.allclose(a.loc[antes].fillna(-9), b.loc[antes].fillna(-9))
+
+
+def test_datos_de_la_semana_anterior(panel):
+    """La fila de la semana t usa la lluvia de la semana t-1 (llega con retraso)."""
+    d = panel[panel.clave == panel.clave.iloc[0]].set_index("semana")
+    t = pd.Timestamp("2017-03-06")
+    assert np.isclose(d.loc[t, "log_lluvia_7d"], np.log1p(max(d.loc[t - pd.Timedelta(weeks=1), "lluvia_7d"], 0)))
+
+
+def test_salitral_separados(panel):
+    assert panel.clave.nunique() == 78
+    assert not panel.duplicated(["clave", "semana"]).any()
+    assert "emergencia_t" not in P.CON_AVISO
+
+
+def test_registro_prospectivo():
+    R = pytest.importorskip("registro_prospectivo")
+    if not (RAIZ / "dashboard" / "data" / "prediccion_semanal.json").exists():
+        pytest.skip("sin prediccion_semanal.json")
+    f = R.filas()
+    assert len(f) == 78 * 4
+    assert f.prob.between(0, 1).all() and f.climatologia.notna().all()
+    assert (pd.to_datetime(f.semana_objetivo) > pd.to_datetime(f.semana_base)).all()
+    assert R.huella() == R.huella()

@@ -1,5 +1,9 @@
 # 21 · El modelo de 1 a 4 semanas, medido por plazo
 
+> **Actualización (6/11/2026):** el modelo ya no usa «emergencia en la semana t», usa los datos de la semana anterior
+> y umbrales calculados solo con el pasado. Las cifras de este documento son de la versión anterior; las actuales
+> (más bajas y realistas) están en [24_MEJORAS_TRAS_EL_TEST.md](../3_validacion/24_MEJORAS_TRAS_EL_TEST.md).
+
 *6 de noviembre de 2026. Script: `src/prediccion_semanal.py`. Pruebas: `tests/test_prediccion_semanal.py`. Salidas: `data/modelo/resultados_plazo/` y `dashboard/data/prediccion_semanal.json`.*
 
 ## La pregunta

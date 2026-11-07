@@ -208,30 +208,18 @@ def bootstrap(pr: pd.DataFrame, bloque: list[str], reps: int, semilla=2026) -> d
 
 # ---------------------------------------------------------------------------------------- modelo por plazo
 def plazo_sin_emergencia_t() -> dict:
+    """Modelo por plazo (src/prediccion_semanal.py). Desde el 6/11/2026 ya no usa emergencia_t, usa los datos de la
+    semana anterior y umbrales solo del pasado: se reporta tal cual. (La comparación con y sin emergencia_t del informe
+    23 se hizo con la versión anterior del script.)"""
     import prediccion_semanal as ps
     modelo = "logística con variables del aviso"
-    out, original, panel = {}, list(ps.CON_AVISO), ps.panel
-    sin = [c for c in original if c != "emergencia_t"]
-    clima = ["log_lluvia_30d", "log_caudal_razon", "nino12", "lluvia_sobre_p95", "lluvia_sobre_p99", "log_lluvia_7d",
-             "caudal_sobre_p95"]
-
-    def desfasado():                                      # clima, río y mar de la semana t-1 (llegan con retraso)
-        p = panel()
-        p[clima] = p.groupby("clave")[clima].shift(1)
-        return p
-
-    for nombre, cols, fn in [("con_emergencia_t", original, panel), ("sin_emergencia_t", sin, panel),
-                             ("sin_emergencia_t_y_clima_desfasado_1_semana", sin, desfasado)]:
-        ps.CON_AVISO, ps.panel = cols, fn
-        _, _, res = ps.correr()
-        r = res.set_index(["h", "modelo"])
-        out[nombre] = {f"h{h}": {"pr_auc": round(float(r.loc[(h, modelo), "pr_auc"]), 4),
-                                 "pr_auc_climatologia": round(float(r.loc[(h, "climatología distrito y mes"), "pr_auc"]), 4),
-                                 "bss": round(float(r.loc[(h, modelo), "bss"]), 4),
-                                 "bss_climatologia": round(float(r.loc[(h, "climatología distrito y mes"), "bss"]), 4)}
-                       for h in ps.PLAZOS}
-    ps.CON_AVISO, ps.panel = original, panel
-    return out
+    _, _, res = ps.correr()
+    r = res.set_index(["h", "modelo"])
+    return {"corregido": {f"h{h}": {"pr_auc": round(float(r.loc[(h, modelo), "pr_auc"]), 4),
+                                    "pr_auc_climatologia": round(float(r.loc[(h, "climatología distrito y mes"), "pr_auc"]), 4),
+                                    "bss": round(float(r.loc[(h, modelo), "bss"]), 4),
+                                    "bss_climatologia": round(float(r.loc[(h, "climatología distrito y mes"), "bss"]), 4)}
+                          for h in ps.PLAZOS}}
 
 
 # --------------------------------------------------------------------------------------------------- gráficos

@@ -1,5 +1,8 @@
 # Test de realidad del modelo de alerta
 
+> **Actualización (6/11/2026):** las fallas encontradas aquí en el modelo por plazo ya se corrigieron. Ver
+> [24_MEJORAS_TRAS_EL_TEST.md](24_MEJORAS_TRAS_EL_TEST.md).
+
 **Pregunta:** si el modelo hubiera funcionado cada lunes desde 2008, con solo lo que se sabía ese día, ¿habría avisado
 mejor que la climatología? La climatología no es un modelo: solo dice "en esta época del año este distrito suele tener
 emergencias".

@@ -69,3 +69,9 @@ def test_base_guarda_la_y_del_sinpad():
     assert y["semana"].max() <= pd.Timestamp(FIN_ETIQUETA)
     m = b.merge(cargar("sinpad")[["ubigeo", "semana", OBJETIVO]], on=["ubigeo", "semana"], suffixes=("", "_modelo"))
     assert len(m) > 0 and (m[OBJETIVO].fillna(-1) == m[OBJETIVO + "_modelo"].fillna(-1)).all()
+
+
+def test_url_de_desinventar_no_se_pisa():
+    """La lista de columnas de DesInventar no debe reemplazar la URL de descarga (rompió el flujo semanal)."""
+    import base_modelo
+    assert isinstance(base_modelo.DESINVENTAR, str) and base_modelo.DESINVENTAR.startswith("https://")

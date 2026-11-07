@@ -268,14 +268,14 @@ def main() -> None:
     guardar_con_sinpad(sem)
 
 
-DESINVENTAR = ["emergencias", "viv_afectadas", "viv_destruidas", "damnificados", "emergencia_sem", "emergencia_1a4",
+COLUMNAS_DESINVENTAR = ["emergencias", "viv_afectadas", "viv_destruidas", "damnificados", "emergencia_sem", "emergencia_1a4",
                "emergencias_5anios_previos"]
 
 
 def guardar_con_sinpad(sem: pd.DataFrame) -> None:
     """La etiqueta del modelo es la del SINPAD. Las columnas de DesInventar quedan con sufijo _desinventar."""
     from etiqueta_sinpad import agregar_etiqueta
-    sem = sem.rename(columns={c: c + "_desinventar" for c in DESINVENTAR if c in sem})
+    sem = sem.rename(columns={c: c + "_desinventar" for c in COLUMNAS_DESINVENTAR if c in sem})
     sem = agregar_etiqueta(sem)
     sem["semana"] = sem["semana"].dt.strftime("%Y-%m-%d")
     sem.to_csv(CARPETA / "base_distrito_semana.csv", index=False, float_format="%.3f")

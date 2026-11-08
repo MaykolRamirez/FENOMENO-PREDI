@@ -1,6 +1,6 @@
 {
- "generado": "2026-11-07T13:06-05:00",
- "hoy": "2026-11-07",
+ "generado": "2026-11-08T13:25-05:00",
+ "hoy": "2026-11-08",
  "fuentes": {
   "noticias": "Google Noticias (RSS), últimos 14 días, titulares con palabras de inundación y «Piura» o «Tumbes»; acumulados en data/eventos/noticias_registro.csv",
   "verificados": "data/eventos/catalogo_verificado.csv (revisión manual del equipo)",
@@ -12,10 +12,40 @@
   "no detectado": 3,
   "fuera de alcance": 13,
   "sin pasada": 0,
-  "sin radar": 0
+  "sin radar": 1
  },
- "n": 20,
+ "n": 21,
  "eventos": [
+  {
+   "id": "n-2026-11-08-catacaos",
+   "origen": "noticias (automático)",
+   "fecha": "2026-11-08",
+   "fecha_fin": "2026-11-08",
+   "lugar": "Catacaos",
+   "ubigeo": "200105",
+   "distrito": "Catacaos",
+   "provincia": "Piura",
+   "departamento": "Piura",
+   "lat": -5.2679,
+   "lon": -80.674,
+   "altura_m": 26,
+   "precision": "lugar nombrado en la noticia",
+   "tipo": "inundación",
+   "titulo": "Diez años después de la tragedia, Catacaos sigue expuesto a inundaciones por El Niño",
+   "articulos": [
+    {
+     "titulo": "Diez años después de la tragedia, Catacaos sigue expuesto a inundaciones por El Niño",
+     "medio": "Norte Sostenible",
+     "fecha": "2026-11-08",
+     "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNd042SFZOVDNXRjNKY1lpZlBjN0lsVUJUTExKZ1FWSXo4eGY1cUVkbGJ6SzcwNVFtZHJBY3FlODZIQjItXzNhWTVaaWNoN2hxUXRtRnhoNVF0RnpTaHJXNkNMcHdDSTlqWkpfOE9mMzVFX3l5RVpvLW94NGhRdml0bWtFeFZVOEdCQVg5YU95TDZZdWduSXJ3OHA1WlVTcUZaNkF6TzFVazVDczMtTHRlUDd3?oc=5"
+    }
+   ],
+   "radar": {
+    "capa": null,
+    "veredicto": "sin radar",
+    "explicacion": "No hay una capa de radar calculada para esa fecha."
+   }
+  },
   {
    "id": "2026-vaqueria",
    "origen": "verificado por el equipo",
@@ -355,6 +385,12 @@
      "medio": "Expreso",
      "fecha": "2026-11-07",
      "url": "https://news.google.com/rss/articles/CBMijgJBVV95cUxPY2FmNUl6UFNPVE94X2xuZUlEWElhQkFvckNMSHJZcWRNUHpSenJSWWV1Sk5Vc1lBcnVfZ1lZSDliU0Z0RndIaWt2eWcyN2xvQkhacWhnS2I1cjd4UEdzVkw4WHVJRmVwTTBUcHcydW80amFWU0syMmg1enVQMHBTbDhwY0lCTXh0TURkT2VfNGoyRDZaSUJJWWxlNXotcmRhTmV0VXFkaExfS1RQRlFEMm9CVUFDM0xyTTc1TDR4OXVHczBQdFYzQkVqOF9JaEh5YXlVclRqWVd2aG9yZ0dyQ0N5R3ZscEd5U19wdzZEYTFOQ1Z1M0EyLVFrM3JralpYakNVek52OEJtZkRPSGc?oc=5"
+    },
+    {
+     "titulo": "Tumbes: Oficina Regional de Gestión del Riesgo reporta vías afectadas y más de 10 quebradas activadas por intensas lluvias",
+     "medio": "El Comercio Perú",
+     "fecha": "2026-11-08",
+     "url": "https://news.google.com/rss/articles/CBMihAJBVV95cUxPVTNJSUlJQ2c2SlRwQmRqS3VkVDVQUUFNTm1wRFI2LTNkTDhqbkEtcGIxUHh0ZHVwN3Z4Z2FEVE9SQXg4OUlqYkpmdjE4a2VNZl9kNXN1N0w4TmpLeDEwU0pINlFQWGcwaTBxaF9lTGozMVpOS2hGYUVvT2x3MU1KVFg1SERvWDR3OTlFYlRSMXdOMzFqdEJIZUFFOTlNaE5UYnZObngtTENCT2Q4V29ySjhaMUI1XzF5QkVkRm5KbnJJMFB6cUdqVmpQU05NcmF5STB4czJtLUFWcklTajA3cWdaMUZJOExKMTlLcDIzeENKTHBQSEFqSFBjVjFPMFhrQkN4LdIBmAJBVV95cUxOYXJyWVlyNENjdG1Idk1DT282cml6OWZKTkF3SE9XMFJGNGVTMkxXQ0hHSnc1LUMzVnVwb2JxWkZjMF9aV3RNdVBfaWFRLUhka1RQUkV2c2gydEUtOTRBTlFNSmp5VThNQVR3cm9GbXRpUGpzZWc5a01EUXYzMFNtTzZ5dDhGV2Q4SHNnRlZjaG9qUjA3YmRQSHJ3R0trcm4zN2JVQjV1ZGMzejdBXzdxVHk0X0JiM1FSYWVOOEx2eWp0NU90b1QtT1JSQjM3QlZzOGpDcmlOUzh1UlRmMnNSbDR1Yjc0N0hSYUxZS2RVVG9HdVNjTk9yWm1sSndEQU9MM3hMTjREa3gxWF8yV2tlWTc2MnR6WFZh?oc=5"
     },
     {
      "titulo": "Fenómeno El Niño: lluvias extremas en Tumbes inundan calles y viviendas de Puerto Pizarro",

@@ -46,7 +46,7 @@ def main() -> dict:
 
     # 2. coincidencia con DesInventar 2003-2015
     b = pd.read_csv(RAIZ / "data" / "modelo" / "base_distrito_semana.csv", parse_dates=["semana"])
-    di = b[(b["emergencia_sem_desinventar"] == 1) & b["semana"].dt.year.between(2003, 2015)][["clave", "semana"]]
+    di = b[(b["emergencia_sem"] == 1) & b["semana"].dt.year.between(2003, 2015)][["clave", "semana"]]
     si = set(zip(ev["clave"], ev["semana"]))
     misma = sum((c, s) in si for c, s in zip(di["clave"], di["semana"]))
     tol = sum(any((c, s + pd.Timedelta(weeks=k)) in si for k in range(-2, 3)) for c, s in zip(di["clave"], di["semana"]))

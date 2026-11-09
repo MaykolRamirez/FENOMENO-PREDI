@@ -82,10 +82,7 @@ def etiqueta_sinpad(b: pd.DataFrame) -> pd.DataFrame:
 def cargar(fuente: str = "sinpad") -> pd.DataFrame:
     b = pd.read_csv(BASE, parse_dates=["semana"])
     if fuente == "sinpad":
-        b = etiqueta_sinpad(b)       # la base ya trae la Y del SINPAD; se recalcula aquí para quitar 2001-2002
-    else:                            # comparación: la Y antigua de DesInventar (2001-2015)
-        b = b.drop(columns=["emergencias", "emergencia_sem", "emergencia_1a4"])
-        b = b.rename(columns={c: c.removesuffix("_desinventar") for c in b if c.endswith("_desinventar")})
+        b = etiqueta_sinpad(b)
     b["anio"] = b["semana"].dt.year
     ang = 2 * np.pi * b["semana_anio"] / 52
     b["sen_semana"], b["cos_semana"] = np.sin(ang), np.cos(ang)

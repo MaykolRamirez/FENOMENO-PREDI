@@ -167,6 +167,61 @@ table.tabla td.n{text-align:right;font-variant-numeric:tabular-nums}
 footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;font-size:12px;color:var(--ink-3)}
 @media (max-width:480px){.g4{grid-template-columns:1fr}}
 @media (max-width:600px){main{padding:16px 16px 40px}.barra{padding:12px 16px 0}.kpi .cifra{font-size:28px}}
+
+/* ---------- selector de distrito ---------- */
+.selector{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 16px;box-shadow:var(--sombra);margin:0 0 16px;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end}
+.selector .tit{flex:1 1 100%;font:700 14px Archivo;color:var(--ink);margin-bottom:-2px}
+.selector .tit span{font:400 12.5px "Public Sans";color:var(--ink-3);margin-left:6px}
+.sel-campo{display:flex;flex-direction:column;gap:3px;min-width:0}
+.sel-campo label{font-size:11.5px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em}
+.selector select,.selector input[type=search]{font:500 14px "Public Sans";border:1px solid var(--line-2);border-radius:9px;padding:7px 10px;background:var(--panel);color:var(--ink);min-width:0}
+.selector input[type=search]{width:250px}
+.sel-busca{position:relative}
+.sel-sug{position:absolute;z-index:40;top:100%;left:0;right:0;background:var(--panel);border:1px solid var(--line-2);border-radius:10px;margin-top:4px;box-shadow:var(--sombra);max-height:280px;overflow:auto;display:none}
+.sel-sug button{display:flex;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:none;padding:8px 11px;font:500 14px "Public Sans";cursor:pointer;color:var(--ink)}
+.sel-sug button:hover,.sel-sug button.foco{background:var(--accent-soft)}
+.sel-sug small{color:var(--ink-3)}
+@media (max-width:640px){.selector input[type=search]{width:100%}.sel-campo{flex:1 1 100%}.selector select{width:100%}.plazos4{grid-template-columns:1fr 1fr}.edades .f{grid-template-columns:84px minmax(0,1fr) 92px;gap:6px;font-size:12.5px}}
+.ficha-corta{display:none;font-size:14px;color:var(--ink-2)}
+.ficha-corta b{color:var(--ink)}
+body:not([data-vista=resumen]) .ficha .completa{display:none}
+body:not([data-vista=resumen]) .ficha .ficha-corta{display:block}
+body:not([data-vista=resumen]) .ficha{padding:10px 16px}
+.ficha{margin:0 0 16px}
+body[data-vista=satelite] #selector,body[data-vista=mar] #selector,body[data-vista=metodo] #selector,body[data-vista=satelite] #ficha,body[data-vista=mar] #ficha,body[data-vista=metodo] #ficha{display:none}
+.ficha .cab{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.ficha .cab h2{font:800 24px Archivo;font-stretch:88%;margin:0}
+.ficha .cab .ubic{color:var(--ink-3);font-size:13px}
+.edades .f{display:grid;grid-template-columns:110px minmax(0,1fr) 120px;gap:10px;align-items:center;font-size:13.5px;padding:3px 0}
+.edades .b{height:12px;background:var(--panel-2);border-radius:4px;overflow:hidden}
+.edades .b i{display:block;height:100%;border-radius:4px;background:var(--c3)}
+.edades .v{text-align:right;font-variant-numeric:tabular-nums}
+.plazos4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.plazos4 div{background:var(--panel-2);border-radius:10px;padding:8px 10px;font-size:12.5px;color:var(--ink-3)}
+.plazos4 b{display:block;font:800 22px Archivo;font-stretch:88%;color:var(--ink)}
+.fase{display:inline-block;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:999px;margin-top:2px}
+.fase.alerta{background:#f9dcd5;color:#8e2414}
+@media (max-width:640px){.plazos4{grid-template-columns:1fr 1fr}.edades .f{grid-template-columns:84px minmax(0,1fr) 92px;gap:6px;font-size:12.5px}}
+#r-censo{overflow-x:auto}.fase.atencion{background:#fdf0cf;color:#7a5300}.fase.normal{background:#eef2ec;color:#3e5a3a}
+
+.g3c{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:900px){.g3c{grid-template-columns:1fr}}
+.c-h{font:700 13px "Public Sans";margin:0 0 4px;color:var(--ink-2)}
+.p-barra{display:inline-block;vertical-align:middle;height:9px;border-radius:3px;background:var(--c3);margin-right:6px}
+#p-disp text{font:11px "Public Sans";fill:var(--ink-3)}
+#p-rank td.n,#p-serv td.n{white-space:nowrap}
+.hist-svg text{font:10.5px "Public Sans";fill:var(--ink-3)}
+
+.piramide{display:grid;grid-template-columns:1fr 70px 1fr;gap:4px 8px;align-items:center;font-size:13px}
+.piramide .pc{text-align:center;font-size:12px;color:var(--ink-3)}
+.piramide .pl,.piramide .pr{display:flex;align-items:center;gap:6px;height:16px}
+.piramide .pl{justify-content:flex-end}
+.piramide .pl i{display:block;height:14px;border-radius:3px 0 0 3px;background:#b5527d}
+.piramide .pr i{display:block;height:14px;border-radius:0 3px 3px 0;background:#1f5f99}
+.piramide span{font-variant-numeric:tabular-nums;white-space:nowrap;font-size:12.5px}
+.piramide .pe{text-align:center;font-size:12px;color:var(--ink-2)}
+.matbar{display:flex;height:16px;border-radius:5px;overflow:hidden;gap:2px}
+.matbar i{display:block;height:100%}
 </style>
 </head>
 <body>
@@ -183,6 +238,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;font-size:12px;color:v
     <button class="tab" role="tab" data-v="inundaciones">Mapa de inundación</button>
     <button class="tab" role="tab" data-v="satelite">Antes y después</button>
     <button class="tab" role="tab" data-v="alerta">Alerta por distrito</button>
+    <button class="tab" role="tab" data-v="prioridad">¿Dónde actuar primero?</button>
     <button class="tab" role="tab" data-v="zonas">Lluvia y ríos</button>
     <button class="tab" role="tab" data-v="mar">El mar y El Niño</button>
     <button class="tab" role="tab" data-v="metodo">Método y fuentes</button>
@@ -190,6 +246,19 @@ footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;font-size:12px;color:v
 </header>
 
 <main>
+<div class="selector" id="selector">
+  <div class="tit">Elige tu distrito<span>Busca por nombre o elige departamento, provincia y distrito. El tablero se enfoca en lo que elijas.</span></div>
+  <div class="sel-campo sel-busca">
+    <label for="sel-buscar">Buscar distrito</label>
+    <input type="search" id="sel-buscar" placeholder="Escribe un distrito, p. ej. Catacaos" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="sel-sug">
+    <div class="sel-sug" id="sel-sug" role="listbox"></div>
+  </div>
+  <div class="sel-campo"><label for="sel-dep">Departamento</label><select id="sel-dep"><option value="">Tumbes y Piura</option></select></div>
+  <div class="sel-campo"><label for="sel-prov">Provincia</label><select id="sel-prov"><option value="">Todas</option></select></div>
+  <div class="sel-campo"><label for="sel-dist">Distrito</label><select id="sel-dist"><option value="">Todos</option></select></div>
+  <button class="btn sec" id="sel-limpiar" hidden>Ver todo</button>
+</div>
+<div class="panel ficha" id="ficha" hidden></div>
 
 
 <!-- RESUMEN -->
@@ -227,17 +296,34 @@ footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;font-size:12px;color:v
 <!-- ALERTA POR DISTRITO -->
 <section class="vista" id="v-alerta">
   <p class="titular" id="a-titular">Alerta por distrito</p>
-  <p class="bajada">Un modelo de machine learning estima, para cada distrito y cada semana, qué tan probable es que haya una emergencia por inundación o lluvias en las <b>próximas 4 semanas</b>. Aprendió de las emergencias registradas por INDECI en el SINPAD entre 2003 y 2025 y usa la lluvia acumulada, el caudal del río, la temperatura del mar y la época del año.</p>
+  <p class="bajada">Un modelo de machine learning (regresión logística calibrada) estima, para cada distrito, la probabilidad de que el INDECI registre una emergencia por lluvia o inundación en cada una de las <b>próximas 1 a 4 semanas</b>. Aprendió de las emergencias del SINPAD de 2003 a 2025 y usa la lluvia, el caudal de los ríos, la temperatura del mar, la época del año, la historia del distrito y la exposición del Censo 2025. Se probó año por año con años que no vio.</p>
   <div class="panel" id="a-aviso" style="margin-bottom:16px" hidden></div>
   <div class="grid g32">
-    <div class="panel"><h2 id="a-t-mapa">Riesgo esta semana</h2><p class="nota">0 = como una semana tranquila; 100 = más alto que cualquier semana de 2003 a 2025. Pasa el cursor sobre un distrito.</p><svg id="a-mapa" style="width:100%;display:block"></svg><div class="leyenda" id="a-ley"></div></div>
+    <div class="panel"><h2 id="a-t-mapa">Riesgo esta semana</h2><p class="nota">En una semana cualquiera la probabilidad promedio es de 3 %. Pasa el cursor sobre un distrito o haz clic para ver su ficha.</p><svg id="a-mapa" style="width:100%;display:block"></svg><div class="leyenda" id="a-ley"></div></div>
     <div class="panel"><h2>Distritos con más riesgo</h2><p class="nota" id="a-nota-lista"></p><div id="a-lista"></div></div>
   </div>
-  <div class="grid g2" style="margin-top:16px">
-    <div class="panel"><h2>¿Funciona?</h2><p class="nota"><b>Límite importante:</b> el modelo pesa sobre todo dónde y en qué época del año se ha inundado antes; la lluvia, el caudal y el mar suman, pero no le gana con claridad a la referencia sin modelo (tabla de al lado). Úsalo para ordenar distritos, no como pronóstico.</p><div id="a-valida"></div></div>
-    <div class="panel"><h2>Modelos comparados</h2><p class="nota">Mismos datos y misma prueba: se entrena con los años anteriores y se evalúa en el año siguiente (2008 a 2025).</p><div id="a-modelos"></div></div>
-  </div>
   <div class="panel" id="a-plazo" style="margin-top:16px" hidden></div>
+</section>
+
+<!-- DÓNDE ACTUAR PRIMERO -->
+<section class="vista" id="v-prioridad">
+  <p class="titular" id="p-titular">¿Dónde actuar primero?</p>
+  <p class="bajada" id="p-bajada">Cruza la probabilidad del modelo con quiénes viven en la zona inundable según el Censo 2025.</p>
+  <div class="grid g4" id="p-kpis"></div>
+  <div class="grid g32" style="margin-top:16px">
+    <div class="panel"><h2 id="p-t-rank">Distritos por personas en riesgo esperado</h2>
+      <p class="nota"><b>Personas en riesgo esperado</b> = probabilidad de emergencia en la semana del pronóstico (1 semana) × personas que viven en la zona inundable (Censo 2025). Ordena dónde hay más gente con más probabilidad de verse afectada. Clic en un distrito para ver su ficha.</p>
+      <div style="overflow-x:auto" id="p-rank"></div></div>
+    <div class="panel"><h2>Riesgo frente a vulnerabilidad</h2>
+      <p class="nota">Cada círculo es un distrito: más a la derecha, más probabilidad; más arriba, más vulnerable; más grande, más personas en la zona inundable. Arriba a la derecha están los que conviene atender primero.</p>
+      <svg id="p-disp" style="width:100%;display:block"></svg>
+      <p class="nota" id="p-disp-nota" style="margin-top:6px"></p></div>
+  </div>
+  <div class="panel" style="margin-top:16px"><h2>Colegios y centros de salud en la zona inundable de los distritos en alerta</h2>
+    <p class="nota">Locales escolares (ESCALE, Censo Educativo 2025) y establecimientos de salud (RENIPRESS) dentro de la zona inundable de 1 en 100 años, en los distritos en fase de alerta en la semana del pronóstico.</p>
+    <div class="grid g4" id="p-serv-kpis" style="margin:8px 0 12px"></div>
+    <div style="overflow-x:auto" id="p-serv"></div></div>
+  <div class="panel" style="margin-top:16px"><h2>Cómo se calcula</h2><div id="p-metodo" class="nota" style="font-size:13.5px"></div></div>
 </section>
 
 <!-- INUNDACIONES -->
@@ -303,6 +389,14 @@ footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;font-size:12px;color:v
       <div id="tabla-dia"></div>
     </div>
   </div>
+  <p class="titular" style="margin-top:28px;font-size:24px" id="c-titular">¿Se parece a 2017?</p>
+  <p class="bajada">Esta temporada frente a 2017 (Niño costero) y 2023 (ciclón Yaku y Niño costero), semana a semana del año. Las líneas son las mismas semanas del calendario.</p>
+  <div class="panel"><div id="c-tabla" style="overflow-x:auto"></div>
+    <div class="grid g3c" style="margin-top:12px"><div><h3 class="c-h">Mar frente a Piura (Niño 1+2), °C sobre lo normal</h3><svg id="c-mar" style="width:100%;display:block"></svg></div>
+    <div><h3 class="c-h">Lluvia de 30 días, promedio de Piura (mm)</h3><svg id="c-llp" style="width:100%;display:block"></svg></div>
+    <div><h3 class="c-h">Lluvia de 30 días, promedio de Tumbes (mm)</h3><svg id="c-llt" style="width:100%;display:block"></svg></div></div>
+    <div class="leyenda" id="c-ley"></div>
+    <p class="nota" id="c-nota" style="margin-top:8px"></p></div>
   <p class="titular" style="margin-top:28px;font-size:24px">Los índices oficiales</p>
   <p class="bajada">Niño 1+2 es el mar frente a Perú y Ecuador, el que manda en El Niño costero. El ICEN es el promedio de 3 meses de Niño 1+2 con el que el ENFEN declara la magnitud del evento.</p>
   <div class="panel"><h2>Anomalía semanal por región Niño (°C)</h2>
@@ -353,7 +447,7 @@ footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;font-size:12px;color:v
 <!-- MÉTODO -->
 <section class="vista metodo" id="v-metodo">
   <p class="titular">Método y fuentes</p>
-  <p class="bajada">Todas las cifras salen de fuentes públicas y se pueden volver a calcular con el código del repositorio. Aquí se explica de dónde viene cada una y qué no puede decir.</p>
+  <p class="bajada">Las cifras salen de fuentes públicas y de los Censos Nacionales 2025, que el INEI entregó al proyecto. Aquí se explica de dónde viene cada una y qué no puede decir.</p>
 
   <h3>1. ¿Dónde se inunda?</h3>
   <ul>
@@ -372,21 +466,26 @@ footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;font-size:12px;color:v
 
   <h3>2. ¿A quién afecta?</h3>
   <ul>
-    <li><b>Personas:</b> WorldPop 2026, población estimada cada 100 m. Se cuenta la población de las celdas que caen en la zona inundable.</li>
-    <li><b>Viviendas del censo:</b> viviendas ocupadas por manzana de los Censos Nacionales 2025 y el material predominante de paredes, techo y piso, entregados al proyecto por el INEI. Cada manzana se ubica por un punto interior y se ve si cae en la zona inundable. Solo se publican totales por distrito; los distritos con menos de 10 viviendas en la zona no se detallan. No incluye la vivienda rural dispersa, que no se organiza en manzanas.</li>
+    <li><b>Viviendas y personas:</b> Censos Nacionales 2025 (INEI). El INEI entregó al proyecto las viviendas ocupadas por manzana con el material de paredes, techo y piso, y las personas por sexo y grupo de edad; las viviendas rurales vienen agrupadas por centro poblado. Cada manzana se ubica por un punto interior y cada centro poblado por su punto, y se ve si cae en la zona inundable. Se publican totales por distrito; las cifras menores de 10 no se muestran.</li>
+    <li><b>Comparación:</b> WorldPop 2026 (población estimada cada 100 m) da 400 198 personas en la misma zona, 1,9 % menos que el censo. WorldPop se usa en el mapa 3D, donde hace falta la población celda por celda.</li>
     <li><b>Edificaciones:</b> Google Open Buildings v3 (confianza ≥ 0,75). Incluye viviendas y cualquier otro tipo de construcción, por eso se habla de edificaciones y no de viviendas.</li>
-    <li><b>Salud:</b> establecimientos activos del RENIPRESS (SUSALUD), de puestos de salud a hospitales. <b>Colegios:</b> locales escolares del padrón de servicios educativos ESCALE (MINEDU, corte del 30 de octubre de 2026). Un local con inicial, primaria y secundaria cuenta una vez. <b>Alumnos:</b> matrícula del Censo Educativo 2025 (ESCALE, MINEDU), sumada por local; el 96 % de los locales tiene el dato y en el 8 % de los servicios la cifra fue estimada por MINEDU porque el colegio no respondió. Por eso el total de alumnos es un mínimo.</li>
-    <li><b>Niños y adultos mayores:</b> WorldPop 2026 por edad y sexo (100 m): de 0 a 4 años y de 65 años a más. <b>Cultivos:</b> ESA WorldCover 2021 (10 m), clase «tierras de cultivo». <b>Carreteras y puentes:</b> OpenStreetMap, vías troncales, primarias, secundarias y terciarias.</li>
+    <li><b>Salud:</b> establecimientos activos del RENIPRESS (SUSALUD), de puestos de salud a hospitales. <b>Colegios:</b> locales escolares del padrón ESCALE (MINEDU, corte del 30 de octubre de 2026). Un local con inicial, primaria y secundaria cuenta una vez. <b>Alumnos:</b> matrícula del Censo Educativo 2025, sumada por local; el 96 % de los locales tiene el dato, por eso el total de alumnos es un mínimo.</li>
+    <li><b>Cultivos:</b> ESA WorldCover 2021 (10 m), clase «tierras de cultivo». <b>Carreteras y puentes:</b> OpenStreetMap, vías troncales, primarias, secundarias y terciarias. <b>Pobreza:</b> INEI, Mapa de Pobreza Monetaria 2018.</li>
     <li><b>Estado oficial:</b> último Comunicado Oficial del ENFEN, leído de su documento publicado en gob.pe.</li>
     <li>Las distancias se cuentan de dos formas: <b>dentro</b> de la zona y <b>acumulado</b> hasta 500 m o 1 km.</li>
     <li>Es <b>exposición</b>: dice quién está en la zona, no cuántos resultarán afectados. Para comparar, en 2017 INDECI registró 74 348 viviendas afectadas en Piura y 11 395 en Tumbes (OCHA, informe n.º 10, mayo de 2017).</li>
   </ul>
 
-  <h3>3. Alerta por distrito (machine learning)</h3>
+  <h3>3. Probabilidad de emergencia por distrito (machine learning)</h3>
   <ul>
-    <li>Base de 78 distritos por semana desde 2001. Las emergencias por inundación y lluvia intensa vienen del SINPAD del INDECI (datos abiertos, 2003-2025).</li>
-    <li>Variables: lluvia de 30 días (NASA POWER), caudal del río más cercano (GloFAS), temperatura del mar (Niño 1+2), historia del distrito y época del año.</li>
-    <li>Se compararon cuatro modelos con validación temporal: se entrena con los años anteriores y se prueba en el siguiente. Ganó una regresión logística simple. El índice de 0 a 100 compara cada semana con todas las semanas de 2001 a 2015; 95 o más es alerta.</li>
+    <li><b>Qué predice:</b> la probabilidad de que el SINPAD del INDECI registre una emergencia por lluvia intensa o inundación en un distrito, en cada una de las cuatro semanas siguientes. Se entrenó con las emergencias de 2003 a 2025 en los 78 distritos.</li>
+    <li><b>Variables:</b> lluvia de 7 y 30 días y días de lluvia extrema (NASA POWER), caudal del río más cercano (GloFAS), temperatura del mar (Niño 1+2), época del año, historia de emergencias del distrito, y porcentaje del distrito, viviendas y personas en zona inundable (Censo 2025). Todas se conocen al cerrar la semana.</li>
+    <li><b>Modelo:</b> regresión logística. Se comparó con LightGBM y con reglas simples; LightGBM ordena un poco mejor, pero la logística permite explicar cada predicción.</li>
+    <li><b>Prueba:</b> año por año de 2008 a 2025, entrenando solo con los años anteriores. Las probabilidades se calibran con los cinco años previos (método de Platt) para que coincidan con la frecuencia real.</li>
+    <li><b>Fases:</b> atención desde 5 % y alerta desde 15 %, elegidas con lo que habría pasado en esos 18 años.</li>
+    <li><b>Lluvia reciente:</b> NASA POWER publica con unos cuatro días de retraso; esos días se completan con Open-Meteo y se reemplazan cuando llega el dato.</li>
+    <li><b>¿Dónde actuar primero?:</b> las personas en riesgo esperado son la probabilidad por las personas en zona inundable. La vulnerabilidad es un índice de 0 a 100 que compara a los distritos entre sí en cuatro indicadores: niños de 0 a 4 años y adultos de 65 o más, paredes frágiles, piso de tierra y pobreza.</li>
+    <li><b>Límites:</b> a 3 y 4 semanas no supera a la historia del distrito; la cantidad de viviendas afectadas se queda corta en años extremos; el SINPAD recoge lo registrado, no todo lo ocurrido.</li>
   </ul>
 
   <h3>4. Lluvia, ríos y mar</h3>
@@ -406,6 +505,8 @@ footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;font-size:12px;color:v
   <ul>
     <li>Copernicus Sentinel-1 y Sentinel-2 (ESA), vía Microsoft Planetary Computer.</li>
     <li>JRC, CEMS-GloFAS flood hazard maps v2; GloFAS v4 (Copernicus Emergency Management Service).</li>
+    <li>INEI, Censos Nacionales 2025: viviendas y población por manzana y centro poblado de Tumbes y Piura.</li>
+    <li>INDECI, SINPAD: emergencias y daños, 2003-2025 (datos abiertos).</li>
     <li>WorldPop (2026), población total y por edad y sexo; Google Open Buildings v3; RENIPRESS (SUSALUD); padrón ESCALE (MINEDU); OpenStreetMap (carreteras); ESA WorldCover 2021.</li>
     <li>Pobreza: INEI, Mapa de Pobreza Monetaria Provincial y Distrital 2018. IDH: PNUD, Índice de Desarrollo Humano Perú 2019.</li>
     <li>ENFEN, comunicados oficiales (gob.pe).</li>
@@ -415,11 +516,11 @@ footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;font-size:12px;color:v
   </ul>
 
   <h3>Autores</h3>
-  <p>Marcia, Christopher, Maykol y Luz Ángela.</p>
+  <p>Christopher Calle, Luz Ángela Mendizábal, Maykol Ramírez y Marcia Shapiama De La Cruz. Asesor: Prof. Alexander Quispe.</p>
   <p class="aviso">Código y datos: <a href="https://github.com/MarciaShapiama/iapn-inei">github.com/MarciaShapiama/iapn-inei</a> · Mapa 2D para equipos sin tarjeta gráfica: <a href="mapa2d.html">mapa2d.html</a>.</p>
 </section>
 </main>
-<footer id="pie">Autores: Marcia, Christopher, Maykol y Luz Ángela · Proyecto integrador del Programa de Extensión Universitaria: Ciencia del Dato (PEU-CD), INEI · 2026</footer>
+<footer id="pie">Christopher Calle, Luz Ángela Mendizábal, Maykol Ramírez y Marcia Shapiama De La Cruz · Proyecto integrador del Programa de Extensión Universitaria: Ciencia del Dato (PEU-CD), INEI · 2026</footer>
 <div class="tip" id="tip"></div>
 
 <script>
@@ -462,18 +563,23 @@ Promise.all([get("resumen"),get("regiones"),get("mar"),get("indices"),geo("depar
   window.D={R,REG,MAR,IDX,GEO,ZON,ZGEO,IN,DIST,RIE,SAT,EX,ENF,VC,AV,EVR};
   pestanas(); estado();
   const seguro=(f,n)=>{try{f()}catch(e){console.error(n,e)}};
-  seguro(resumenVista,"resumen"); seguro(censoVista,"censo"); seguro(avisoVista,"aviso"); seguro(mar,"mar"); seguro(indices,"indices"); seguro(sateliteVista,"satelite"); seguro(alertaVista,"alerta");
-  get("prediccion_semanal").then(P=>seguro(()=>prediccionVista(P),"prediccion"));
+  seguro(resumenVista,"resumen"); seguro(censoVista,"censo"); seguro(avisoVista,"aviso"); seguro(mar,"mar"); seguro(indices,"indices"); seguro(sateliteVista,"satelite");
+  seguro(selectorVista,"selector");
+  const prP=get("prioridades").then(PR=>{D.PR=PR;seguro(comparacionVista,"comparacion")});
+  get("prediccion_semanal").then(P=>{D.P=P;prP.then(()=>{seguro(prioridadVista,"prioridad");seguro(fichaSel,"ficha")});seguro(()=>alertaVista(P),"alerta");seguro(()=>prediccionVista(P),"prediccion");seguro(fichaSel,"ficha");seguro(semanaModelo,"semana")});
   try{ const ini=()=>{if(visible("v-inundaciones")&&!I3.deck)setTimeout(inundacionesVista,30)}; ini(); window.addEventListener("hashchange",ini);
     document.querySelector('[data-v="inundaciones"]').addEventListener("click",ini); }catch(e){console.error(e)}
   try{ if(visible("v-zonas"))zonasVista(); else document.querySelector('[data-v="zonas"]').addEventListener("click",()=>{if(!Z3.deck)setTimeout(zonasVista,30)},{once:true}); window.addEventListener("hashchange",()=>{if(visible("v-zonas")&&!Z3.deck)setTimeout(zonasVista,30)}); }catch(e){console.error(e)}
   ["ley2"].forEach(id=>{if(document.getElementById(id))leyenda(id)});
+  document.querySelector('[data-v="prioridad"]').addEventListener("click",()=>setTimeout(()=>{try{prioridadVista()}catch(e){}},30));
+  window.addEventListener("resize",debounce(()=>{if(visible("v-prioridad"))try{prioridadVista()}catch(e){}},150));
 });
 
 function pestanas(){
   const tabs=[...document.querySelectorAll(".tab")];
   const ir=v=>{tabs.forEach(t=>t.setAttribute("aria-selected",t.dataset.v===v));
     document.querySelectorAll(".vista").forEach(s=>s.classList.toggle("activa",s.id==="v-"+v));
+    document.body.dataset.vista=v;
     window.dispatchEvent(new Event("resize"))};
   tabs.forEach(t=>t.onclick=()=>{history.replaceState(null,"","#"+t.dataset.v);ir(t.dataset.v)});
   const desdeHash=()=>{const h=location.hash.slice(1);ir(tabs.some(t=>t.dataset.v===h)?h:"resumen")};
@@ -482,6 +588,283 @@ function pestanas(){
 function estado(){const R=D.R;if(!R)return;
   document.getElementById("estado").innerHTML=`Mar al <b>${R.ultimo_dia_mar?fechaTxt(R.ultimo_dia_mar):"—"}</b> · histórico: <b>${R.dias_historico} días</b><br>Actualizado ${R.actualizado}`}
 
+
+
+function semanaModelo(){const P=D.P,e=document.getElementById("r-modelo");if(!P||!e)return;
+  const F=(P.fases&&P.fases.umbrales)||{alerta:.15}, n=P.distritos.filter(d=>d.prob_h1>=F.alerta).length, top=P.distritos.slice().sort((a,b)=>b.prob_h1-a.prob_h1)[0];
+  document.getElementById("r-modelo-eti").textContent=`Distritos en alerta según el modelo (semana del ${fechaTxt(P.semana_objetivo.h1)})`;
+  e.textContent=`${n} de ${P.distritos.length}`+(top?` · el más alto: ${top.distrito} (${Math.round(100*top.prob_h1)} %)`:"")}
+
+/* ---------- etiquetas de semana (relativas a hoy) ---------- */
+function etqSem(h,mayus){ // "esta semana", "la próxima semana", "la semana del 23 nov"…
+  const P=D.P; if(!P||!P.semana_objetivo)return mayus?"Próxima semana":"la próxima semana";
+  const ini=new Date(P.semana_objetivo["h"+h]+"T00:00:00"), hoy=new Date(); hoy.setHours(0,0,0,0);
+  const dias=Math.round((ini-hoy)/864e5); let t;
+  if(dias<=0&&dias>-7)t="esta semana"; else if(dias>0&&dias<=7)t="la próxima semana";
+  else if(dias<=-7)t=`la semana del ${fechaTxt(P.semana_objetivo["h"+h])} (ya pasó)`; else t=`la semana del ${fechaTxt(P.semana_objetivo["h"+h])}`;
+  return mayus?t[0].toUpperCase()+t.slice(1):t;
+}
+/* ---------- ¿DÓNDE ACTUAR PRIMERO? ---------- */
+const pctR=x=>x==null?"—":x<.0095?"<1 %":Math.round(100*x)+" %";
+function rangoPct(vals){ // percentil (0-1) de cada valor dentro de la lista, con empates promediados
+  const v=vals.filter(x=>x!=null).sort((a,b)=>a-b);
+  return x=>{if(x==null||v.length<2)return null;const lo=d3.bisectLeft(v,x),hi=d3.bisectRight(v,x);return ((lo+hi-1)/2)/(v.length-1)}}
+function vulnerabilidad(){
+  if(D.VUL)return D.VUL; const V=D.VC&&D.VC.escenarios&&D.VC.escenarios.rp100; if(!V||!D.PR)return {};
+  const filas=V.distritos.filter(d=>d.viviendas>0).map(d=>({u:d.ubigeo,
+    edad:d.personas>0&&d.edad_0_4!=null&&d.edad_65_mas!=null?(d.edad_0_4+d.edad_65_mas)/d.personas:null,
+    frag:d.viviendas>0?((d.paredes_tierra||0)+(d.paredes_precarias||0))/d.viviendas:null,
+    piso:d.viviendas>0&&d.piso_tierra!=null?d.piso_tierra/d.viviendas:null,
+    pob:(D.PR.distritos[d.ubigeo]||{}).pobreza_pct}));
+  const r={}; ["edad","frag","piso","pob"].forEach(k=>r[k]=rangoPct(filas.map(f=>f[k])));
+  D.VUL={}; filas.forEach(f=>{const c=["edad","frag","piso","pob"].map(k=>r[k](f[k])).filter(x=>x!=null);
+    D.VUL[f.u]={indice:c.length?Math.round(100*d3.mean(c)):null,edad:f.edad,frag:f.frag,piso:f.piso,pob:f.pob}});
+  return D.VUL;
+}
+function prioridadVista(){
+  const P=D.P, V=D.VC&&D.VC.escenarios&&D.VC.escenarios.rp100, PR=D.PR; if(!P||!V||!PR)return;
+  const F=(P.fases&&P.fases.umbrales)||{atencion:.05,alerta:.15}, VUL=vulnerabilidad();
+  const fase=x=>x>=F.alerta?"alerta":x>=F.atencion?"atencion":"normal", COL={normal:"#c9d3c4",atencion:"#f2bf4a",alerta:"#d4472c"};
+  const C={}; V.distritos.forEach(d=>C[d.ubigeo]=d);
+  const ubs=new Set(selFeatures().map(f=>f.properties.ubigeo));
+  const filas=P.distritos.filter(d=>ubs.has(d.ubigeo)).map(d=>{const c=C[d.ubigeo]||{};const per=c.personas||0;
+    return {...d,per,c,esp:d.prob_h1*per,vul:(VUL[d.ubigeo]||{}).indice,sv:PR.distritos[d.ubigeo]||{}}});
+  const zona=SEL.dist?filas[0]&&filas[0].distrito:SEL.prov?`la provincia de ${SEL.prov}`:SEL.dep?SEL.dep:"Tumbes y Piura";
+  const al=filas.filter(d=>fase(d.prob_h1)==="alerta"), perAl=d3.sum(al,d=>d.per), esp=d3.sum(filas,d=>d.esp);
+  const ord=filas.slice().sort((a,b)=>b.esp-a.esp), top10=d3.sum(ord.slice(0,10),d=>d.esp);
+  document.getElementById("p-titular").textContent=`¿Dónde actuar primero? ${zona[0].toUpperCase()+zona.slice(1)}, semana del ${fechaTxt(P.semana_objetivo.h1)}`;
+  document.getElementById("p-bajada").innerHTML=`No todos los distritos en alerta pesan igual: importa también <b>cuánta gente</b> vive donde llega el agua y <b>qué tan vulnerable</b> es. Esta vista cruza la probabilidad del modelo con los Censos Nacionales 2025 del INEI, la pobreza 2018 y los colegios y centros de salud de la zona inundable.`;
+  document.getElementById("p-kpis").innerHTML=`
+    <div class="kpi"><div class="eti">Distritos en alerta</div><div class="r-cifra" style="font-size:34px;color:#b3261e">${al.length} <span style="font-size:18px;color:var(--ink-3)">de ${filas.length}</span></div><div class="det">probabilidad de ${pctR(F.alerta)} o más ${etqSem(1)}</div></div>
+    <div class="kpi"><div class="eti">Personas en zona inundable de esos distritos</div><div class="r-cifra" style="font-size:34px">${nf(perAl)}</div><div class="det">${nf(d3.sum(al,d=>d.c.edad_0_4||0))} niños de 0 a 4 años y ${nf(d3.sum(al,d=>d.c.edad_65_mas||0))} de 65 o más (Censo 2025)</div></div>
+    <div class="kpi"><div class="eti">Personas en riesgo esperado</div><div class="r-cifra" style="font-size:34px">${nf(esp)}</div><div class="det">suma de probabilidad × personas expuestas; sirve para comparar distritos, no es un pronóstico de afectados</div></div>
+    <div class="kpi"><div class="eti">Concentración</div><div class="r-cifra" style="font-size:34px">${esp?Math.round(100*top10/esp):0} %</div><div class="det">del riesgo esperado está en los ${Math.min(10,ord.length)} primeros distritos de la lista</div></div>`;
+  // ranking
+  const mxE=d3.max(ord,d=>d.esp)||1;
+  const cel=x=>x==null?"<10":nf(x);
+  document.getElementById("p-t-rank").textContent=`Distritos por personas en riesgo esperado · ${zona}`;
+  document.getElementById("p-rank").innerHTML=`<table class="tabla"><tr><th>#</th><th>Distrito</th><th style="text-align:right">Probabilidad</th><th style="text-align:right">Personas en zona inundable</th><th>Riesgo esperado</th><th style="text-align:right">0-4 años</th><th style="text-align:right">65 o más</th><th style="text-align:right">Vulnerabilidad</th></tr>`+
+    ord.filter(d=>d.esp>0).slice(0,15).map((d,i)=>`<tr data-u="${d.ubigeo}" style="cursor:pointer"><td style="color:var(--ink-3)">${i+1}</td><td><b>${d.distrito}</b> <span style="color:var(--ink-3)">${d.provincia}</span></td>
+      <td class="n"><span class="chip"><i style="background:${COL[fase(d.prob_h1)]}"></i>${pctR(d.prob_h1)}</span></td><td class="n">${nf(d.per)}</td>
+      <td style="white-space:nowrap"><span class="p-barra" style="width:${Math.max(2,70*d.esp/mxE)}px"></span>${nf(d.esp)}</td>
+      <td class="n">${cel(d.c.edad_0_4)}</td><td class="n">${cel(d.c.edad_65_mas)}</td><td class="n">${d.vul==null?"—":d.vul}</td></tr>`).join("")+`</table>`+
+    (filas.some(d=>!d.per)?`<p class="nota" style="margin-top:8px">${filas.filter(d=>!d.per).length} distritos de la selección no tienen viviendas en la zona inundable de JRC (solo modela ríos grandes) y no entran al ranking, aunque su probabilidad sea alta.</p>`:"");
+  document.querySelectorAll("#p-rank tr[data-u]").forEach(tr=>tr.onclick=()=>SEL.elegir(tr.dataset.u));
+  // dispersión
+  const el=document.getElementById("p-disp"), w=Math.max(300,el.parentNode.clientWidth-36), h=Math.min(440,w*.85), m={l:46,r:14,t:14,b:40};
+  const svg=d3.select(el).attr("viewBox",`0 0 ${w} ${h}`); svg.selectAll("*").remove();
+  const todos=P.distritos.map(d=>({...d,per:(C[d.ubigeo]||{}).personas||0,vul:(VUL[d.ubigeo]||{}).indice})).filter(d=>d.per>0&&d.vul!=null);
+  const x=d3.scaleLinear([0,Math.max(.3,d3.max(todos,d=>d.prob_h1)*1.08)],[m.l,w-m.r]), y=d3.scaleLinear([0,100],[h-m.b,m.t]), r=d3.scaleSqrt([0,d3.max(todos,d=>d.per)],[2.5,Math.min(24,w/28)]);
+  svg.append("rect").attr("x",x(F.alerta)).attr("y",y(100)).attr("width",x.range()[1]-x(F.alerta)).attr("height",y(50)-y(100)).attr("fill","#f9dcd5").attr("opacity",.55);
+  svg.append("text").attr("x",w-m.r-4).attr("y",m.t+12).attr("text-anchor","end").style("font-weight","700").style("fill","#8e2414").text("Actuar primero");
+  svg.append("g").attr("transform",`translate(0,${h-m.b})`).call(d3.axisBottom(x).ticks(6).tickFormat(v=>Math.round(v*100)+" %")).call(g=>g.selectAll("line,path").attr("stroke","#c9c2b6"));
+  svg.append("g").attr("transform",`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5)).call(g=>g.selectAll("line,path").attr("stroke","#c9c2b6"));
+  svg.append("line").attr("x1",x(F.alerta)).attr("x2",x(F.alerta)).attr("y1",m.t).attr("y2",h-m.b).attr("stroke","#b3261e").attr("stroke-dasharray","4 3");
+  svg.append("text").attr("x",x(F.alerta)+4).attr("y",h-m.b-6).text("alerta");
+  svg.append("line").attr("x1",m.l).attr("x2",w-m.r).attr("y1",y(50)).attr("y2",y(50)).attr("stroke","#c9c2b6").attr("stroke-dasharray","4 3");
+  svg.append("text").attr("x",(m.l+w)/2).attr("y",h-6).attr("text-anchor","middle").text(`Probabilidad de emergencia ${etqSem(1)}`);
+  svg.append("text").attr("transform",`translate(12,${(h-m.b)/2}) rotate(-90)`).attr("text-anchor","middle").text("Vulnerabilidad (0-100)");
+  const hay=ubs.size<P.distritos.length;
+  svg.append("g").selectAll("circle").data(todos.sort((a,b)=>b.per-a.per)).join("circle").attr("cx",d=>x(d.prob_h1)).attr("cy",d=>y(d.vul)).attr("r",d=>r(d.per))
+    .attr("fill",d=>COL[fase(d.prob_h1)]).attr("fill-opacity",d=>hay&&!ubs.has(d.ubigeo)?.15:.8).attr("stroke",d=>hay&&ubs.has(d.ubigeo)?"#13202b":"#fff").attr("stroke-width",d=>hay&&ubs.has(d.ubigeo)?1.8:1).style("cursor","pointer")
+    .on("mousemove",(ev,d)=>{const v=VUL[d.ubigeo]||{};mostrar(ev,`<b>${d.distrito}</b> · ${d.provincia}<br>Probabilidad: <b>${pctR(d.prob_h1)}</b><br>Personas en zona inundable: ${nf(d.per)}<br>Vulnerabilidad: <b>${d.vul}</b> de 100<br><small>0-4 y 65+: ${v.edad==null?"—":Math.round(100*v.edad)+" %"} · paredes frágiles: ${Math.round(100*(v.frag||0))} % · piso de tierra: ${v.piso==null?"—":Math.round(100*v.piso)+" %"} · pobreza 2018: ${v.pob==null?"—":fmtN(v.pob,0)+" %"}</small>`)})
+    .on("mouseleave",ocultar).on("click",(ev,d)=>{ocultar();SEL.elegir(d.ubigeo)});
+  const etq=todos.filter(d=>!hay||ubs.has(d.ubigeo)).sort((a,b)=>b.prob_h1*b.per-a.prob_h1*a.per).slice(0,6);
+  const der=d=>x(d.prob_h1)>w*.72;
+  svg.append("g").selectAll("text").data(etq).join("text").attr("x",d=>der(d)?x(d.prob_h1)-r(d.per)-3:x(d.prob_h1)+r(d.per)+3).attr("text-anchor",d=>der(d)?"end":"start").attr("y",d=>y(d.vul)+4).style("fill","#13202b").style("font-weight","600")
+    .style("paint-order","stroke").style("stroke","#fff").style("stroke-width","3px").text(d=>d.distrito);
+  document.getElementById("p-disp-nota").textContent=`${todos.length} distritos con viviendas en la zona inundable. Vulnerabilidad: promedio de cuatro posiciones relativas entre esos distritos: % de niños de 0 a 4 años y adultos de 65 o más, % de viviendas con paredes frágiles, % con piso de tierra (Censo 2025) y % de pobreza monetaria 2018 (INEI).`;
+  // servicios
+  const alS=al.map(d=>({...d,s:d.sv})).sort((a,b)=>(b.s.alumnos||0)-(a.s.alumnos||0));
+  document.getElementById("p-serv-kpis").innerHTML=`
+    <div class="kpi"><div class="eti">Locales escolares</div><div class="r-cifra" style="font-size:30px">${nf(d3.sum(alS,d=>d.s.colegios||0))}</div><div class="det">dentro de la zona inundable de distritos en alerta</div></div>
+    <div class="kpi"><div class="eti">Alumnos</div><div class="r-cifra" style="font-size:30px">${nf(d3.sum(alS,d=>d.s.alumnos||0))}</div><div class="det">estudian en esos locales (matrícula 2025)</div></div>
+    <div class="kpi"><div class="eti">Establecimientos de salud</div><div class="r-cifra" style="font-size:30px">${nf(d3.sum(alS,d=>d.s.salud||0))}</div><div class="det">postas, centros y hospitales en la misma zona</div></div>
+    <div class="kpi"><div class="eti">Distritos con salud en la zona</div><div class="r-cifra" style="font-size:30px">${alS.filter(d=>d.s.salud>0).length}</div><div class="det">de los ${al.length} en alerta: la atención podría quedar afectada justo cuando más se necesita</div></div>`;
+  const conS=alS.filter(d=>(d.s.colegios||0)+(d.s.salud||0)>0).slice(0,12);
+  document.getElementById("p-serv").innerHTML=conS.length?`<table class="tabla"><tr><th>Distrito</th><th style="text-align:right">Probabilidad</th><th style="text-align:right">Colegios</th><th style="text-align:right">Alumnos</th><th>Locales con más alumnos</th><th style="text-align:right">Salud</th><th>Establecimientos</th></tr>`+
+    conS.map(d=>`<tr data-u="${d.ubigeo}" style="cursor:pointer"><td><b>${d.distrito}</b> <span style="color:var(--ink-3)">${d.provincia}</span></td><td class="n">${pctR(d.prob_h1)}</td><td class="n">${nf(d.s.colegios||0)}</td><td class="n">${nf(d.s.alumnos||0)}</td>
+      <td style="font-size:12.5px">${(d.s.colegios_mayores||[]).map(c=>`${c[0]} (${nf(c[1])})`).join("; ")||"—"}</td><td class="n">${nf(d.s.salud||0)}</td><td style="font-size:12.5px">${(d.s.salud_lista||[]).map(c=>`${c[0]}${c[1]?" ("+c[1]+")":""}`).join("; ")||"—"}</td></tr>`).join("")+`</table>`
+    :`<p class="nota">Ningún distrito en alerta de esta selección tiene colegios o establecimientos de salud dentro de la zona inundable.</p>`;
+  document.querySelectorAll("#p-serv tr[data-u]").forEach(tr=>tr.onclick=()=>SEL.elegir(tr.dataset.u));
+  document.getElementById("p-metodo").innerHTML=`<p><b>Probabilidad:</b> modelo de machine learning por semanas (regresión logística calibrada), con datos hasta la semana del ${fechaTxt(P.semana_base)}. <b>Personas en zona inundable:</b> Censos Nacionales 2025 (INEI) cruzados con la zona de crecidas de 1 en 100 años (JRC); son personas expuestas, no afectadas. <b>Riesgo esperado:</b> probabilidad × personas; un distrito con 30 % y 10 000 personas suma 3 000 y queda por delante de uno con 60 % y 1 000 personas (600). <b>Vulnerabilidad:</b> índice relativo a estos distritos, no una evaluación oficial (EVAR/CENEPRED). <b>Colegios y salud:</b> ESCALE 2025 y RENIPRESS, ubicados en su distrito por coordenadas.</p>`;
+}
+function SEL_EXTRA(){try{prioridadVista()}catch(e){console.error(e)}}
+
+/* ---------- ¿SE PARECE A 2017? ---------- */
+function comparacionVista(){
+  const C=D.PR&&D.PR.comparacion; if(!C)return;
+  const A=C.anios.map(String), act=String(C.anio_actual), S=C.series[act];
+  const COLA={"2017":"#d4472c","2023":"#5f97c7"}; COLA[act]="#13202b";
+  const wk=C.semana_referencia||S.semana_anio[S.semana_anio.length-1], wkl=wk;
+  const en=(a,campo,sub)=>{const q=C.series[a],i=q.semana_anio.indexOf(wk);if(i<0)return null;const v=sub?(q[campo]||{})[sub]:q[campo];return v?v[i]:null};
+  const filas=[["Mar frente a Piura (Niño 1+2)",a=>en(a,"nino12"),v=>(v>0?"+":"")+fmtN(v,1)+" °C"],
+    ["Lluvia de 30 días, promedio de Piura",a=>en(a,"lluvia_30d_piura"),v=>fmtN(v,0)+" mm"],
+    ["Lluvia de 30 días, promedio de Tumbes",a=>en(a,"lluvia_30d_tumbes"),v=>fmtN(v,0)+" mm"],
+    ...["Piura","Chira","Tumbes"].filter(r=>S.caudal_razon[r]&&S.caudal_razon[r].some(v=>v!=null)).map(r=>[`Caudal del río ${r}, veces lo normal`,a=>en(a,"caudal_razon",r),v=>fmtN(v,1)+"×"])];
+  document.getElementById("c-tabla").innerHTML=`<table class="tabla"><tr><th>Semana ${wk} del año</th>${A.map(a=>`<th style="text-align:right">${a===act?"<b>"+a+"</b>":a}</th>`).join("")}</tr>`+
+    filas.map(f=>`<tr><td>${f[0]}</td>${A.map(a=>{const v=f[1](a);return `<td class="n">${v==null?"—":a===act?"<b>"+f[2](v)+"</b>":f[2](v)}</td>`}).join("")}</tr>`).join("")+`</table>`;
+  const m17=en("2017","nino12"), mh=en(act,"nino12");
+  document.getElementById("c-titular").textContent=mh!=null&&m17!=null?`¿Se parece a 2017? El mar está ${mh>m17?"más caliente":"menos caliente"} que en la misma semana de 2017`:"¿Se parece a 2017?";
+  const graf=(id,campo,fy)=>{const el=document.getElementById(id),w=Math.max(240,el.parentNode.clientWidth),h=170,m={l:36,r:8,t:8,b:22};
+    const svg=d3.select(el).attr("viewBox",`0 0 ${w} ${h}`); svg.selectAll("*").remove();
+    const all=A.flatMap(a=>C.series[a][campo].filter(v=>v!=null));
+    const x=d3.scaleLinear([1,53],[m.l,w-m.r]), y=d3.scaleLinear([Math.min(0,d3.min(all)),d3.max(all)*1.05],[h-m.b,m.t]).nice();
+    svg.append("g").attr("transform",`translate(0,${h-m.b})`).call(d3.axisBottom(x).tickValues([1,14,27,40,53]).tickFormat(v=>({1:"ene",14:"abr",27:"jul",40:"oct",53:"dic"})[v])).call(g=>g.selectAll("line,path").attr("stroke","#c9c2b6")).call(g=>g.selectAll("text").style("font-size","10.5px"));
+    svg.append("g").attr("transform",`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickFormat(fy)).call(g=>g.selectAll("line,path").attr("stroke","#c9c2b6")).call(g=>g.selectAll("text").style("font-size","10.5px"));
+    if(y.domain()[0]<0)svg.append("line").attr("x1",m.l).attr("x2",w-m.r).attr("y1",y(0)).attr("y2",y(0)).attr("stroke","#9aa3ad");
+    A.forEach(a=>{const s=C.series[a];svg.append("path").datum(s.semana_anio.map((wq,i)=>[wq,s[campo][i]])).attr("fill","none").attr("stroke",COLA[a]).attr("stroke-width",a===act?2.6:1.6)
+      .attr("d",d3.line().defined(d=>d[1]!=null).x(d=>x(d[0])).y(d=>y(d[1])))});
+    svg.append("line").attr("x1",x(wk)).attr("x2",x(wk)).attr("y1",m.t).attr("y2",h-m.b).attr("stroke","#13202b").attr("stroke-dasharray","3 3");};
+  const dib=()=>{graf("c-mar","nino12",v=>fmtN(v,0));graf("c-llp","lluvia_30d_piura",v=>fmtN(v,0));graf("c-llt","lluvia_30d_tumbes",v=>fmtN(v,0))};
+  dib(); window.addEventListener("resize",debounce(()=>{if(visible("v-mar"))dib()},150));
+  document.querySelector('[data-v="mar"]').addEventListener("click",()=>setTimeout(dib,30));
+  document.getElementById("c-ley").innerHTML=A.map(a=>`<span><i style="background:${COLA[a]};height:3px"></i>${a===act?a+" (esta temporada)":a}</span>`).join("")+`<span>- - - semana ${wk}</span>`;
+  document.getElementById("c-nota").textContent=`Niño 1+2: NOAA CPC (semanal). Lluvia: NASA POWER, promedio de los distritos de cada departamento; la del año en curso llega hasta la última semana completa. Caudal: GloFAS, mediana de los distritos del río. En 2017 la lluvia fuerte llegó en febrero y marzo, cuando el mar ya estaba caliente.`;
+}
+
+/* ---------- SELECTOR DE DISTRITO ---------- */
+const SEL={dep:"",prov:"",dist:"",alDibujar:{}};
+const sinT=x=>String(x).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+function selFeatures(){const F=(D.DIST&&D.DIST.features)||[];
+  return F.filter(f=>(!SEL.dep||f.properties.departamento===SEL.dep)&&(!SEL.prov||f.properties.provincia===SEL.prov)&&(!SEL.dist||f.properties.ubigeo===SEL.dist))}
+function volarSel(animar=true){
+  if(!I3.deck||!window.deck)return; const fs=selFeatures();
+  if(fs.length===D.DIST.features.length){I3.deck.setProps({initialViewState:{...VISTAS.piura,transitionDuration:animar?1400:0,transitionInterpolator:new deck.FlyToInterpolator()}});return}
+  const [[x0,y0],[x1,y1]]=d3.geoBounds({type:"FeatureCollection",features:fs}), el=document.getElementById("i-mapa");
+  const vp=new deck.WebMercatorViewport({width:el.clientWidth||900,height:el.clientHeight||600}).fitBounds([[x0,y0],[x1,y1]],{padding:60});
+  I3.deck.setProps({initialViewState:{longitude:vp.longitude,latitude:vp.latitude,zoom:Math.min(13,vp.zoom),pitch:50,bearing:15,transitionDuration:animar?1500:0,transitionInterpolator:new deck.FlyToInterpolator()}});
+}
+function selectorVista(){
+  const F=(D.DIST&&D.DIST.features)||[]; if(!F.length)return;
+  const dists=F.map(f=>f.properties).sort((a,b)=>a.distrito.localeCompare(b.distrito,"es"));
+  const sDep=document.getElementById("sel-dep"),sProv=document.getElementById("sel-prov"),sDist=document.getElementById("sel-dist");
+  [...new Set(dists.map(d=>d.departamento))].sort().forEach(d=>sDep.add(new Option(d,d)));
+  const llenar=()=>{
+    sDep.value=SEL.dep;
+    sProv.length=1;[...new Set(dists.filter(d=>!SEL.dep||d.departamento===SEL.dep).map(d=>d.provincia))].sort((a,b)=>a.localeCompare(b,"es")).forEach(p=>sProv.add(new Option(p,p)));
+    sProv.value=SEL.prov;
+    sDist.length=1;dists.filter(d=>(!SEL.dep||d.departamento===SEL.dep)&&(!SEL.prov||d.provincia===SEL.prov)).forEach(d=>sDist.add(new Option(d.distrito+(SEL.prov?"":` (${d.provincia})`),d.ubigeo)));
+    sDist.value=SEL.dist;
+    document.getElementById("sel-limpiar").hidden=!(SEL.dep||SEL.prov||SEL.dist);
+  };
+  const aplicar=()=>{
+    llenar(); fichaSel();
+    if(I3.deck){capasInund();if(visible("v-inundaciones"))volarSel();else I3.pendiente=true}
+    Object.values(SEL.alDibujar).forEach(f=>{try{f()}catch(e){console.error(e)}});
+    SEL_EXTRA();
+    if(Z3.deck&&SEL.prov){const i=D.ZON.zonas.findIndex(z=>z.provincia===SEL.prov);if(i>=0){document.getElementById("z-sel").value=i;elegirZona(i,visible("v-zonas"))}}
+    try{const q=new URLSearchParams(location.search);["dep","prov","dist"].forEach(k=>SEL[k]?q.set(k,SEL[k]):q.delete(k));
+      history.replaceState(null,"",location.pathname+(q.toString()?"?"+q:"")+location.hash)}catch(e){}
+  };
+  SEL.elegir=u=>{const d=dists.find(x=>x.ubigeo===u);if(!d)return;SEL.dep=d.departamento;SEL.prov=d.provincia;SEL.dist=u;document.getElementById("sel-buscar").value=d.distrito;aplicar();
+    document.getElementById("ficha").scrollIntoView({behavior:"smooth",block:"nearest"})};
+  sDep.onchange=()=>{SEL.dep=sDep.value;SEL.prov="";SEL.dist="";document.getElementById("sel-buscar").value="";aplicar()};
+  sProv.onchange=()=>{SEL.prov=sProv.value;document.getElementById("sel-buscar").value="";if(SEL.prov)SEL.dep=dists.find(d=>d.provincia===SEL.prov).departamento;SEL.dist="";aplicar()};
+  sDist.onchange=()=>sDist.value?SEL.elegir(sDist.value):(SEL.dist="",document.getElementById("sel-buscar").value="",aplicar());
+  document.getElementById("sel-limpiar").onclick=()=>{SEL.dep=SEL.prov=SEL.dist="";document.getElementById("sel-buscar").value="";aplicar()};
+  // buscador
+  const inp=document.getElementById("sel-buscar"),sug=document.getElementById("sel-sug"); let foco=-1;
+  const cerrar=()=>{sug.style.display="none";inp.setAttribute("aria-expanded","false");foco=-1};
+  inp.oninput=()=>{const q=sinT(inp.value.trim()); if(!q)return cerrar();
+    const r=dists.filter(d=>sinT(d.distrito).includes(q)||sinT(d.provincia).includes(q))
+      .sort((a,b)=>(sinT(a.distrito).startsWith(q)?0:1)-(sinT(b.distrito).startsWith(q)?0:1)||a.distrito.localeCompare(b.distrito,"es")).slice(0,10);
+    sug.innerHTML=r.length?r.map(d=>`<button role="option" data-u="${d.ubigeo}">${d.distrito} <small>${d.provincia}, ${d.departamento}</small></button>`).join("")
+      :`<div style="padding:8px 11px;color:var(--ink-3);font-size:13.5px">No hay un distrito con ese nombre en Tumbes ni Piura.</div>`;
+    sug.style.display="block";inp.setAttribute("aria-expanded","true");foco=-1;
+    sug.querySelectorAll("button").forEach(b=>b.onmousedown=ev=>{ev.preventDefault();cerrar();SEL.elegir(b.dataset.u)})};
+  inp.onkeydown=ev=>{const bs=[...sug.querySelectorAll("button")];
+    if(ev.key==="ArrowDown")foco=Math.min(bs.length-1,foco+1);else if(ev.key==="ArrowUp")foco=Math.max(0,foco-1);
+    else if(ev.key==="Enter"){if(bs.length){cerrar();SEL.elegir(bs[Math.max(0,foco)].dataset.u)}ev.preventDefault();return}
+    else if(ev.key==="Escape"){cerrar();return}else return;
+    bs.forEach((b,i)=>b.classList.toggle("foco",i===foco));ev.preventDefault()};
+  inp.onblur=()=>setTimeout(cerrar,150);
+  // al abrir el mapa 3D después de elegir
+  document.querySelector('[data-v="inundaciones"]').addEventListener("click",()=>{if(I3.pendiente&&I3.deck){I3.pendiente=false;setTimeout(volarSel,80)}});
+  // selección guardada en la dirección (para compartir el enlace)
+  const q=new URLSearchParams(location.search);
+  if(q.get("dist")&&dists.some(d=>d.ubigeo===q.get("dist"))){const d=dists.find(x=>x.ubigeo===q.get("dist"));SEL.dep=d.departamento;SEL.prov=d.provincia;SEL.dist=d.ubigeo;inp.value=d.distrito}
+  else{if(q.get("dep"))SEL.dep=q.get("dep");if(q.get("prov"))SEL.prov=q.get("prov")}
+  llenar(); if(SEL.dep||SEL.prov||SEL.dist)aplicar();
+}
+function fichaSel(){
+  const el=document.getElementById("ficha"); if(!el)return;
+  if(!SEL.dep&&!SEL.prov&&!SEL.dist){el.hidden=true;return}
+  const V=D.VC&&D.VC.escenarios&&D.VC.escenarios.rp100, fs=selFeatures(), ubs=new Set(fs.map(f=>f.properties.ubigeo));
+  const C=V?V.distritos.filter(d=>ubs.has(d.ubigeo)):[];
+  const suma=k=>C.reduce((s,d)=>s+(d[k]||0),0), algunoNulo=k=>C.some(d=>d[k]==null);
+  const cel=(k)=>C.length===1&&C[0][k]==null?"menos de 10":nf(suma(k))+(algunoNulo(k)?"*":"");
+  const pr=SEL.dist?fs[0].properties:null;
+  const titulo=pr?pr.distrito:SEL.prov?`Provincia de ${SEL.prov}`:`Departamento de ${SEL.dep}`;
+  const ubic=pr?`Provincia de ${pr.provincia}, ${pr.departamento}`:SEL.prov?`${SEL.dep} · ${fs.length} distritos`:`${fs.length} distritos`;
+  // probabilidad del modelo
+  const P=D.P, F=P&&P.fases&&P.fases.umbrales||{atencion:.05,alerta:.15};
+  const fase=x=>x>=F.alerta?"alerta":x>=F.atencion?"atencion":"normal", NOMF={alerta:"Alerta",atencion:"Atención",normal:"Normal"};
+  const pct=x=>x==null?"—":x<.0095?"<1 %":Math.round(100*x)+" %";
+  let modelo="";
+  if(P&&P.distritos){
+    const pd=P.distritos.filter(d=>ubs.has(d.ubigeo));
+    if(pr&&pd.length){const d=pd[0];
+      modelo=`<h3 style="margin:16px 0 6px">Probabilidad de emergencia por lluvia o inundación (modelo)</h3>
+      <div class="plazos4">${[1,2,3,4].map(h=>`<div>${etqSem(h,true)}<b>${pct(d["prob_h"+h])}</b><span class="fase ${fase(d["prob_h"+h])}">${NOMF[fase(d["prob_h"+h])]}</span></div>`).join("")}</div>
+      <p class="nota" style="margin-top:6px">Con datos hasta la semana del ${fechaTxt(P.semana_base)}${P.lluvia_provisional?` (la lluvia de sus últimos ${P.lluvia_provisional.dias.length} días es provisional: Open-Meteo, hasta que NASA POWER publique el dato)`:""}. En una semana cualquiera la probabilidad promedio es de 3 %. A 3 y 4 semanas es orientativa.${d.viviendas_si_ocurre!=null?` Si ocurre, el modelo estima unas ${nf(d.viviendas_si_ocurre)} viviendas afectadas${d.viviendas_rango_historico&&d.viviendas_rango_historico[0]!=null?` (en emergencias pasadas del distrito, entre ${nf(d.viviendas_rango_historico[0])} y ${nf(d.viviendas_rango_historico[1])})`:""}.`:""}</p>`}
+    else if(pd.length){const al=pd.filter(d=>fase(d.prob_h1)==="alerta"),at=pd.filter(d=>fase(d.prob_h1)==="atencion"),top=pd.slice().sort((a,b)=>b.prob_h1-a.prob_h1).slice(0,5);
+      modelo=`<h3 style="margin:16px 0 6px">Probabilidad de emergencia ${etqSem(1)} (modelo)</h3>
+      <p style="margin:0 0 6px"><b>${al.length}</b> de ${pd.length} distritos en <span class="fase alerta">Alerta</span> y <b>${at.length}</b> en <span class="fase atencion">Atención</span>. Los más altos: ${top.map(d=>`<a href="#" data-u="${d.ubigeo}" class="ir-dist">${d.distrito}</a> (${pct(d.prob_h1)})`).join(", ")}.</p>`}
+  }
+  // censo
+  let censo;
+  if(!V)censo="";
+  else if(!C.length)censo=`<p style="margin:10px 0 0">El mapa de zona inundable (JRC) no marca viviendas ${pr?"en este distrito":"en esta zona"}: solo modela los ríos grandes, no las quebradas ni la lluvia que se acumula en la ciudad.</p>`;
+  else{
+    const per=suma("personas"), grupos=[["0 a 4 años","edad_0_4"],["5 a 14 años","edad_5_14"],["15 a 64 años","edad_15_64"],["65 años o más","edad_65_mas"]];
+    const mx=Math.max(...grupos.map(g=>suma(g[1])),1), frag=suma("paredes_tierra")+suma("paredes_precarias"), viv=suma("viviendas");
+    const pc=(a,b)=>b?Math.round(100*a/b)+" %":"—";
+    censo=`<h3 style="margin:14px 0 6px">Quiénes viven en la zona inundable (Censos Nacionales 2025, crecida de 1 en 100 años)</h3>
+    <div class="grid g4" style="margin:6px 0 12px">
+      <div><div class="eti">Viviendas</div><div class="r-cifra" style="font-size:30px">${cel("viviendas")}</div><div class="det">ocupadas, en la zona inundable</div></div>
+      <div><div class="eti">Personas</div><div class="r-cifra" style="font-size:30px">${cel("personas")}</div><div class="det">${per?`Mujeres ${cel("mujeres")} · hombres ${cel("hombres")}`:""}</div></div>
+      <div><div class="eti">Paredes frágiles</div><div class="r-cifra" style="font-size:30px">${nf(frag)}</div><div class="det">${pc(frag,viv)} de las viviendas: adobe, tapia, quincha, madera, triplay o estera</div></div>
+      <div><div class="eti">Piso de tierra</div><div class="r-cifra" style="font-size:30px">${cel("piso_tierra")}</div><div class="det">${pc(suma("piso_tierra"),viv)} de las viviendas</div></div>
+    </div>
+    ${per?(()=>{const gs=[["0 a 4","0_4"],["5 a 14","5_14"],["15 a 64","15_64"],["65 o más","65_mas"]];
+      const mxp=Math.max(...gs.flatMap(([n,k])=>[suma("mujeres_"+k),suma("hombres_"+k)]),1);
+      return `<div class="eti" style="margin-bottom:6px">Personas por edad y sexo</div>
+      <div class="piramide"><div class="pc"><b>Mujeres</b></div><div></div><div class="pc"><b>Hombres</b></div>
+      ${gs.map(([n,k])=>`<div class="pl"><span>${cel("mujeres_"+k)}</span><i style="width:${100*suma("mujeres_"+k)/mxp}%"></i></div><div class="pe">${n}</div><div class="pr"><i style="width:${100*suma("hombres_"+k)/mxp}%"></i><span>${cel("hombres_"+k)}</span></div>`).join("")}</div>
+      <p class="nota" style="margin:4px 0 0">Niños de 0 a 4 años: ${cel("edad_0_4")} (${pc(suma("edad_0_4"),per)}) · adultos de 65 o más: ${cel("edad_65_mas")} (${pc(suma("edad_65_mas"),per)}), de ellos ${cel("mujeres_65_mas")} mujeres.</p>`})():""}
+    ${(()=>{const nob=suma("material_noble"),tie=suma("paredes_tierra"),pre=suma("paredes_precarias"),otr=Math.max(0,viv-nob-tie-pre);
+      const seg=[["Ladrillo o concreto",nob,"#5b7f95"],["Adobe, tapia o quincha",tie,"#c98a3d"],["Madera, triplay o estera",pre,"#d4472c"],["Otro",otr,"#c9c2b6"]].filter(x=>x[1]>0);
+      const rur=suma("viviendas_rural");
+      return `<div class="eti" style="margin:14px 0 6px">Material de las paredes</div>
+      <div class="matbar">${seg.map(x=>`<i style="flex:${x[1]};background:${x[2]}" title="${x[0]}: ${nf(x[1])}"></i>`).join("")}</div>
+      <div class="leyenda" style="margin-top:6px">${seg.map(x=>`<span><i style="background:${x[2]}"></i>${x[0]}: <b>${nf(x[1])}</b> (${pc(x[1],viv)})</span>`).join("")}</div>
+      <p class="nota" style="margin:6px 0 0">Techo de caña, estera, triplay o paja: ${nf(suma("techo_precario"))} viviendas. ${rur?`Zona rural (centros poblados fuera de manzanas): ${nf(rur)} viviendas${suma("personas_rural")?` y ${cel("personas_rural")} personas`:""}; el resto es urbano.`:"Todas las viviendas expuestas están en manzanas (zona urbana)."}</p>`})()}
+    <p class="nota" style="margin-top:8px">Viviendas y personas en la zona que cubriría una crecida de 1 en 100 años (exposición, no daño). Para proteger el secreto estadístico, las cifras menores de 10 no se muestran${C.some(d=>Object.values(d).includes(null))?"; * suma que omite alguna celda menor de 10":""}.</p>`}
+  // versión corta para las pestañas de mapas
+  const pd1=P&&P.distritos?P.distritos.filter(d=>ubs.has(d.ubigeo)):[];
+  const corta=`<b>${titulo}</b>${C.length&&suma("personas")?` · <b>${cel("personas")}</b> personas en zona inundable (${cel("edad_0_4")} de 0 a 4 años y ${cel("edad_65_mas")} de 65 o más)`:" · sin viviendas en la zona inundable de JRC"}`+
+    (pr&&pd1.length?` · ${etqSem(1)}: <b>${pct(pd1[0].prob_h1)}</b> <span class="fase ${fase(pd1[0].prob_h1)}">${NOMF[fase(pd1[0].prob_h1)]}</span>`:pd1.length>1?` · <b>${pd1.filter(d=>fase(d.prob_h1)==="alerta").length}</b> de ${pd1.length} distritos en alerta`:"")+
+    ` · <a href="#resumen">ver ficha completa</a>`;
+  // historia del SINPAD (2003-2025)
+  const H=D.PR&&D.PR.historia; let hist="", serie=null;
+  if(H){const anios=H.anios, em=anios.map((a,i)=>d3.sum([...ubs],u=>((H.distritos[u]||{}).emergencias||[])[i]||0)), vv=anios.map((a,i)=>d3.sum([...ubs],u=>((H.distritos[u]||{}).viviendas||[])[i]||0));
+    serie={anios,em,vv}; const tot=d3.sum(em), conA=em.filter(v=>v>0).length;
+    hist=`<h3 style="margin:16px 0 4px">Emergencias por lluvia o inundación registradas en el SINPAD, 2003-2025</h3>
+    <p class="nota" style="margin:0 0 4px">${tot?`${nf(tot)} emergencias en ${conA} de ${anios.length} años; ${nf(d3.sum(vv))} viviendas afectadas o destruidas en total. Es lo que el modelo aprendió de ${pr?"este distrito":"esta zona"}.`:`El SINPAD no registra emergencias por lluvia o inundación ${pr?"en este distrito":"en esta zona"} entre 2003 y 2025.`}</p>
+    <svg id="ficha-hist" class="hist-svg" style="width:100%;display:block"></svg>`}
+  el.innerHTML=`<div class="ficha-corta">${corta}</div><div class="completa"><div class="cab"><div><h2>${titulo}</h2><div class="ubic">${ubic}</div></div><button class="btn sec" id="ficha-cerrar">Ver todo Tumbes y Piura</button></div>${censo}${modelo}${hist}</div>`;
+  if(serie&&d3.sum(serie.em)){const sv=document.getElementById("ficha-hist"),w=Math.max(280,el.clientWidth-40),h=150,m={l:30,r:6,t:16,b:22};
+    const svg=d3.select(sv).attr("viewBox",`0 0 ${w} ${h}`),x=d3.scaleBand(serie.anios,[m.l,w-m.r]).padding(.18),y=d3.scaleLinear([0,d3.max(serie.em)],[h-m.b,m.t]).nice();
+    svg.append("g").attr("transform",`translate(0,${h-m.b})`).call(d3.axisBottom(x).tickValues(serie.anios.filter(a=>a%2===1)).tickFormat(a=>"'"+String(a).slice(2))).call(g=>g.selectAll("line,path").attr("stroke","#c9c2b6"));
+    svg.append("g").attr("transform",`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(3).tickFormat(d3.format("d"))).call(g=>g.selectAll("line,path").attr("stroke","#c9c2b6"));
+    svg.append("g").selectAll("rect").data(serie.anios.map((a,i)=>({a,e:serie.em[i],v:serie.vv[i]}))).join("rect").attr("x",d=>x(d.a)).attr("width",x.bandwidth()).attr("y",d=>y(d.e)).attr("height",d=>y(0)-y(d.e)).attr("rx",2)
+      .attr("fill",d=>d.a===2017||d.a===2023?"#d4472c":"#1f5f99").on("mousemove",(ev,d)=>mostrar(ev,`<b>${d.a}</b><br>${d.e} emergencias<br>${nf(d.v)} viviendas afectadas o destruidas`)).on("mouseleave",ocultar);
+    [2017,2023].forEach(a=>{const i=serie.anios.indexOf(a);if(serie.em[i])svg.append("text").attr("x",x(a)+x.bandwidth()/2).attr("y",y(serie.em[i])-4).attr("text-anchor","middle").style("font-weight","700").style("fill","#8e2414").text(a)})}
+  el.hidden=false;
+  document.getElementById("ficha-cerrar").onclick=()=>document.getElementById("sel-limpiar").click();
+  el.querySelectorAll("a.ir-dist").forEach(a=>a.onclick=ev=>{ev.preventDefault();SEL.elegir(a.dataset.u)});
+}
 
 /* ---------- RESUMEN ---------- */
 const miles=v=>v==null?"—":Math.round(v).toLocaleString("es-PE").replace(/,/g," ");
@@ -516,7 +899,7 @@ function resumenVista(){
   if(Z)["Tumbes","Piura"].forEach(p=>{const z=Z.zonas.find(x=>x.provincia===p&&x.departamento===p);if(z)filas.push([`Lluvia en la provincia de ${p}, últimos 20 días`,`${fmtN(z.lluvia_20d,0)} mm (lo normal: ${fmtN(z.normal_20d,0)} mm)`])});
   if(D.AV&&D.AV.conteo){const cm=D.AV.conteo_motivo, rio=cm?(cm.caudal||0)+(cm["lluvia y caudal"]||0):null, sinC=D.AV.caudal&&D.AV.caudal.estado!=="ok";
     filas.push([`Aviso de lluvia${cm?" y caudal":""}, próximos ${D.AV.ventana_dias} días (pronóstico frente a lo extremo de cada distrito${cm?" y de cada río":""})`,`${D.AV.conteo.extremo} distritos en nivel extremo · ${D.AV.conteo.fuerte} en fuerte`+(cm?(sinC?" · hoy sin pronóstico de caudal":` · ${rio} por el río`):"")]);}
-  if(RIE){const n=RIE.distritos_hoy.filter(d=>d.alerta).length, top=RIE.distritos_hoy[0];filas.push([`Distritos en alerta según el modelo (semana del ${fechaTxt(RIE.semana_actual)})`,`${n} de ${RIE.distritos_hoy.length}`+(top?` · el más alto: ${top.distrito}`:"")]);}
+  filas.push([`<span id="r-modelo-eti">Distritos en alerta según el modelo</span>`,`<span id="r-modelo">…</span>`]);
   document.getElementById("r-fecha").textContent=R?`Datos al ${fechaTxt(R.ultimo_dia_mar||R.actualizado.slice(0,10))}. Se actualizan solos todos los días.`:"";
   document.getElementById("r-semana").innerHTML=filas.map(f=>`<div class="r-fila"><span>${f[0]}</span><b>${f[1]}</b></div>`).join("")+
     (D.ENF&&D.ENF.titular?`<p class="nota" style="margin-top:8px">ENFEN: «${D.ENF.titular}»${D.ENF.magnitud_esperada?`; magnitud ${D.ENF.magnitud_esperada}`:""}.</p>`:"");
@@ -528,7 +911,8 @@ function resumenVista(){
   document.getElementById("r-pasado").innerHTML=pas.map(f=>`<div class="r-fila" style="display:block"><b style="font-size:15px">${f[0]}</b><div style="color:var(--ink-2);margin-top:2px">${f[1]}</div></div>`).join("");
   const guia=[["inundaciones","Mapa de inundación","Qué quedaría bajo el agua, en 3D: zonas, edificaciones, colegios y salud."],
     ["satelite","Antes y después","Fotos reales del satélite de 2017, 2023 y de estos días."],
-    ["alerta","Alerta por distrito","Aviso de lluvia de los próximos días y riesgo en las próximas semanas."],
+    ["alerta","Alerta por distrito","Aviso de lluvia de los próximos 3 días y probabilidad de emergencia a 1-4 semanas."],
+    ["prioridad","¿Dónde actuar primero?","Los distritos ordenados por personas en riesgo, su vulnerabilidad, colegios y salud."],
     ["zonas","Lluvia y ríos","Cuánto llovió y cómo van los ríos en cada provincia."],
     ["mar","El mar y El Niño","La temperatura del mar, que es donde empieza El Niño."],
     ["metodo","Método y fuentes","De dónde sale cada cifra y sus límites."]];
@@ -564,58 +948,61 @@ function sateliteVista(){
 function prediccionVista(P){
   const el=document.getElementById("a-plazo"); if(!P||!P.distritos||!el)return;
   const pct=x=>x==null?"–":fmtN(100*x,0)+" %";
-  const barra=x=>`<span style="display:inline-block;vertical-align:middle;width:46px;height:8px;background:var(--line,#e5e2da);border-radius:4px;overflow:hidden;margin-right:6px"><i style="display:block;height:100%;width:${Math.min(100,100*x)}%;background:#d4472c"></i></span>${pct(x)}`;
+  const F=(P.fases&&P.fases.umbrales)||null;
   const C=P.calidad_por_plazo||[];
-  const calidad=`<table class="tabla"><tr><th>Plazo</th><th style="text-align:right">PR-AUC del modelo</th><th style="text-align:right">Sin modelo (tasa)</th><th style="text-align:right">Climatología</th><th style="text-align:right">Año por año: modelo / climatología</th><th style="text-align:right">Años que gana</th><th style="text-align:right">Puntaje Brier (BSS)</th><th style="text-align:right">Acierta del top 10</th></tr>`+
-    C.map(c=>`<tr><td>${c.h} semana${c.h>1?"s":""}</td><td class="n"><b>${fmtN(c.pr_auc,3)}</b></td><td class="n">${fmtN(c.tasa_sin_modelo,3)}</td><td class="n">${fmtN(c.pr_auc_climatologia,3)}</td><td class="n">${c.pr_auc_promedio_anual==null?"–":fmtN(c.pr_auc_promedio_anual,3)+" / "+fmtN(c.pr_auc_promedio_anual_climatologia,3)}</td><td class="n">${c.anios_que_gana==null?"–":c.anios_que_gana+" de "+c.anios}</td><td class="n">${fmtN(c.bss,3)}</td><td class="n">${fmtN(10*c.top10_promedio,1)} de 10</td></tr>`).join("")+"</table>";
-  const top=P.distritos.slice(0,15);
-  const lista=`<table class="tabla"><tr><th>Distrito</th><th>1 semana</th><th>2 semanas</th><th>3 semanas</th><th>4 semanas</th><th style="text-align:right">Viviendas si ocurre</th><th style="text-align:right">Personas si ocurre</th></tr>`+
-    top.map(d=>`<tr><td><b>${d.distrito}</b> <span style="color:var(--ink-3)">${d.provincia}</span></td><td>${barra(d.prob_h1)}</td><td>${barra(d.prob_h2)}</td><td>${barra(d.prob_h3)}</td><td>${barra(d.prob_h4)}</td>`+
-      `<td class="n">${fmtN(d.viviendas_si_ocurre,0)}${d.viviendas_rango_historico&&d.viviendas_rango_historico[0]!=null?`<br><span style="color:var(--ink-3)">antes: ${fmtN(d.viviendas_rango_historico[0],0)} a ${fmtN(d.viviendas_rango_historico[1],0)}</span>`:""}</td><td class="n">${fmtN(d.personas_si_ocurre,0)}</td></tr>`).join("")+"</table>";
-  el.innerHTML=`<h2>Probabilidad de emergencia por plazo: 1 a 4 semanas</h2>
-    <p class="nota">Con los datos de lluvia y caudal hasta la semana del ${fechaTxt(P.semana_datos||P.semana_base)} (llegan con unos 6 días de retraso): probabilidad de que el SINPAD registre una emergencia por inundación o lluvia intensa en cada una de las cuatro semanas siguientes a la del ${fechaTxt(P.semana_base)}. Se entrenó con las emergencias de 2003 a 2025 y se probó año por año solo con lo que se sabía en cada momento.</p>
-    ${(P.limites||[]).length?`<p class="aviso">${P.limites[0]}</p>`:""}
-    <h3 style="margin:10px 0 6px">¿Qué tan bien funciona en cada plazo?</h3>${calidad}
-    <p class="nota">PR-AUC: qué tan bien encuentra las semanas con emergencia (un modelo al azar saca la tasa). La climatología es la historia del distrito en ese mes. «Año por año» promedia cada año de prueba por separado: ahí se ve que el modelo supera a la climatología a 1 semana (la diferencia es estadísticamente clara) y que de 2 a 4 semanas prácticamente empata con ella.</p>
-    <h3 style="margin:14px 0 6px">Los 15 distritos con más probabilidad la próxima semana</h3>${lista}
-    <p class="aviso">${P.como_leer}</p>`;
+  const calidad=`<table class="tabla"><tr><th>Plazo</th><th style="text-align:right">Modelo</th><th style="text-align:right">Historia del distrito</th><th style="text-align:right">Sin modelo</th><th style="text-align:right">Años en que gana el modelo</th><th style="text-align:right">Ventaja del modelo (margen al 95 %)</th></tr>`+
+    C.map(c=>{const v=c.ventaja_sobre_climatologia_ic95;return `<tr><td>${c.h} semana${c.h>1?"s":""}</td><td class="n"><b>${fmtN(c.pr_auc,3)}</b></td><td class="n">${fmtN(c.pr_auc_climatologia,3)}</td><td class="n">${fmtN(c.tasa_sin_modelo,3)}</td><td class="n">${c.anios_que_gana==null?"–":c.anios_que_gana+" de "+c.anios}</td><td class="n">${v?`${fmtN(v[0],3)} a ${fmtN(v[1],3)}${v[0]>0?" · <b>gana</b>":" · empate"}`:"–"}</td></tr>`}).join("")+"</table>";
+  const fd=P.fases&&P.fases.desempeno;
+  const fases=F&&fd?`<table class="tabla"><tr><th>Plazo</th><th>Fase</th><th style="text-align:right">Emergencias que tuvieron aviso</th><th style="text-align:right">Avisos que acertaron</th><th style="text-align:right">Avisos por distrito al año</th></tr>`+
+    [1,2,3,4].filter(h=>fd["h"+h]).map(h=>[["atencion","Atención",F.atencion],["alerta","Alerta",F.alerta]].map(([k,n,u],i)=>{const r=fd["h"+h][k];
+      return `<tr><td>${i?"":h+" semana"+(h>1?"s":"")}</td><td><span class="fase ${k}">${n} · ${pct(u)} o más</span></td><td class="n">${fmtN(r.captura_pct,0)} %</td><td class="n">${fmtN(r.precision_pct,0)} %</td><td class="n">${fmtN(r.avisos_por_distrito_y_anio,1)}</td></tr>`}).join("")).join("")+"</table>":"";
+  el.innerHTML=`<h2>¿Qué tan bien funciona el modelo?</h2>
+    <p class="nota">Se probó con cada año de 2008 a 2025: para predecir un año, el modelo solo conoce los anteriores. La medida es el PR-AUC, que indica si las semanas con emergencia quedan entre las de mayor probabilidad; sin modelo el resultado es la tasa de emergencias, 3 de cada 100 semanas por distrito.</p>
+    ${calidad}
+    <p class="nota">«Historia del distrito» es cuántas emergencias tuvo ese distrito en ese mes en años anteriores. El modelo le gana a 1 y 2 semanas; a 3 y 4 semanas dicen casi lo mismo, por eso esos plazos son solo orientativos. El margen sale de repetir la comparación 2 000 veces sorteando años completos.</p>
+    <h3 style="margin:14px 0 6px">Fases de aviso</h3>
+    ${fases}
+    <p class="nota">La fase de atención avisa antes de la mayoría de las emergencias, con más falsas alarmas: sirve para prepararse. La de alerta acierta más y da menos avisos: sirve para actuar. Con datos hasta la semana del ${fechaTxt(P.semana_base)}. No es una alerta oficial.</p>`;
   el.hidden=false;
 }
 
 /* ---------- ALERTA POR DISTRITO ---------- */
 const sinTilde=x=>String(x).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z]/g,"");
-function alertaVista(){
-  const RIE=D.RIE, DIST=D.DIST; if(!RIE||!DIST)return;
-  // con la provincia: hay dos distritos Salitral (Morropón y Sullana)
-  const porNombre={}; RIE.distritos_hoy.forEach(d=>porNombre[sinTilde(d.departamento)+sinTilde(d.provincia)+sinTilde(d.distrito)]=d);
-  const dato=f=>porNombre[sinTilde(f.properties.departamento)+sinTilde(f.properties.provincia)+sinTilde(f.properties.distrito)];
-  const esc=d3.scaleThreshold().domain([50,75,90,95]).range(["#f1eee6","#f7d29c","#ef9550","#d4472c","#8b1a1a"]);
-  const n=RIE.distritos_hoy.filter(d=>d.alerta).length;
-  document.getElementById("a-titular").textContent=`Alerta por distrito: ${n} de ${RIE.distritos_hoy.length} distritos en alerta esta semana`;
-  document.getElementById("a-t-mapa").textContent=`Riesgo en la semana del ${fechaTxt(RIE.semana_actual)}`;
-  document.getElementById("a-ley").innerHTML=[["menos de 50","#f1eee6"],["50 a 74","#f7d29c"],["75 a 89","#ef9550"],["90 a 94","#d4472c"],["95 o más · alerta","#8b1a1a"]].map(x=>`<span><i style="background:${x[1]}"></i>${x[0]}</span>`).join("");
+function alertaVista(P){
+  const DIST=D.DIST; if(!P||!P.distritos||!DIST)return;
+  const porU={}; P.distritos.forEach(d=>porU[d.ubigeo]=d);
+  const dato=f=>porU[f.properties.ubigeo];
+  const F=(P.fases&&P.fases.umbrales)||{atencion:.05,alerta:.15};
+  const COL={normal:"#e3e8df",atencion:"#f2bf4a",alerta:"#d4472c"}, NOMF={normal:"Normal",atencion:"Atención",alerta:"Alerta"};
+  const fase=x=>x==null?null:x>=F.alerta?"alerta":x>=F.atencion?"atencion":"normal";
+  const pct=x=>x==null?"–":x<.0095?"<1 %":Math.round(100*x)+" %";
+  const chipF=x=>{const f=fase(x);return f?`<span class="chip"><i style="background:${COL[f]}"></i>${pct(x)}</span>`:"–"};
+  const n=P.distritos.filter(d=>fase(d.prob_h1)==="alerta").length, na=P.distritos.filter(d=>fase(d.prob_h1)==="atencion").length;
+  document.getElementById("a-titular").textContent=`Alerta por distrito: ${n} de ${P.distritos.length} distritos en alerta para ${etqSem(1)}`;
+  document.getElementById("a-t-mapa").textContent=`Probabilidad de emergencia en la semana del ${fechaTxt(P.semana_objetivo.h1)}`;
+  document.getElementById("a-ley").innerHTML=[[`Normal (menos de ${pct(F.atencion)})`,COL.normal],[`Atención (${pct(F.atencion)} a ${pct(F.alerta)}) · ${na} distritos`,COL.atencion],[`Alerta (${pct(F.alerta)} o más) · ${n} distritos`,COL.alerta]].map(x=>`<span><i style="background:${x[1]}"></i>${x[0]}</span>`).join("");
   const dib=()=>{
     const el=document.getElementById("a-mapa"), w=Math.max(280,el.parentNode.clientWidth-36), h=w*1.15;
     const svg=d3.select(el).attr("viewBox",`0 0 ${w} ${h}`); svg.selectAll("*").remove();
     const p=d3.geoMercator().fitExtent([[6,6],[w-6,h-6]],DIST), path=d3.geoPath(p);
     svg.append("g").selectAll("path").data(DIST.features).join("path").attr("d",path)
-      .attr("fill",f=>{const d=dato(f);return d?esc(d.riesgo):"#e7e9eb"}).attr("stroke","#fff").attr("stroke-width",.8)
-      .on("mousemove",(ev,f)=>{const d=dato(f);mostrar(ev,`<b>${f.properties.distrito}</b> · ${f.properties.provincia}<br>`+(d?`Riesgo: <b>${fmtN(d.riesgo,0)}</b> de 100${d.alerta?" · <b>en alerta</b>":""}<br>Lluvia de 30 días: ${fmtN(d.lluvia_30d,0)} mm<br>Río: ${fmtN(d.caudal_razon,1)} veces su caudal normal`:"Sin dato"))})
-      .on("mouseleave",ocultar);
+      .attr("fill",f=>{const d=dato(f);return d?COL[fase(d.prob_h1)]:"#e7e9eb"}).attr("stroke","#fff").attr("stroke-width",.8).style("cursor","pointer")
+      .on("mousemove",(ev,f)=>{const d=dato(f);mostrar(ev,`<b>${f.properties.distrito}</b> · ${f.properties.provincia}<br>`+(d?`Próxima semana: <b>${pct(d.prob_h1)}</b> · ${NOMF[fase(d.prob_h1)]}<br>En 2 semanas: ${pct(d.prob_h2)} · en 4: ${pct(d.prob_h4)}`+(d.senales&&d.senales.lluvia_30d!=null?`<br>Lluvia de 30 días: ${fmtN(d.senales.lluvia_30d,0)} mm`:"")+(d.senales&&d.senales.caudal_razon!=null?`<br>Río: ${fmtN(d.senales.caudal_razon,1)} veces su caudal normal`:"")+`<br><small>Clic para ver el distrito</small>`:"sin dato"))})
+      .on("mouseleave",ocultar).on("click",(ev,f)=>{ocultar();SEL.elegir&&SEL.elegir(f.properties.ubigeo)});
+    const fs=selFeatures(); if(fs.length<DIST.features.length){
+      svg.append("g").selectAll("path").data(DIST.features).join("path").attr("d",path).attr("fill","#fff").attr("opacity",f=>fs.includes(f)?0:.55).attr("pointer-events","none");
+      svg.append("g").selectAll("path").data(fs).join("path").attr("d",path).attr("fill","none").attr("stroke","#13202b").attr("stroke-width",SEL.dist?2.6:1.6).attr("pointer-events","none");}
   };
+  SEL.alDibujar.alerta=dib;
   dib(); window.addEventListener("resize",debounce(()=>{if(visible("v-alerta"))dib()},150));
-  const top=RIE.distritos_hoy.slice(0,12);
-  document.getElementById("a-nota-lista").textContent="Riesgo de 0 a 100, lluvia de los últimos 30 días y caudal del río más cercano frente a lo normal. La lluvia de NASA POWER se publica con unos 4 días de retraso, así que la semana más reciente puede no incluir los últimos días de lluvia.";
-  document.getElementById("a-lista").innerHTML=`<table class="tabla"><tr><th>Distrito</th><th style="text-align:right">Riesgo</th><th style="text-align:right">Lluvia 30 d</th><th style="text-align:right">Río</th></tr>`+
-    top.map(d=>`<tr><td><b>${d.distrito}</b> <span style="color:var(--ink-3)">${d.provincia}</span></td><td class="n"><span class="chip"><i style="background:${esc(d.riesgo)}"></i>${fmtN(d.riesgo,0)}</span></td><td class="n">${fmtN(d.lluvia_30d,0)} mm</td><td class="n">${fmtN(d.caudal_razon,1)}×</td></tr>`).join("")+"</table>";
-  const rv=RIE.revision||{};
-  document.getElementById("a-valida").innerHTML=`<p>Se probó con años que el modelo <b>no vio</b> al entrenarse: cada año lo predice un modelo entrenado solo con los años anteriores, y las emergencias reales vienen del SINPAD del INDECI. Entre 2016 y 2025, comparando los meses de enero a abril, el modelo puso a <b>2017 en el puesto ${rv.puesto_2017}</b> y a <b>2023 en el puesto ${rv.puesto_2023}</b> de ${rv.anios_comparados} años. Fueron justamente los dos años con más inundaciones.</p>
-    <p>Lo que más pesa es la historia de cada distrito y la época del año. La lluvia, el caudal y el mar suben el riesgo, pero con un efecto moderado.</p>
-    <p class="aviso">Límites: el SINPAD se publica cada seis meses (la etiqueta llega hasta diciembre de 2025) y la lluvia viene en cuadros de unos 50 km, así que distritos vecinos comparten valores. Es una herramienta para priorizar, no un aviso oficial.</p>`;
-  const NOM={climatologia:"Referencia sin modelo (historia y época)",logistica_simple:"Regresión logística (el que se usa)",logistica_completa:"Regresión logística con 20 variables",lightgbm:"LightGBM (árboles)"};
-  document.getElementById("a-modelos").innerHTML=`<table class="tabla"><tr><th>Modelo</th><th style="text-align:right">PR-AUC</th><th style="text-align:right">ROC-AUC</th></tr>`+
-    RIE.metricas.map(m=>`<tr${m.modelo===RIE.modelo_principal?' style="font-weight:700"':""}><td>${NOM[m.modelo]||m.modelo}</td><td class="n">${fmtN(m.pr_auc,3)}</td><td class="n">${fmtN(m.roc_auc,3)}</td></tr>`).join("")+
-    `</table><p class="nota" style="margin-top:8px">PR-AUC es la medida principal cuando el evento es poco frecuente (aquí, 7,8 % de las semanas tienen una emergencia en las 4 siguientes). Se eligió la logística simple porque todos sus efectos tienen sentido; ningún modelo supera con claridad a la referencia sin modelo. El modelo por plazo (abajo) sí le gana a 1 y 2 semanas.</p>`;
+  const listaA=()=>{const ubs=new Set(selFeatures().map(f=>f.properties.ubigeo));
+    const top=P.distritos.filter(d=>ubs.has(d.ubigeo)).sort((a,b)=>b.prob_h1-a.prob_h1).slice(0,12);
+    document.getElementById("a-nota-lista").textContent=`Probabilidad de emergencia ${etqSem(1)} y ${etqSem(2)}, lluvia de los últimos 30 días y caudal del río más cercano frente a lo normal. Clic en un distrito para ver su ficha.`;
+    document.getElementById("a-lista").innerHTML=`<table class="tabla"><tr><th>Distrito</th><th style="text-align:right">1 semana</th><th style="text-align:right">2 semanas</th><th style="text-align:right">Lluvia 30 d</th><th style="text-align:right">Río</th></tr>`+
+      top.map(d=>{const s=d.senales||{};return `<tr data-u="${d.ubigeo}" style="cursor:pointer"><td><b>${d.distrito}</b> <span style="color:var(--ink-3)">${d.provincia}</span></td><td class="n">${chipF(d.prob_h1)}</td><td class="n">${chipF(d.prob_h2)}</td><td class="n">${s.lluvia_30d!=null?fmtN(s.lluvia_30d,0)+" mm":"–"}</td><td class="n">${s.caudal_razon!=null?fmtN(s.caudal_razon,1)+"×":"–"}</td></tr>`}).join("")+`</table>`;
+    document.querySelectorAll("#a-lista tr[data-u]").forEach(tr=>tr.onclick=()=>SEL.elegir&&SEL.elegir(tr.dataset.u));
+    document.querySelector('#a-lista').closest('.panel').querySelector('h2').textContent=SEL.dep||SEL.prov?'Distritos de tu selección, por probabilidad':'Distritos con más probabilidad';};
+  listaA(); SEL.alDibujar.alertaLista=listaA;
 }
 
 /* ---------- MAPA ---------- */
@@ -709,8 +1096,11 @@ function avisoVista(){
   const rio=d=>{const c=d.caudal; if(!c||!c.rio)return `<span style="color:var(--muted)">solo lluvia</span>`;
     if(c.estado!=="ok")return `<span style="color:var(--muted)">${c.rio}: sin pronóstico</span>`;
     return `${nf(c.m3s_max)} m³/s · ${f(c.fecha_max)}<br><span style="color:var(--muted)">fuerte desde ${nf(c.p95)}</span>`};
-  const lista=A.distritos.filter(d=>d.nivel==="extremo"||d.nivel==="fuerte");
-  const mostrar=(lista.length?lista:A.distritos.slice(0,8)).slice(0,18);
+  const hayS=SEL.dep||SEL.prov||SEL.dist, fsel=hayS?new Set(selFeatures().map(x=>sinT(x.properties.provincia)+"|"+sinT(x.properties.distrito))):null;
+  const enS=d=>!hayS||fsel.has(sinT(d.provincia)+"|"+sinT(d.distrito));
+  const lista=A.distritos.filter(d=>(d.nivel==="extremo"||d.nivel==="fuerte")&&enS(d));
+  const mostrar=hayS?A.distritos.filter(enS).slice(0,18):(lista.length?lista:A.distritos.slice(0,8)).slice(0,18);
+  SEL.alDibujar.aviso=avisoVista;
   const filas=mostrar.map(d=>`<tr><td><b>${d.distrito}</b> <span style="color:var(--muted)">${d.provincia}</span></td><td>${chip(d.nivel)}</td><td>${motivo(d)}</td><td class="n">${fmtN(d.mm_dia_max,0)} mm · ${f(d.fecha_max)}<br><span style="color:var(--muted)">fuerte desde ${fmtN(d.p95,0)}</span></td><td class="n">${rio(d)}</td><td class="n">${d.personas_zona_inundable==null?"—":nf(d.personas_zona_inundable)}</td></tr>`).join("");
   const porRio=A.conteo_motivo?(A.conteo_motivo.caudal||0)+(A.conteo_motivo["lluvia y caudal"]||0):0;
   const rios=okC?Object.entries(C.rios||{}).filter(([r,x])=>x.estado==="ok").map(([r,x])=>`río ${r}: ${nf(x.m3s_max)} m³/s el ${f(x.fecha_max)} (fuerte desde ${nf(x.p95)}, extremo desde ${nf(x.p99)})`).join(" · "):"";
@@ -719,7 +1109,7 @@ function avisoVista(){
   ${C&&!okC?`<p class="nota" style="color:#b3261e">Hoy no llegó el pronóstico de caudal (${C.estado.replace(/^sin dato: /,"")}). Los distritos de valle muestran solo el aviso por lluvia.</p>`:""}
   ${rios?`<p class="nota">Caudal pronosticado, día más alto de los próximos ${A.ventana_dias}: ${rios}.</p>`:""}
   <table class="tabla"><tr><th>Distrito</th><th>Aviso</th><th>Motivo</th><th style="text-align:right">Lluvia: día más alto</th><th style="text-align:right">Río: caudal más alto</th><th style="text-align:right">Personas en zona inundable</th></tr>${filas}</table>
-  <p class="nota" style="margin-top:8px">${lista.length?"":"Ningún distrito supera los umbrales en los próximos días; se muestran los de más lluvia pronosticada. "}La lluvia intensa sobre ciudades (calles anegadas, quebradas) es el daño más frecuente y el radar no la ve: este aviso sirve para anticiparla. ${A.nota} Fuente: ${A.fuente}${C?" "+C.fuente:""}</p>`;
+  <p class="nota" style="margin-top:8px">${hayS?"Se muestran los distritos de tu selección. ":lista.length?"":"Ningún distrito supera los umbrales en los próximos días; se muestran los de más lluvia pronosticada. "}La lluvia intensa sobre ciudades (calles anegadas, quebradas) es el daño más frecuente y el radar no la ve: este aviso sirve para anticiparla. ${A.nota} Fuente: ${A.fuente}${C?" "+C.fuente:""}</p>`;
   el.hidden=false;
 }
 // Viviendas ocupadas del Censo 2025 (INEI) en la zona inundable: solo totales por distrito.
@@ -784,6 +1174,7 @@ function inundacionesVista(){
       if(layer.id==="viv")return {html:"Edificación (Open Buildings) en la mancha",style:tipEstilo};
       if(layer.id.startsWith("hex"))return {html:`<b>${nf(object.points?object.points.length:object.count)}</b> edificaciones en esta zona (hexágono de ~450 m)`,style:tipEstilo};return null}});
   panelInund(); capasInund();
+  if(selFeatures().length<D.DIST.features.length)setTimeout(()=>volarSel(false),50);
 }
 function capasInund(){
   const IN=D.IN,e=IN.eventos[I3.ev],T=new deck._TerrainExtension();
@@ -797,6 +1188,7 @@ function capasInund(){
   if(I3.capas.agua&&e.capa)capas.push(new deck.GeoJsonLayer({id:"agua-"+I3.ev,data:"data/"+e.capa,filled:true,stroked:false,
       getFillColor:f=>AZUL[e.tipo][f.properties.c]||[0,200,255,200],getLineColor:[255,255,255,90],lineWidthMinPixels:.6,extensions:[T]}));
   if(I3.capas.dis&&D.DIST)capas.push(new deck.GeoJsonLayer({id:"dis",data:D.DIST,filled:false,stroked:true,pickable:true,getLineColor:[255,255,255,150],lineWidthMinPixels:1.2,extensions:[T]}));
+  const fsel=selFeatures(); if(D.DIST&&fsel.length&&fsel.length<D.DIST.features.length)capas.push(new deck.GeoJsonLayer({id:"dis-sel",data:{type:"FeatureCollection",features:fsel},filled:false,stroked:true,pickable:false,getLineColor:[255,214,10,255],lineWidthMinPixels:3.5,extensions:[T]}));
   if(I3.capas.col3d&&e.edificaciones_puntos&&e.edificaciones_puntos.length)capas.push(new deck.HexagonLayer({id:"hex-"+I3.ev,data:e.edificaciones_puntos,getPosition:d=>d,
       radius:450,coverage:.82,extruded:true,elevationScale:e.edificaciones_puntos.length>5000?4:14,upperPercentile:99,pickable:true,opacity:.92,
       colorRange:[[255,237,160],[254,217,118],[254,178,76],[253,141,60],[240,59,32],[189,0,38]],
@@ -845,7 +1237,7 @@ function panelInund(){
       :`<div class="i-aviso">Estos días no hay lluvias fuertes ni inundaciones reportadas: el agua nueva es sobre todo riego por inundación de arrozales (Bajo Piura, San Lorenzo), no desbordes. Esta capa se actualiza los lunes y jueves.</div>`;
   }
   const VCe=D.VC&&D.VC.escenarios&&D.VC.escenarios[I3.ev];
-  if(VCe)extra+=`<div class="i-valida"><b>Viviendas del Censo 2025 (INEI) en esta zona</b><br><b>${nf(VCe.viviendas)}</b> viviendas ocupadas (Piura ${nf(VCe.por_departamento.Piura)} · Tumbes ${nf(VCe.por_departamento.Tumbes)}); <b>${nf(VCe.paredes_tierra+VCe.paredes_precarias)}</b> con paredes de tierra o precarias y <b>${nf(VCe.piso_tierra)}</b> con piso de tierra. Solo viviendas en manzanas: la vivienda rural dispersa no está.</div>`;
+  if(VCe)extra+=`<div class="i-valida"><b>Viviendas del Censo 2025 (INEI) en esta zona</b><br><b>${nf(VCe.viviendas)}</b> viviendas ocupadas (Piura ${nf(VCe.por_departamento.Piura)} · Tumbes ${nf(VCe.por_departamento.Tumbes)}); <b>${nf(VCe.paredes_tierra+VCe.paredes_precarias)}</b> con paredes de tierra o precarias y <b>${nf(VCe.piso_tierra)}</b> con piso de tierra. Incluye las viviendas rurales, ubicadas por el punto de su centro poblado.</div>`;
   const X=D.EX&&D.EX.capas&&D.EX.capas[I3.ev];
   if(X){const f=[];
     if(X.ninos_0a4!=null)f.push(`Niños de 0 a 4 años: <b>${nf(X.ninos_0a4)}</b>`);
@@ -898,7 +1290,8 @@ function zonasVista(){
   document.getElementById("z-tabla").innerHTML=`<table class="tabla"><tr><th>Zona</th><th>Condiciones</th><th style="text-align:right">Indicador</th><th style="text-align:right">Mar hoy</th><th style="text-align:right">Lluvia 20 d / normal</th><th>Río</th></tr>`+
     orden.map(i=>{const z=Z.zonas[i],m=z.mar.filter(v=>v!=null).at(-1);return `<tr data-i="${i}" style="cursor:pointer"><td><b>${z.provincia}</b> <span style="color:var(--ink-3)">${z.departamento}</span></td><td><span class="chip"><i style="background:${NIVEL[z.nivel][0]}"></i>${COND[z.nivel]||z.nivel}</span></td><td class="n"><b>${z.indice}</b></td><td class="n">${fmt(m,1)} °C</td><td class="n">${fmtN(z.lluvia_20d,1)} / ${fmtN(z.normal_20d,1)} mm</td><td>${z.rio?z.rio.nombre+(z.rio.hoy!=null?` · ${fmtN(z.rio.hoy,0)} m³/s`:""):"—"}</td></tr>`}).join("")+"</table>";
   document.querySelectorAll("#z-tabla tr[data-i]").forEach(tr=>tr.onclick=()=>{sel.value=tr.dataset.i;elegirZona(+tr.dataset.i,true);document.getElementById("z-mapa").scrollIntoView({behavior:"smooth",block:"center"})});
-  elegirZona(orden[0],false);
+  const iz=SEL.prov?Z.zonas.findIndex(z=>z.provincia===SEL.prov):-1;
+  if(iz>=0){sel.value=iz;elegirZona(iz,false)}else elegirZona(orden[0],false);
 }
 function vistaZona(z){
   const el=document.getElementById("z-mapa"),w=el.clientWidth||800,h=el.clientHeight||600;

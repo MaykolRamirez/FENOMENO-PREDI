@@ -1,13 +1,13 @@
 # Inundaciones por El Niño en Tumbes y Piura
 
-Tablero público que estima **cuántas viviendas y personas de Tumbes y Piura pueden verse afectadas por inundaciones durante El Niño costero, y dónde están**. Trabaja en tres tiempos:
+Sistema que estima, para cada uno de los 78 distritos de Tumbes y Piura, **la probabilidad de una emergencia por lluvia o inundación en las próximas una a cuatro semanas, y cuántas viviendas y personas viven en la zona inundable** según los Censos Nacionales 2025. Tiene tres partes:
 
-1. **Anticipar:** cada mañana compara el pronóstico de lluvia de cada distrito con lo que es extremo en ese lugar, y sigue el caudal de los ríos.
-2. **Confirmar:** el radar Sentinel-1 muestra dónde hubo agua abierta cuando pasa el satélite (más o menos cada 4 días; no ve calles ni cultivos inundados).
-3. **Comprobar:** contra noticias, registros del INDECI y el mapa oficial de Copernicus de 2017.
+1. **Exposición:** viviendas y personas del censo (por sexo, edad y material de la vivienda) dentro de la zona inundable de cada distrito.
+2. **Probabilidad a 1-4 semanas:** un modelo de aprendizaje automático entrenado con las emergencias del SINPAD (INDECI) desde 2003, validado año por año y calibrado. Es el núcleo del trabajo.
+3. **Aviso de 1 a 3 días:** reglas sobre el pronóstico de lluvia y el caudal de los ríos, como respaldo. El radar Sentinel-1 y las noticias solo se usan para comprobar; no entran al modelo.
 
 Proyecto integrador del Programa de Extensión Universitaria: Ciencia del Dato (PEU-CD), INEI, 2026.
-**Autores:** Marcia, Christopher, Maykol y Luz Ángela.
+**Autores:** Christopher Calle, Luz Ángela Mendizábal, Maykol Ramírez y Marcia Shapiama De La Cruz. **Asesor:** Prof. Alexander Quispe.
 
 - **Tablero 3D:** https://marciashapiama.github.io/iapn-inei/
 - **Mapa 2D (sin aceleración gráfica), panel por distrito y metadatos:** https://marciashapiama.github.io/iapn-inei/mapa2d.html
@@ -18,12 +18,14 @@ Proyecto integrador del Programa de Extensión Universitaria: Ciencia del Dato (
 
 | Pestaña | Qué muestra |
 |---|---|
+| Selector de distrito (arriba, en casi todas las pestañas) | Buscador por nombre y menús de departamento, provincia y distrito; enfoca todo el tablero y abre la ficha del distrito: censo por sexo, edad, material de la vivienda y zona urbana o rural; probabilidad a 1-4 semanas; emergencias del SINPAD 2003-2025 |
 | Resumen | Cifras principales (personas, viviendas del Censo 2025, edificaciones, colegios con alumnos, salud, niños, adultos mayores, cultivos y carreteras en zona inundable), estado oficial del ENFEN y lo que pasa esta semana |
 | Mapa de inundación | Vista 3D sobre el relieve: zona inundable por profundidad, agua vista por radar, edificaciones, colegios y salud |
 | Antes y después | Fotos Sentinel-2 de 2017, 2023 y de estos días, con comparador deslizable |
-| Alerta por distrito | Aviso de lluvia de los próximos 3 días y riesgo de emergencia por distrito (machine learning), con su validación |
+| Alerta por distrito | Aviso de lluvia de los próximos 3 días y probabilidad de emergencia por distrito a 1-4 semanas (machine learning, doc 2.2), con su validación |
+| ¿Dónde actuar primero? | Distritos ordenados por personas en riesgo esperado (probabilidad × personas expuestas), riesgo frente a vulnerabilidad, y colegios y salud en la zona inundable de los distritos en alerta |
 | Lluvia y ríos | Las 11 provincias de Tumbes y Piura: lluvia de 20 días frente a lo normal, caudal y pronóstico de 7 días |
-| El mar y El Niño | Anomalía diaria del mar, Niño 1+2 semanal e ICEN |
+| El mar y El Niño | Anomalía diaria del mar, comparación de la temporada con 2017 y 2023, Niño 1+2 semanal e ICEN |
 | Método y fuentes | De dónde sale cada cifra, sus límites y la comparación con el mapa oficial de 2017 |
 
 ## Cómo está organizado el repositorio
@@ -39,49 +41,61 @@ iapn-inei/
 │   ├── 3_validacion/         Pruebas contra noticias, INDECI y Copernicus
 │   ├── 4_tablero/            Mejoras del tablero (río normal frente a El Niño, calidad visual)
 │   ├── 5_aporte_y_politicas/ Aporte al INEI, estado del arte y políticas públicas
-│   ├── 6_presentacion/       Informe final, presentaciones LaTeX y guía de preguntas del jurado
+│   ├── 6_presentacion/       Informe final, guía de preguntas del jurado y avances anteriores
 │   ├── evidencia/            Salidas de las pruebas (JSON) que respaldan las cifras de los documentos
 │   └── figuras/              Figuras sueltas
 ├── herramientas/         Scripts que no son parte de la actualización diaria
 │   ├── pruebas/              Pruebas con noticias, eventos pasados, Copernicus GFM e INDECI
 │   ├── figuras/              Figuras de las presentaciones
-│   ├── documentos/           Conversión del informe a Word
+│   ├── datos/                Nomenclátor de lugares para ubicar noticias
 │   └── mapa/                 Propuesta de polígonos de agua más suaves
 ├── tests/                Pruebas automáticas (python -m pytest -q)
 └── .github/workflows/    Actualización automática y publicación
 ```
 
-Los datos confidenciales del INEI (viviendas por manzana) **no están en este repositorio**: `.gitignore` los bloquea. Solo se publican totales por distrito (`dashboard/data/viviendas_censo.json`).
+El INEI entregó al proyecto los datos por manzana y centro poblado de los Censos Nacionales 2025 y autorizó su uso y la difusión de los resultados. El repositorio publica los totales por distrito (`dashboard/data/viviendas_censo.json`); los archivos por manzana no se incluyen y no se muestran cifras menores de 10.
 
 ## Documentos
 
-| Tema | Documento | Contenido |
+Los documentos están numerados por carpeta: el primer número es el tema y el segundo, el orden de lectura. **Para empezar, lea 1.3, 2.2, 3.1 y 3.3.** Los marcados *(histórico)* documentan versiones anteriores y se conservan por trazabilidad.
+
+| N.° | Documento | Contenido |
 |---|---|---|
-| Datos | [01 Auditoría técnica y de datos](docs/1_datos/01_AUDITORIA_TECNICA_Y_DATOS.md) | Arquitectura, fuentes y licencias, errores corregidos y actualización del 4/11 |
-| Datos | [07 Refuerzo](docs/1_datos/07_REFUERZO.md) | Padrón ESCALE de colegios y verificación de pobreza e IDH |
-| Datos | [11 Cruce de habitantes](docs/1_datos/11_CRUCE_HABITANTES.md) | Cómo cruzar la data de habitantes del INEI (personas, sexo y edad) |
-| Datos | [20 Mapa con los 78 distritos del INEI](docs/1_datos/20_MAPA_78_DISTRITOS_INEI.md) | Límites oficiales del INEI en lugar de GADM (76): fuente, cambios en el código y tabla antes y después |
-| Datos | [17 Viviendas y personas del Censo 2025](docs/1_datos/17_VIVIENDAS_INEI_MATERIALES.md) | Viviendas y personas (sexo y edad) en la zona inundable, materiales precarios, centros poblados rurales y radar |
-| Modelo | [02 Plan de machine learning](docs/2_modelo/02_PLAN_MACHINE_LEARNING.md) | Modelo de alerta por distrito y su evaluación |
-| Modelo | [08 Diseño del modelo de viviendas](docs/2_modelo/08_DISENO_MODELO_VIVIENDAS.md) | Primer diseño de la pregunta del profesor |
-| Modelo | [10 Modelo de viviendas afectadas](docs/2_modelo/10_MODELO_VIVIENDAS_AFECTADAS.md) | Etiqueta real del SINPAD (INDECI), variables, 6 modelos y validación 2012-2025 |
-| Modelo | [21 Modelo por plazo (1 a 4 semanas)](docs/2_modelo/21_MODELO_POR_PLAZO.md) | Probabilidad de emergencia en cada semana t+h, comparada con la climatología y reglas simples; panel del tablero |
-| Modelo | [19 Variable dependiente desde el SINPAD](docs/2_modelo/19_VARIABLE_DEPENDIENTE_SINPAD.md) | El modelo de alerta usa el SINPAD 2003-2025 en lugar de DesInventar: trazabilidad, auditoría y resultados |
-| Modelo | [Modelo de inundación](docs/2_modelo/modelo_inundacion.md) | Documento original del modelo de alerta |
-| Validación | [06 Validación y viabilidad](docs/3_validacion/06_VALIDACION_Y_VIABILIDAD_EXPANSION.md) | Validación contra INDECI y costo de expandir |
-| Validación | [09 El radar frente a las noticias](docs/3_validacion/09_PRUEBA_DETECTOR_NOTICIAS.md) | Tres pruebas (6 lugares recientes, 13 eventos verificados, cultivos inundados) y la capa de inundaciones reportadas del tablero |
-| Validación | [18 ¿El aviso habría anticipado el pasado?](docs/3_validacion/18_PRUEBA_AVISO_CON_EL_PASADO.md) | Pronósticos reales antes de 10 eventos (9 avisados) y 24 años de emergencias de INDECI con lluvia y caudal |
-| Validación | [14 Prueba del aviso de lluvia](docs/3_validacion/14_PRUEBA_AVISO_LLUVIA.md) | Aviso del 5/11 frente a lo que pasó |
-| Tablero | [12 Río normal frente a El Niño](docs/4_tablero/12_RIO_NORMAL_VS_NINO.md) | Capas, orden y vista propuesta |
-| Tablero | [13 Mejora visual](docs/4_tablero/13_MEJORA_VISUAL.md) | Por qué el mapa se veía tosco y cómo arreglarlo |
-| Aporte | [03 Aporte al INEI](docs/5_aporte_y_politicas/03_APORTE_AL_INEI.md) | Indicador principal y gobernanza |
-| Aporte | [04 Estado del arte](docs/5_aporte_y_politicas/04_ESTADO_DEL_ARTE_Y_BIBLIOGRAFIA.md) | Referencias con DOI verificados |
-| Aporte | [05 Políticas públicas](docs/5_aporte_y_politicas/05_POLITICAS_PUBLICAS.md) | Opciones de política vinculadas a los resultados |
-| Presentación | [15 Preguntas del jurado](docs/6_presentacion/15_PREGUNTAS_JURADO.md) | 20 preguntas con respuesta, cifra y fuente |
-| Presentación | [Informe final](docs/6_presentacion/informe_final/INFORME_FINAL_PROYECTO_INTEGRADOR.md) · `.docx` | Informe para la evaluación del curso |
-| Presentación | `docs/6_presentacion/presentacion/` | Presentaciones en LaTeX (avance, validación, de dónde sale el agua) |
-| Presentación | `docs/6_presentacion/avance_latex/` | Informe de avance en LaTeX |
-| Presentación | `docs/6_presentacion/Guia_didactica_modelo.pdf` | Guía didáctica del modelo de alerta, variable por variable (con la Y del SINPAD) |
+| **1 · Datos** | | |
+| 1.1 | [Auditoría técnica y de datos](docs/1_datos/1.1_AUDITORIA_TECNICA_Y_DATOS.md) | Arquitectura, fuentes y licencias, errores corregidos |
+| 1.2 | [Mapa con los 78 distritos del INEI](docs/1_datos/1.2_MAPA_78_DISTRITOS_INEI.md) | Límites oficiales del INEI en lugar de GADM (76): fuente, cambios y tabla antes y después |
+| 1.3 | [Viviendas y personas del Censo 2025](docs/1_datos/1.3_VIVIENDAS_Y_PERSONAS_CENSO_2025.md) | Viviendas y personas (sexo y edad) en la zona inundable, materiales precarios, centros poblados y radar |
+| 1.4 | [Cruce de habitantes](docs/1_datos/1.4_CRUCE_HABITANTES.md) | *(histórico)* Diseño del cruce antes de recibir los datos; reemplazado por 1.3 |
+| 1.5 | [Colegios y pobreza](docs/1_datos/1.5_COLEGIOS_Y_POBREZA.md) | Padrón ESCALE de colegios y verificación de pobreza e IDH |
+| **2 · Modelo** | | |
+| 2.1 | [Variable dependiente del SINPAD](docs/2_modelo/2.1_VARIABLE_DEPENDIENTE_SINPAD.md) | La etiqueta sale del SINPAD (INDECI) 2003-2025: trazabilidad y auditoría |
+| 2.2 | [Modelo por plazo (1 a 4 semanas)](docs/2_modelo/2.2_MODELO_POR_PLAZO.md) | **Modelo principal.** Probabilidad por semana y distrito, calibración, fases de aviso, margen de error y práctica con 2017 y 2023 |
+| 2.3 | [Modelo de alerta](docs/2_modelo/2.3_MODELO_DE_ALERTA.md) | Modelo anterior: ¿emergencia en alguna de las próximas 4 semanas? |
+| 2.4 | [Modelo de viviendas afectadas](docs/2_modelo/2.4_MODELO_VIVIENDAS_AFECTADAS.md) | Dos etapas (¿hay emergencia? → ¿cuántas viviendas?) |
+| 2.5 | [Plan de machine learning](docs/2_modelo/2.5_PLAN_MACHINE_LEARNING.md) | *(histórico)* Plan inicial y su evaluación |
+| 2.6 | [Diseño del modelo de viviendas](docs/2_modelo/2.6_DISENO_MODELO_VIVIENDAS.md) | *(histórico)* Primer diseño de la pregunta del profesor |
+| **3 · Validación** | | |
+| 3.1 | [¿El aviso habría anticipado el pasado?](docs/3_validacion/3.1_PRUEBA_AVISO_CON_EL_PASADO.md) | Pronósticos reales antes de 10 eventos (9 avisados), 24 años de INDECI y falsas alarmas |
+| 3.2 | [El radar frente a las noticias](docs/3_validacion/3.2_RADAR_FRENTE_A_NOTICIAS.md) | Qué ve y qué no ve el satélite; capa de inundaciones reportadas |
+| 3.3 | [Auditoría crítica](docs/3_validacion/3.3_AUDITORIA_CRITICA.md) | ¿El modelo aprende?, de dónde sale cada dato y qué falta: lo que preguntará el jurado |
+| 3.4 | [Validación y viabilidad](docs/3_validacion/3.4_VALIDACION_Y_VIABILIDAD_EXPANSION.md) | Validación contra INDECI y costo de expandir a otras regiones |
+| 3.5 | [Prueba del aviso de lluvia (noviembre)](docs/3_validacion/3.5_PRUEBA_AVISO_LLUVIA_NOVIEMBRE.md) | Aviso del 5/11 frente a lo que pasó |
+| **4 · Tablero** | | |
+| 4.1 | [Río normal frente a El Niño](docs/4_tablero/4.1_RIO_NORMAL_VS_NINO.md) | Capas, orden y vista propuesta |
+| 4.2 | [Mejora visual](docs/4_tablero/4.2_MEJORA_VISUAL.md) | Por qué el mapa se veía tosco y cómo arreglarlo |
+| **5 · Aporte y políticas** | | |
+| 5.1 | [Aporte al INEI](docs/5_aporte_y_politicas/5.1_APORTE_AL_INEI.md) | Indicador principal y gobernanza |
+| 5.2 | [Políticas públicas](docs/5_aporte_y_politicas/5.2_POLITICAS_PUBLICAS.md) | Opciones de política vinculadas a los resultados |
+| 5.3 | [Estado del arte y bibliografía](docs/5_aporte_y_politicas/5.3_ESTADO_DEL_ARTE_Y_BIBLIOGRAFIA.md) | Detección de inundaciones y referencias con DOI verificados |
+| 5.4 | [Estado del arte: avisos e impacto](docs/5_aporte_y_politicas/5.4_ESTADO_DEL_ARTE_AVISOS_E_IMPACTO.md) · [referencias](docs/5_aporte_y_politicas/5.4_REFERENCIAS.csv) | Avisos basados en impacto, daños y El Niño costero |
+| 5.5 | [Trabajos parecidos en el mundo](docs/5_aporte_y_politicas/5.5_TRABAJOS_SIMILARES_Y_MEJORAS.md) | Qué tomamos de trabajos parecidos (Cataluña, Cruz Roja Perú, calibración) y mejoras pendientes |
+| **6 · Presentación** | | |
+| 6.1 | [Preguntas del jurado](docs/6_presentacion/6.1_PREGUNTAS_JURADO.md) | Preguntas con respuesta, cifra y fuente |
+| — | [Informe final (PDF)](docs/6_presentacion/informe_final/Informe_final_proyecto_integrador.pdf) · [Word](docs/6_presentacion/informe_final/Informe_final_proyecto_integrador.docx) | Informe en formato APA 7, con las cifras del 9 de noviembre de 2026 |
+| — | `docs/6_presentacion/presentacion/` y `avance_latex/` | *(histórico)* Presentaciones e informe de avance en LaTeX, anteriores al modelo por plazo |
+| — | `docs/6_presentacion/Guia_didactica_modelo.pdf` | Guía didáctica del modelo de alerta, variable por variable |
+
+Las salidas de las pruebas que respaldan cada cifra están en `docs/evidencia/` (JSON y CSV).
 
 ## Instalación desde cero
 
@@ -143,7 +157,6 @@ Pasos sueltos útiles:
 | `python src/vivienda_inei.py` | Viviendas del Censo 2025 por distrito: zona inundable, materiales y radar → `viviendas_censo.json` (necesita los archivos del INEI en `datos_inei/manzana/`; no se suben) |
 | `python src/validar_radar.py` | Compara el radar y la zona inundable con el mapa oficial de Copernicus 2017 |
 | `python src/modelo_afectados.py` | Modelo de viviendas afectadas con el SINPAD (INDECI) |
-| `python herramientas/documentos/md_a_docx.py` | Genera el informe en Word desde el Markdown |
 | `python herramientas/figuras/figuras_avance.py` | Regenera las figuras del informe LaTeX |
 | `python herramientas/pruebas/prueba_noticias_verificadas.py` | Prueba del radar con cada evento de `data/eventos/catalogo_verificado.csv` |
 | `python herramientas/pruebas/prueba_aviso_pasado.py` | Aviso de lluvia y caudal frente a eventos con noticias y emergencias de SINPAD 2003-2026 |

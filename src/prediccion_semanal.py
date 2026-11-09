@@ -13,16 +13,13 @@ Datos (todo está en el repositorio):
     dashboard/data/viviendas_censo.json      viviendas y personas del Censo 2025 en la zona de 1 en 100 años
     data/exposicion/ubigeo_distritos.csv     superficie del distrito (para el % inundable)
 
-Variables (todas se conocen cuando se publica el aviso; ninguna mira la semana que se predice):
-    La lluvia (NASA POWER) y el caudal (GloFAS) llegan con unos 6 días de retraso. Por eso la fila de la semana t lleva
-    los datos de la semana t-1, la última completa. Los umbrales y normales se calculan solo con los años anteriores
-    al año de prueba (docs/3_validacion/23_TEST_DE_REALIDAD.md y 24_MEJORAS_TRAS_EL_TEST.md).
-    sin aviso   lluvia de 30 días, caudal frente a su mediana de esa semana del año, Niño 1+2, época del año de la
-                semana t+h (calendario), frecuencia histórica de emergencias del distrito (solo años de entrenamiento)
-    con aviso   lo anterior + ¿hubo un día sobre el p95 o el p99 de lluvia del distrito?, lluvia de 7 días, ¿el río
-                pasó su p95 de caudal diario? (distritos de la lista CUENCA de src/aviso_lluvia.py), % del distrito en
-                zona inundable, viviendas y personas del censo en esa zona.
-    «¿Hubo emergencia en la semana t?» queda solo como regla de referencia: el SINPAD se publica cada seis meses.
+Variables (todas se conocen al terminar la semana t; ninguna mira la semana que se predice):
+    sin aviso   lluvia de 30 días, caudal frente a lo normal, Niño 1+2, época del año de la semana t+h (calendario),
+                frecuencia histórica de emergencias del distrito (solo años de entrenamiento)
+    con aviso   lo anterior + ¿hubo un día sobre el p95 o el p99 de lluvia del distrito en la semana t? (umbrales
+                2001-2020 como en herramientas/pruebas/prueba_aviso_pasado.py), lluvia de 7 días, ¿el río pasó su
+                p95 de caudal diario en la semana t? (distritos de la lista CUENCA de src/aviso_lluvia.py), % del
+                distrito en zona inundable, viviendas y personas del censo en esa zona, ¿hubo emergencia en la semana t?
 
 Validación por años: para cada año A de 2008 a 2025 se entrena con los ejemplos cuya semana objetivo t+h es anterior al
 1 de enero de A y se prueba con los de A. Nunca se mezclan semanas de un mismo año.
@@ -40,7 +37,6 @@ import argparse
 import json
 import sys
 import unicodedata
-from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
@@ -67,14 +63,20 @@ INICIO, FIN_ETIQUETA = "2003-01-06", "2025-12-29"   # semanas con etiqueta confi
 PLAZOS = (1, 2, 3, 4)
 ANIOS_PRUEBA = list(range(2008, 2026))
 SIN_AVISO = ["log_lluvia_30d", "log_caudal_razon", "nino12", "sen_obj", "cos_obj", "hist_frec"]
-# «¿hubo emergencia en la semana t?» ya no es variable: el SINPAD se publica cada seis meses (no existe en tiempo real).
 CON_AVISO = SIN_AVISO + ["lluvia_sobre_p95", "lluvia_sobre_p99", "log_lluvia_7d", "caudal_sobre_p95", "pct_inundable",
                          "log_censo_viviendas", "log_censo_personas"]
-# La lluvia (NASA POWER) y el caudal (GloFAS) llegan con unos 6 días de retraso: la fila de la semana t lleva los datos
-# de la semana t-1, la última completa cuando se publica el aviso.
-DESFASE = ["log_lluvia_30d", "log_lluvia_7d", "nino12"]
-# Variables que dependen de umbrales o normales: se recalculan solo con los años anteriores al año de prueba.
-UMBRAL = ["lluvia_sobre_p95", "lluvia_sobre_p99", "caudal_sobre_p95", "log_caudal_razon"]
+# «emergencia en la semana t» se quitó del modelo (8/11/2026): el SINPAD publica cada seis meses, así que en tiempo real
+# no se conoce y el modelo publicado la llenaba con 0 («no hubo»), justo cuando sí había emergencias. Se mantiene
+# solo como regla de comparación. Costo medido: PR-AUC a 1 semana 0,227 -> 0,219.
+MODELO = "logística con variables del aviso"
+CALIBRADO = "logística con aviso, calibrada"
+# Fases de aviso sobre la probabilidad calibrada (herramientas/pruebas/umbrales_e_intervalos.py, validación 2008-2025):
+#   atención >= 5 %: a 1 semana captura 71 % de las emergencias; 15 de cada 100 avisos aciertan (tasa base: 3 de 100)
+#   alerta   >= 15 %: captura 35 %; 26 de cada 100 avisos aciertan (8 veces la tasa base)
+FASES = {"atencion": 0.05, "alerta": 0.15}
+EVIDENCIA = DATA.parent / "docs" / "evidencia" / "umbrales_e_intervalos.json"
+ANIOS_CALIBRACION = 5      # Platt con las predicciones fuera de muestra de los 5 años anteriores (la tasa de registro
+                           # del SINPAD sube con el tiempo: los años recientes representan mejor el nivel actual)
 
 
 def plano(x) -> str:
@@ -83,36 +85,27 @@ def plano(x) -> str:
 
 
 # ------------------------------------------------------------------------------------------------- 1. panel
-@lru_cache(maxsize=1)
-def _lluvia_diaria() -> pd.DataFrame:
+def senales_lluvia() -> pd.DataFrame:
+    """¿Hubo algún día de la semana con lluvia sobre el p95 o el p99 del distrito? Umbrales: días con >= 1 mm de
+    2001-2020 del mismo distrito (igual que herramientas/pruebas/prueba_aviso_pasado.py)."""
     ll = pd.read_csv(LLUVIA, parse_dates=["fecha"])
+    base = ll[ll.fecha.dt.year.between(2001, 2020) & (ll.lluvia >= 1)]
+    u = base.groupby("clave")["lluvia"].agg(p95=lambda x: np.percentile(x, 95), p99=lambda x: np.percentile(x, 99))
     ll["semana"] = ll.fecha.dt.to_period("W-SUN").dt.start_time
-    return ll
+    s = ll.groupby(["clave", "semana"])["lluvia"].max().rename("mm_max").reset_index().join(u, on="clave")
+    s["lluvia_sobre_p95"] = (s.mm_max > s.p95).astype(float).where(s.mm_max.notna())
+    s["lluvia_sobre_p99"] = (s.mm_max > s.p99).astype(float).where(s.mm_max.notna())
+    return s[["clave", "semana", "lluvia_sobre_p95", "lluvia_sobre_p99"]]
 
 
-@lru_cache(maxsize=1)
-def _caudal_diario() -> pd.DataFrame:
+def senales_caudal() -> pd.DataFrame:
+    """¿El río pasó su percentil 95 de caudal diario (2001-2020) algún día de la semana?"""
     q = pd.read_csv(CAUDAL, parse_dates=["fecha"])
+    p95 = q[q.fecha.dt.year.between(2001, 2020)].groupby("rio")["caudal"].quantile(0.95)
     q["semana"] = q.fecha.dt.to_period("W-SUN").dt.start_time
-    return q
-
-
-def senales(p: pd.DataFrame, hasta: int) -> pd.DataFrame:
-    """Columnas UMBRAL con umbrales y normales calculados SOLO con los años anteriores a `hasta`, desfasadas 1 semana.
-    ¿Hubo un día de la semana con lluvia sobre el p95 / p99 del distrito (días con >= 1 mm)? ¿El río pasó su p95 de
-    caudal diario? Caudal frente a su mediana de esa semana del año."""
-    ll, q = _lluvia_diaria(), _caudal_diario()
-    u = ll[(ll.fecha.dt.year < hasta) & (ll.lluvia >= 1)].groupby("clave")["lluvia"].quantile([.95, .99]).unstack()
-    qp95 = q[q.fecha.dt.year < hasta].groupby("rio")["caudal"].quantile(0.95)
-    med = p[p.semana.dt.year < hasta].groupby(["rio", "semana_anio"])["caudal"].median().rename("_m")
-    out = pd.DataFrame(index=p.index)
-    hay = p.mm_max.notna()
-    out["lluvia_sobre_p95"] = (p.mm_max > p.clave_lluvia.map(u[0.95])).astype(float).where(hay)
-    out["lluvia_sobre_p99"] = (p.mm_max > p.clave_lluvia.map(u[0.99])).astype(float).where(hay)
-    out["caudal_sobre_p95"] = (p.q_max > p.rio_cuenca.map(qp95)).astype(float)
-    mediana = p.join(med, on=["rio", "semana_anio"])["_m"]
-    out["log_caudal_razon"] = np.log((p.caudal / mediana.clip(lower=0.5)).clip(lower=0.05))
-    return out.groupby(p["clave"]).shift(1)
+    s = q.groupby(["rio", "semana"])["caudal"].max().rename("q_max").reset_index().join(p95.rename("q_p95"), on="rio")
+    s["caudal_sobre_p95"] = (s.q_max > s.q_p95).astype(float)
+    return s[["rio", "semana", "caudal_sobre_p95"]].rename(columns={"rio": "rio_cuenca"})
 
 
 def censo() -> pd.DataFrame:
@@ -121,26 +114,23 @@ def censo() -> pd.DataFrame:
     return c.rename(columns={"viviendas": "censo_viviendas", "personas": "censo_personas"}).astype({"ubigeo": str})
 
 
-def panel(hasta: int | None = None) -> pd.DataFrame:
-    """Una fila por distrito y semana. Las variables de la semana t son las que se conocen al publicar el aviso
-    (datos hasta la semana t-1). `hasta`: año desde el que ya no se usan datos para umbrales (por defecto, todos)."""
+def panel() -> pd.DataFrame:
     from aviso_lluvia import rio_de
-    from etiqueta_sinpad import normal
     b = pd.read_csv(BASE, parse_dates=["semana"], dtype={"ubigeo": str})
     b = b[["clave", "ubigeo", "departamento", "provincia", "distrito", "semana", "semana_anio", "lluvia_7d", "lluvia_30d",
-           "rio", "caudal", "nino12", "km2_inundable_rp100", "personas_rp100"]].copy()
-    # SINPAD por distrito: la clave departamento+distrito repite «PIURASALITRAL» (Morropón y Sullana) -> + provincia
-    b["prov_n"] = b.provincia.map(normal)
+           "caudal_razon", "nino12", "km2_inundable_rp100", "personas_rp100"]].copy()
+    b = b[b.semana >= INICIO]
     s = pd.read_csv(SINPAD, parse_dates=["semana"])
     s["viviendas"] = s.viv_afectadas.fillna(0) + s.viv_destruidas.fillna(0)
-    s = s.groupby(["clave", "prov_n", "semana"])[["eventos", "viviendas"]].sum().reset_index()
-    b = b.merge(s, on=["clave", "prov_n", "semana"], how="left")
-    dentro = (b.semana >= INICIO) & (b.semana <= FIN_ETIQUETA)
+    s = s.groupby(["clave", "semana"])[["eventos", "viviendas"]].sum().reset_index()
+    b = b.merge(s, on=["clave", "semana"], how="left")
+    dentro = b.semana <= FIN_ETIQUETA
     b["E"] = (b.eventos.fillna(0) > 0).astype(float).where(dentro)
     b["V"] = b.viviendas.fillna(0).where(dentro)
-    b = b.join(_lluvia_diaria().groupby(["clave", "semana"])["lluvia"].max().rename("mm_max"), on=["clave", "semana"])
+    b = b.merge(senales_lluvia(), on=["clave", "semana"], how="left")
     b["rio_cuenca"] = b.distrito.map(rio_de)
-    b = b.join(_caudal_diario().groupby(["rio", "semana"])["caudal"].max().rename("q_max"), on=["rio_cuenca", "semana"])
+    b = b.merge(senales_caudal(), on=["rio_cuenca", "semana"], how="left")
+    b["caudal_sobre_p95"] = b.caudal_sobre_p95.fillna(0.0).where(b.rio_cuenca.notna(), 0.0)
     sup = pd.read_csv(UBIGEO, dtype={"inei": str}).set_index("inei")["superficie"]
     b["pct_inundable"] = 100 * b.km2_inundable_rp100 / b.ubigeo.map(sup)
     b = b.merge(censo(), on="ubigeo", how="left")
@@ -148,16 +138,11 @@ def panel(hasta: int | None = None) -> pd.DataFrame:
     b[["censo_viviendas", "censo_personas"]] = b[["censo_viviendas", "censo_personas"]].fillna(0)
     b["log_lluvia_30d"] = np.log1p(b.lluvia_30d.clip(lower=0))
     b["log_lluvia_7d"] = np.log1p(b.lluvia_7d.clip(lower=0))
+    b["log_caudal_razon"] = np.log(b.caudal_razon.clip(lower=0.05))
     b["log_censo_viviendas"] = np.log1p(b.censo_viviendas)
     b["log_censo_personas"] = np.log1p(b.censo_personas)
-    b["emergencia_t"] = b.E          # solo para la regla de referencia; no se conoce en tiempo real
-    b["clave_lluvia"] = b.clave
-    repetida = b.groupby("clave")["prov_n"].transform("nunique") > 1
-    b.loc[repetida, "clave"] = b.loc[repetida, "clave"] + "_" + b.loc[repetida, "prov_n"]
-    b = b.sort_values(["clave", "semana"]).reset_index(drop=True)
-    b[DESFASE] = b.groupby("clave")[DESFASE].shift(1)
-    b[UMBRAL] = senales(b, hasta or int(b.semana.dt.year.max()) + 1)
-    return b
+    b["emergencia_t"] = b.E
+    return b.sort_values(["clave", "semana"]).reset_index(drop=True)
 
 
 def ejemplos(p: pd.DataFrame, h: int) -> pd.DataFrame:
@@ -236,7 +221,7 @@ def evaluar_anio(tr, te) -> dict[str, tuple[np.ndarray, np.ndarray]]:
     v_hist = te.v_media_evento.to_numpy()
     res = {}
     for nombre, p in {
-        "regla: emergencia en la semana t (no se conoce en tiempo real)": regla(tr, te, "emergencia_t"),
+        "regla: emergencia en la semana t": regla(tr, te, "emergencia_t"),
         "regla: mes del año": te.clim_mes.to_numpy(),
         "regla: lluvia sobre p95 en la semana t": regla(tr, te, "lluvia_sobre_p95"),
         "climatología distrito y mes": te.clim_distrito_mes.to_numpy(),
@@ -251,6 +236,39 @@ def evaluar_anio(tr, te) -> dict[str, tuple[np.ndarray, np.ndarray]]:
     return res
 
 
+def platt(p_cal: np.ndarray, y_cal: np.ndarray):
+    """Calibración de Platt: regresión logística de y sobre logit(p). Devuelve una función p -> p calibrada."""
+    z = lambda p: np.log(np.clip(p, 1e-6, 1 - 1e-6) / (1 - np.clip(p, 1e-6, 1 - 1e-6))).reshape(-1, 1)  # noqa: E731
+    m = LogisticRegression(C=1e6, max_iter=1000).fit(z(np.asarray(p_cal, dtype=float)), np.asarray(y_cal, dtype=float).astype(int))
+    return lambda p: m.predict_proba(z(np.asarray(p, dtype=float)))[:, 1]
+
+
+def pendiente_platt(f) -> float:
+    """La calibración de Platt es lineal en el logit: logit(f(p)) = a + b·logit(p). Devuelve b."""
+    lg = lambda q: np.log(q / (1 - q))  # noqa: E731
+    p = np.array([0.02, 0.2])
+    q = f(p)
+    return float((lg(q[1]) - lg(q[0])) / (lg(p[1]) - lg(p[0])))
+
+
+# Grupos de variables para explicar cada predicción en el tablero
+GRUPOS = {"lluvia": ["log_lluvia_30d", "log_lluvia_7d", "lluvia_sobre_p95", "lluvia_sobre_p99"],
+          "rio": ["log_caudal_razon", "caudal_sobre_p95"],
+          "mar": ["nino12"],
+          "epoca": ["sen_obj", "cos_obj"],
+          "historia": ["hist_frec"],
+          "exposicion": ["pct_inundable", "log_censo_viviendas", "log_censo_personas"]}
+
+
+def calibrar(oos: pd.DataFrame, anio: int, p: np.ndarray) -> np.ndarray:
+    """Calibra las probabilidades del año `anio` SOLO con predicciones fuera de muestra de los años anteriores
+    (ventana de ANIOS_CALIBRACION años). Sin al menos 2 años previos con eventos, devuelve p sin cambios."""
+    c = oos[(oos.anio < anio) & (oos.anio >= anio - ANIOS_CALIBRACION)]
+    if c.anio.nunique() < 2 or c.y.sum() < 20:
+        return p
+    return platt(c.p.to_numpy(), c.y.to_numpy())(p)
+
+
 # ---------------------------------------------------------------------------------------------- 3. métricas
 def top10(te: pd.DataFrame, esperado: np.ndarray) -> float:
     r = te.assign(e=esperado).groupby("clave").agg(real=("v", "sum"), pred=("e", "sum"))
@@ -262,17 +280,15 @@ def top10(te: pd.DataFrame, esperado: np.ndarray) -> float:
 
 def correr(sin_anio: int | None = None) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     p = panel()
-    # umbrales y normales de cada año de prueba: solo con los años anteriores (sin mirar el futuro)
-    sen = {a: senales(p, a) for a in ANIOS_PRUEBA}
     filas, preds = [], []
     for h in PLAZOS:
-        e0 = ejemplos(p, h)
-        e0 = e0[e0.y.notna() & (e0.semana_obj <= FIN_ETIQUETA)]
+        e = ejemplos(p, h)
+        e = e[e.y.notna() & (e.semana_obj <= FIN_ETIQUETA)]
+        oos = pd.DataFrame({"anio": pd.Series(dtype=int), "p": pd.Series(dtype=float), "y": pd.Series(dtype=float)})
+        # (oos: predicciones fuera de muestra del modelo en los años ya probados)
         for anio in ANIOS_PRUEBA:
             if anio == sin_anio:
                 continue
-            e = e0.copy()
-            e[UMBRAL] = sen[anio].loc[e.index]
             tr = e[e.semana_obj < pd.Timestamp(anio, 1, 1)]
             if sin_anio is not None:
                 tr = tr[tr.anio_obj != sin_anio]
@@ -280,7 +296,12 @@ def correr(sin_anio: int | None = None) -> tuple[pd.DataFrame, pd.DataFrame, pd.
             assert tr.semana_obj.max() < te.semana_obj.min() and (te.semana < te.semana_obj).all()
             tr, te = con_historia(tr, te)
             prev = tr.y.mean()
-            for modelo, (prob, esp) in evaluar_anio(tr, te).items():
+            res_anio = evaluar_anio(tr, te)
+            p_mod, e_mod = res_anio[MODELO]
+            p_cal = calibrar(oos, anio, p_mod)
+            res_anio[CALIBRADO] = (p_cal, e_mod * np.divide(p_cal, p_mod, out=np.ones_like(p_cal), where=p_mod > 0))
+            oos = pd.concat([oos, pd.DataFrame({"anio": anio, "p": p_mod, "y": te.y.to_numpy()})], ignore_index=True)
+            for modelo, (prob, esp) in res_anio.items():
                 y = te.y.to_numpy()
                 bs, bs_ref = brier_score_loss(y, prob), brier_score_loss(y, np.full(len(y), prev))
                 filas.append({"h": h, "anio": anio, "modelo": modelo, "n": len(y), "positivos": int(y.sum()),
@@ -317,31 +338,23 @@ def resumen(m: pd.DataFrame, pr: pd.DataFrame) -> pd.DataFrame:
 
 
 # ------------------------------------------------------------------------------------------ 4. predicción hoy
-NOMBRES = {"nino12": "Niño 1+2 (°C de anomalía)", "log_lluvia_30d": "lluvia de 30 días (log)",
-           "log_lluvia_7d": "lluvia de 7 días (log)", "log_caudal_razon": "caudal frente a lo normal (log)"}
-
-
-def fuera_de_rango(tr: pd.DataFrame, hoy: pd.DataFrame) -> list[dict]:
-    """Variables continuas cuyo valor de hoy supera el máximo del entrenamiento en algún distrito (extrapolación)."""
-    out = []
-    for c in NOMBRES:
-        mx, h = tr[c].max(), hoy[c].max()
-        if pd.notna(h) and h > mx:
-            out.append({"variable": NOMBRES[c], "hoy_max": round(float(h), 2), "max_entrenamiento": round(float(mx), 2),
-                        "distritos": int((hoy[c] > mx).sum())})
-    return out
-
-def prediccion_actual(res: pd.DataFrame, m: pd.DataFrame) -> dict:
-    """Entrena con todo lo etiquetado (semana objetivo hasta FIN_ETIQUETA) y predice las 4 semanas siguientes.
-    La semana base t es la siguiente a la última semana con lluvia completa: sus variables son las de esa semana."""
+def prediccion_actual(res: pd.DataFrame, m: pd.DataFrame, pr: pd.DataFrame) -> dict:
+    """Entrena con todo lo etiquetado (semana objetivo hasta FIN_ETIQUETA) y predice desde la última semana con datos."""
     p = panel()
-    ok = p.groupby("semana")["lluvia_7d"].apply(lambda s: s.notna().mean())
-    datos = ok[ok >= 0.9].index.max()
-    t = datos + pd.Timedelta(weeks=1)
-    if t not in set(p.semana):         # no hay fila para la semana siguiente: se usa la última (datos una semana más viejos)
-        t = datos
-        datos = t - pd.Timedelta(weeks=1)
-    salida = {"semana_base": str(t.date()), "semana_datos": str(datos.date()), "distritos": {}, "limites": []}
+    # última semana COMPLETA: con lluvia de 7 días en casi todos los distritos (NASA POWER llega con días de retraso;
+    # una semana a medias deja lluvia_7d vacía y el modelo la reemplazaría por la mediana)
+    ok = p.groupby("semana")[["lluvia_7d", "lluvia_30d"]].apply(lambda s: s.notna().all(axis=1).mean())
+    t = ok[ok >= 0.9].index.max()
+    salida = {"semana_base": str(t.date()), "distritos": {}}
+    # ¿la lluvia de la semana base incluye días provisionales de Open-Meteo (NASA POWER aún no los publica)?
+    ll = pd.read_csv(LLUVIA, parse_dates=["fecha"])
+    if "fuente" in ll:
+        sb = ll[(ll.fecha >= t) & (ll.fecha < t + pd.Timedelta(days=7))]
+        prov = sorted(sb.loc[sb.fuente == "open-meteo", "fecha"].dt.strftime("%Y-%m-%d").unique())
+        if prov:
+            salida["lluvia_provisional"] = {"dias": prov, "fuente": "Open-Meteo (pronóstico de los últimos días)",
+                                            "nota": "NASA POWER publica la lluvia con unos días de retraso; esos días se "
+                                                    "completaron con Open-Meteo y se reemplazan en la siguiente corrida."}
     j = json.load(open(CENSO, encoding="utf-8"))
     tot = j["escenarios"]["rp100"]
     pers_por_viv = tot["personas"] / tot["viviendas"]
@@ -350,17 +363,33 @@ def prediccion_actual(res: pd.DataFrame, m: pd.DataFrame) -> dict:
         tr = e[e.y.notna() & (e.semana_obj <= FIN_ETIQUETA)]
         hoy = e[e.semana == t].copy()
         tr, hoy = con_historia(tr, hoy)
-        prob, _, _ = logistica(tr, hoy, CON_AVISO)
-        if h == 1:
-            salida["fuera_de_rango"] = fuera_de_rango(tr, hoy)
+        prob, modelo_h, med = logistica(tr, hoy, CON_AVISO)
+        # misma calibración que en la validación: Platt con las predicciones fuera de muestra de los últimos años
+        o = pr[(pr.h == h) & (pr.modelo == MODELO)]
+        o = o.assign(anio=pd.to_datetime(o.semana_obj).dt.year)
+        o = o[o.anio > o.anio.max() - ANIOS_CALIBRACION]
+        f_cal = platt(o.p.to_numpy(), o.y.to_numpy())
+        pendiente = pendiente_platt(f_cal)
+        prob = f_cal(prob)
+        # Explicación de cada predicción. En una regresión logística, el aporte de cada variable al logit es
+        # coeficiente × valor estandarizado (es el valor SHAP exacto con el promedio del entrenamiento como base).
+        # Se multiplica por la pendiente de Platt porque la calibración es lineal en el logit.
+        z = modelo_h[0].transform(_x(hoy, CON_AVISO, med))
+        coef = modelo_h[-1].coef_[0] * pendiente
+        aporte = z * coef
+        salida.setdefault("pesos", {})[f"h{h}"] = {c: round(float(w), 4) for c, w in zip(CON_AVISO, coef)}
         vc, _, _ = viviendas_si_ocurre(tr, hoy, CON_AVISO)
         hist = tr[(tr.y == 1) & (tr.v > 0)].groupby("clave")["v"]
         q10, q90 = hist.quantile(0.1), hist.quantile(0.9)
-        for r, pr_, v in zip(hoy.itertuples(), prob, vc):
+        for r, pr_, v, ap in zip(hoy.itertuples(), prob, vc, aporte):
             d = salida["distritos"].setdefault(r.ubigeo, {"ubigeo": r.ubigeo, "departamento": r.departamento,
                                                           "provincia": r.provincia, "distrito": r.distrito})
             d[f"prob_h{h}"] = round(float(pr_), 4)
-            d[f"clim_h{h}"] = round(float(r.clim_distrito_mes), 4)     # referencia para la prueba prospectiva
+            d[f"porque_h{h}"] = {g: round(float(sum(ap[CON_AVISO.index(c)] for c in cs)), 3) for g, cs in GRUPOS.items()}
+            if h == 1:
+                d["senales"] = {k: (None if pd.isna(getattr(r, k)) else round(float(getattr(r, k)), 2))
+                                for k in ("lluvia_7d", "lluvia_30d", "lluvia_sobre_p95", "lluvia_sobre_p99",
+                                          "caudal_razon", "caudal_sobre_p95", "nino12")}
             if h == 1:
                 ppv = (r.censo_personas / r.censo_viviendas) if r.censo_viviendas > 0 else pers_por_viv
                 lo, hi = q10.get(r.clave, np.nan), q90.get(r.clave, np.nan)
@@ -370,45 +399,63 @@ def prediccion_actual(res: pd.DataFrame, m: pd.DataFrame) -> dict:
                 d["personas_por_vivienda"] = round(float(ppv), 2)
     salida["distritos"] = sorted(salida["distritos"].values(), key=lambda d: -d["prob_h1"])
     salida["semana_objetivo"] = {f"h{h}": str((t + pd.Timedelta(weeks=h)).date()) for h in PLAZOS}
-    cal = res[res.modelo == "logística con variables del aviso"].set_index("h")
+    # Capacidad de ordenar: PR-AUC del modelo sin calibrar (la calibración de Platt no cambia el orden dentro de un año;
+    # juntar años calibrados por separado baja el PR-AUC conjunto sin que el modelo ordene peor).
+    # Calidad de la probabilidad (BSS): la del modelo calibrado, que es el que se publica.
+    cal = res[res.modelo == MODELO].set_index("h")
+    calb = res[res.modelo == CALIBRADO].set_index("h")
     ref = res[res.modelo == "climatología distrito y mes"].set_index("h")
     anual = m.pivot_table(index=["h", "anio"], columns="modelo", values="pr_auc")
-    mod, cli = anual["logística con variables del aviso"], anual["climatología distrito y mes"]
+    mod, cli = anual[CALIBRADO], anual["climatología distrito y mes"]
     salida["calidad_por_plazo"] = [{"h": int(h), "pr_auc": round(float(cal.loc[h, "pr_auc"]), 3),
                                     "tasa_sin_modelo": round(float(cal.loc[h, "tasa_sin_modelo"]), 3),
                                     "pr_auc_climatologia": round(float(ref.loc[h, "pr_auc"]), 3),
                                     "pr_auc_promedio_anual": round(float(mod.loc[h].mean()), 3),
                                     "pr_auc_promedio_anual_climatologia": round(float(cli.loc[h].mean()), 3),
                                     "anios_que_gana": int((mod.loc[h] > cli.loc[h]).sum()), "anios": int(mod.loc[h].size),
-                                    "bss": round(float(cal.loc[h, "bss"]), 3),
+                                    "bss": round(float(calb.loc[h, "bss"]), 3),
                                     "top10_promedio": round(float(cal.loc[h, "top10_promedio"]), 2)} for h in PLAZOS]
-    if salida["fuera_de_rango"]:
-        salida["limites"].insert(0, "Fuera de lo visto en el entrenamiento (2003-2025): " + "; ".join(
-            f"{v['variable']} hoy {v['hoy_max']} (máximo histórico {v['max_entrenamiento']})" for v in salida["fuera_de_rango"])
-            + ". Las probabilidades de estas semanas son una extrapolación del modelo y no se pudieron validar.")
+    # Fases de aviso y margen de error (bootstrap por años), si la evidencia ya se calculó
+    salida["fases"] = {"umbrales": FASES}
+    if EVIDENCIA.exists():
+        ev = json.load(open(EVIDENCIA, encoding="utf-8"))["plazos"]
+        for c in salida["calidad_por_plazo"]:
+            b = ev[f"h{c['h']}"]["bootstrap_por_anios"]
+            c["ventaja_sobre_climatologia_ic95"] = b["ic95"]
+            c["pct_replicas_modelo_gana"] = b["pct_replicas_modelo_gana"]
+        salida["fases"]["desempeno"] = {f"h{h}": {n: next((f for f in ev[f"h{h}"]["umbrales_modelo_calibrado"]
+                                                           if abs(f["umbral"] - u) < 1e-9), None)
+                                                  for n, u in FASES.items()} for h in PLAZOS}
     salida["modelo"] = ("Regresión logística con variables del aviso (lluvia sobre p95/p99, lluvia de 7 y 30 días, caudal "
-                        "sobre p95, Niño 1+2, % inundable, censo, época, historia del distrito), con los datos de la semana "
-                        "anterior a la semana base. Etiqueta: SINPAD (INDECI) 2003-2025.")
+                        "sobre p95, Niño 1+2, % inundable, censo, época, historia del distrito), calibrada con Platt usando "
+                        f"las predicciones fuera de muestra de los últimos {ANIOS_CALIBRACION} años. Etiqueta: SINPAD (INDECI) 2003-2025.")
     salida["como_leer"] = ("prob_hN = probabilidad de que el SINPAD registre una emergencia por inundación o lluvia intensa en "
                            "la semana objetivo hN. viviendas_si_ocurre: estimación si ocurre (modelo Gamma); el rango es el "
                            "10 % y 90 % de las viviendas afectadas en las emergencias pasadas del distrito. Personas = "
                            "viviendas × personas por vivienda del censo en la zona inundable del distrito. No es una alerta oficial.")
-    salida["limites"] += ["La lluvia de NASA POWER llega con unos 6 días de retraso: el modelo usa la última semana completa "
-                         "(semana_datos) y se validó así, sin la información que no se tiene a tiempo.",
-                         "Supera a la climatología a 1 y 2 semanas; a 3 y 4 semanas empata (docs/3_validacion/24_MEJORAS_TRAS_EL_TEST.md).",
-                         "Ver docs/2_modelo/21_MODELO_POR_PLAZO.md para la calidad por plazo."]
+    salida["limites"] = ["El modelo no usa si hubo emergencia esta semana: el SINPAD publica cada seis meses y ese dato no existe en tiempo real.",
+                         "La lluvia de NASA POWER llega con unos días de retraso; por eso la semana base puede ser anterior a hoy.",
+                         "Ver docs/2_modelo/2.2_MODELO_POR_PLAZO.md para la calidad por plazo."]
     return salida
 
 
-def main(sin_anio: int | None) -> None:
+def main(sin_anio: int | None, solo_actual: bool = False) -> None:
     SALIDA.mkdir(parents=True, exist_ok=True)
+    if solo_actual:  # reusa la validación ya guardada y solo rehace la predicción de esta semana
+        m = pd.read_csv(SALIDA / "metricas_por_anio.csv")
+        res = pd.read_csv(SALIDA / "metricas_por_plazo.csv")
+        pr = pd.read_csv(SALIDA / "predicciones_validacion.csv.gz")
+        out = prediccion_actual(res, m, pr)
+        JSON.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        print(f"  {JSON.name}: semana base {out['semana_base']}, {len(out['distritos'])} distritos")
+        return
     m, pr, res = correr(sin_anio)
     sufijo = f"_sin_{sin_anio}" if sin_anio else ""
     m.to_csv(SALIDA / f"metricas_por_anio{sufijo}.csv", index=False, float_format="%.5f")
     res.to_csv(SALIDA / f"metricas_por_plazo{sufijo}.csv", index=False, float_format="%.4f")
     if not sin_anio:
         pr.to_csv(SALIDA / "predicciones_validacion.csv.gz", index=False, float_format="%.5f")
-        out = prediccion_actual(res, m)
+        out = prediccion_actual(res, m, pr)
         JSON.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         print(f"  {JSON.name}: semana base {out['semana_base']}, {len(out['distritos'])} distritos")
     pd.set_option("display.width", 220)
@@ -419,4 +466,6 @@ def main(sin_anio: int | None) -> None:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--sin-anio", type=int, default=None, help="evaluar sin entrenar nunca con ese año (p. ej. 2017)")
-    main(ap.parse_args().sin_anio)
+    ap.add_argument("--solo-actual", action="store_true", help="no reevalúa: usa la validación guardada")
+    args = ap.parse_args()
+    main(args.sin_anio, args.solo_actual)

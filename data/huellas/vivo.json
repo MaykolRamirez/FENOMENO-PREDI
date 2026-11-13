@@ -74,7 +74,7 @@
   "2026-10-16",
   "2026-10-18"
  ],
- "km2": 614.2,
+ "km2": 614.1,
  "resolucion_grados": 0.0005,
  "metodo": "Sentinel-1 RTC VV, detección de cambios",
  "umbral_db": -17.0,

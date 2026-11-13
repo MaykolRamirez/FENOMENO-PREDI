@@ -179,7 +179,7 @@
    "edificaciones": 10,
    "personas": 22,
    "qa": {
-    "km2_deteccion_bruta_caja": 614.2,
+    "km2_deteccion_bruta_caja": 614.1,
     "km2_agua_permanente_tierra": 99.5,
     "km2_tras_mascara_tierra_y_limpieza": 93.4,
     "fraccion_retenida": 0.152,

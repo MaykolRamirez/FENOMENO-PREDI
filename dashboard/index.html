@@ -141,6 +141,8 @@ table.tabla td.n{text-align:right;font-variant-numeric:tabular-nums}
 .i-valida{background:#13232f;border-radius:10px;padding:10px 12px;font-size:12.5px;color:#c5d2db;margin-top:10px}
 .i-valida b{color:#fff}
 .i-aviso{background:rgba(242,211,107,.12);border:1px solid rgba(242,211,107,.5);color:#f2d36b;border-radius:10px;padding:9px 11px;font-size:12.5px;margin-top:10px}
+.aviso-rango{background:#fdf0cf;border:1px solid #e0a83a;border-left:5px solid #c27c00;color:#4a3300;border-radius:10px;padding:11px 14px;font-size:14px;line-height:1.5;margin:0 0 16px}
+.aviso-rango b{color:#2e2000}
 
 /* resumen */
 .r-cifra{font-family:Archivo;font-size:40px;font-weight:800;font-stretch:84%;line-height:1;margin:6px 0 4px}
@@ -181,7 +183,13 @@ footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;font-size:12px;color:v
 .sel-sug button{display:flex;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:none;padding:8px 11px;font:500 14px "Public Sans";cursor:pointer;color:var(--ink)}
 .sel-sug button:hover,.sel-sug button.foco{background:var(--accent-soft)}
 .sel-sug small{color:var(--ink-3)}
-@media (max-width:640px){.selector input[type=search]{width:100%}.sel-campo{flex:1 1 100%}.selector select{width:100%}.plazos4{grid-template-columns:1fr 1fr}.edades .f{grid-template-columns:84px minmax(0,1fr) 92px;gap:6px;font-size:12.5px}}
+.sel-mas{display:none}
+/* En celular el selector se reduce al buscador y un botón: la cifra principal tiene que verse en la primera pantalla */
+@media (max-width:640px){.selector{padding:10px 12px;gap:8px}.selector .tit,.sel-busca label{display:none}
+  .sel-mas{display:block;flex:1 1 100%;font:600 13px "Public Sans";color:var(--ink-2);background:none;border:0;padding:2px 0;text-align:left;cursor:pointer}
+  .selector:not(.abierto) .sel-campo:not(.sel-busca){display:none}
+  .barra .sub{display:none}
+  .selector input[type=search]{width:100%}.sel-campo{flex:1 1 100%}.selector select{width:100%}.plazos4{grid-template-columns:1fr 1fr}.edades .f{grid-template-columns:84px minmax(0,1fr) 92px;gap:6px;font-size:12.5px}}
 .ficha-corta{display:none;font-size:14px;color:var(--ink-2)}
 .ficha-corta b{color:var(--ink)}
 body:not([data-vista=resumen]) .ficha .completa{display:none}
@@ -256,8 +264,11 @@ body[data-vista=satelite] #selector,body[data-vista=mar] #selector,body[data-vis
   <div class="sel-campo"><label for="sel-dep">Departamento</label><select id="sel-dep"><option value="">Tumbes y Piura</option></select></div>
   <div class="sel-campo"><label for="sel-prov">Provincia</label><select id="sel-prov"><option value="">Todas</option></select></div>
   <div class="sel-campo"><label for="sel-dist">Distrito</label><select id="sel-dist"><option value="">Todos</option></select></div>
+  <button type="button" class="sel-mas" id="sel-mas" aria-expanded="false" aria-controls="selector" onclick="const s=document.getElementById('selector'),a=s.classList.toggle('abierto');this.setAttribute('aria-expanded',a);this.textContent=a?'▴ Ocultar filtros':'▾ Elegir por departamento, provincia o distrito'">▾ Elegir por departamento, provincia o distrito</button>
   <button class="btn sec" id="sel-limpiar" hidden>Ver todo</button>
 </div>
+<script>/* si el enlace ya trae un filtro, en celular los campos se muestran abiertos para que se vea qué está elegido */
+if(/[?&](dep|prov|dist)=/.test(location.search))document.getElementById("sel-mas").click();</script>
 <div class="panel ficha" id="ficha" hidden></div>
 
 
@@ -297,6 +308,7 @@ body[data-vista=satelite] #selector,body[data-vista=mar] #selector,body[data-vis
 <section class="vista" id="v-alerta">
   <p class="titular" id="a-titular">Alerta por distrito</p>
   <p class="bajada">Un modelo de machine learning (regresión logística calibrada) estima, para cada distrito, la probabilidad de que el INDECI registre una emergencia por lluvia o inundación en cada una de las <b>próximas 1 a 4 semanas</b>. Aprendió de las emergencias del SINPAD de 2003 a 2025 y usa la lluvia, el caudal de los ríos, la temperatura del mar, la época del año, la historia del distrito y la exposición del Censo 2025. Se probó año por año con años que no vio.</p>
+  <div class="aviso-rango" id="a-rango" hidden></div>
   <div class="panel" id="a-aviso" style="margin-bottom:16px" hidden></div>
   <div class="grid g32">
     <div class="panel"><h2 id="a-t-mapa">Riesgo esta semana</h2><p class="nota">En una semana cualquiera la probabilidad promedio es de 3 %. Pasa el cursor sobre un distrito o haz clic para ver su ficha.</p><svg id="a-mapa" style="width:100%;display:block"></svg><div class="leyenda" id="a-ley"></div></div>
@@ -309,6 +321,7 @@ body[data-vista=satelite] #selector,body[data-vista=mar] #selector,body[data-vis
 <section class="vista" id="v-prioridad">
   <p class="titular" id="p-titular">¿Dónde actuar primero?</p>
   <p class="bajada" id="p-bajada">Cruza la probabilidad del modelo con quiénes viven en la zona inundable según el Censo 2025.</p>
+  <div class="aviso-rango" id="p-rango" hidden></div>
   <div class="grid g4" id="p-kpis"></div>
   <div class="grid g32" style="margin-top:16px">
     <div class="panel"><h2 id="p-t-rank">Distritos por personas en riesgo esperado</h2>
@@ -467,7 +480,7 @@ body[data-vista=satelite] #selector,body[data-vista=mar] #selector,body[data-vis
   <h3>2. ¿A quién afecta?</h3>
   <ul>
     <li><b>Viviendas y personas:</b> Censos Nacionales 2025 (INEI). El INEI entregó al proyecto las viviendas ocupadas por manzana con el material de paredes, techo y piso, y las personas por sexo y grupo de edad; las viviendas rurales vienen agrupadas por centro poblado. Cada manzana se ubica por un punto interior y cada centro poblado por su punto, y se ve si cae en la zona inundable. Se publican totales por distrito; las cifras menores de 10 no se muestran.</li>
-    <li><b>Comparación:</b> WorldPop 2026 (población estimada cada 100 m) da 400 198 personas en la misma zona, 1,9 % menos que el censo. WorldPop se usa en el mapa 3D, donde hace falta la población celda por celda.</li>
+    <li><b>Comparación:</b> WorldPop 2026 (población estimada cada 100 m) da 400 198 personas en la misma zona, 1,9 % menos que el censo. Las cifras de personas de este tablero y del mapa 2D son las del censo; WorldPop solo se usa para la capa de densidad del mapa, donde hace falta la población celda por celda, y para las cifras de las capas de radar.</li>
     <li><b>Edificaciones:</b> Google Open Buildings v3 (confianza ≥ 0,75). Incluye viviendas y cualquier otro tipo de construcción, por eso se habla de edificaciones y no de viviendas.</li>
     <li><b>Salud:</b> establecimientos activos del RENIPRESS (SUSALUD), de puestos de salud a hospitales. <b>Colegios:</b> locales escolares del padrón ESCALE (MINEDU, corte del 30 de octubre de 2026). Un local con inicial, primaria y secundaria cuenta una vez. <b>Alumnos:</b> matrícula del Censo Educativo 2025, sumada por local; el 96 % de los locales tiene el dato, por eso el total de alumnos es un mínimo.</li>
     <li><b>Cultivos:</b> ESA WorldCover 2021 (10 m), clase «tierras de cultivo». <b>Carreteras y puentes:</b> OpenStreetMap, vías troncales, primarias, secundarias y terciarias. <b>Pobreza:</b> INEI, Mapa de Pobreza Monetaria 2018.</li>
@@ -586,14 +599,30 @@ function pestanas(){
   window.addEventListener("hashchange",desdeHash); desdeHash();
 }
 function estado(){const R=D.R;if(!R)return;
-  document.getElementById("estado").innerHTML=`Mar al <b>${R.ultimo_dia_mar?fechaTxt(R.ultimo_dia_mar):"—"}</b> · histórico: <b>${R.dias_historico} días</b><br>Actualizado ${R.actualizado}`}
+  // Las mismas tres fechas, con el mismo texto, que el mapa 2D: cada dato tiene su propio ritmo de actualización
+  const inu=D.IN&&D.IN.calculado?fechaTxt(D.IN.calculado.slice(0,10)):"—";
+  document.getElementById("estado").innerHTML=`Tablero actualizado el <b>${fechaTxt(R.actualizado.slice(0,10))}</b><br>Mar medido hasta el ${R.ultimo_dia_mar?fechaTxt(R.ultimo_dia_mar):"—"} · mapas de inundación del ${inu}`}
 
 
 
 function semanaModelo(){const P=D.P,e=document.getElementById("r-modelo");if(!P||!e)return;
   const F=(P.fases&&P.fases.umbrales)||{alerta:.15}, n=P.distritos.filter(d=>d.prob_h1>=F.alerta).length, top=P.distritos.slice().sort((a,b)=>b.prob_h1-a.prob_h1)[0];
   document.getElementById("r-modelo-eti").textContent=`Distritos en alerta según el modelo (semana del ${fechaTxt(P.semana_objetivo.h1)})`;
-  e.textContent=`${n} de ${P.distritos.length}`+(top?` · el más alto: ${top.distrito} (${Math.round(100*top.prob_h1)} %)`:"")}
+  e.textContent=`${n} de ${P.distritos.length}`+(top?` · el más alto: ${top.distrito} (${Math.round(100*top.prob_h1)} %)`:"");
+  const m=marFueraDeRango(); if(m)e.insertAdjacentHTML("beforeend",`<br><span style="font-weight:400;font-size:13px;color:#8a5a00">Ojo: el mar (+${fmtN(m.hoy,1)} °C) supera lo que el modelo vio al entrenar (+${fmtN(m.max_entrenamiento,1)} °C); las fases salen infladas en todos los distritos.</span>`);}
+
+/* ¿La semana base trae el mar fuera de lo que el modelo vio al entrenar? (src/prediccion_semanal.py, fuera_de_rango).
+   Los JSON anteriores no traen el campo: se compara con el máximo de Niño 1+2 de 2003-2025 (+3,5 °C, julio de 2023). */
+function marFueraDeRango(){
+  const P=D.P; if(!P)return null;
+  if(P.fuera_de_rango)return P.fuera_de_rango.nino12||null;
+  const hoy=d3.median(P.distritos,d=>d.senales&&d.senales.nino12);
+  return hoy!=null&&hoy>3.5?{hoy,max_entrenamiento:3.5,semana_max:"2023-07-17"}:null}
+function avisoRango(id){
+  const el=document.getElementById(id), m=marFueraDeRango(); if(!el)return;
+  if(!m){el.hidden=true;return}
+  el.innerHTML=`<b>Por qué casi todos los distritos salen en alerta o atención.</b> El mar frente a la costa (Niño 1+2) está en <b>+${fmtN(m.hoy,1)} °C</b>, y el modelo solo aprendió con semanas de hasta <b>+${fmtN(m.max_entrenamiento,1)} °C</b> (2003-2025). Fuera de ese rango la regresión logística extrapola: el peso del mar sube la probabilidad de todos los distritos a la vez, aunque en muchos no llueva. Use esta vista para <b>comparar distritos entre sí</b> (el orden sigue siendo útil); la fase de cada uno es menos confiable que en una semana normal. No es una alerta oficial.`;
+  el.hidden=false}
 
 /* ---------- etiquetas de semana (relativas a hoy) ---------- */
 function etqSem(h,mayus){ // "esta semana", "la próxima semana", "la semana del 23 nov"…
@@ -634,11 +663,19 @@ function prioridadVista(){
   const ord=filas.slice().sort((a,b)=>b.esp-a.esp), top10=d3.sum(ord.slice(0,10),d=>d.esp);
   document.getElementById("p-titular").textContent=`¿Dónde actuar primero? ${zona[0].toUpperCase()+zona.slice(1)}, semana del ${fechaTxt(P.semana_objetivo.h1)}`;
   document.getElementById("p-bajada").innerHTML=`No todos los distritos en alerta pesan igual: importa también <b>cuánta gente</b> vive donde llega el agua y <b>qué tan vulnerable</b> es. Esta vista cruza la probabilidad del modelo con los Censos Nacionales 2025 del INEI, la pobreza 2018 y los colegios y centros de salud de la zona inundable.`;
+  avisoRango("p-rango");
+  // Concentración: con 10 distritos o menos «los 10 primeros» siempre da 100 %. Con un solo distrito se muestra su
+  // probabilidad; con pocos, cuánto pesa el primero; con más de 10, cuánto pesan los 10 primeros.
+  const conRiesgo=ord.filter(d=>d.esp>0), kpi=(eti,cifra,det)=>`<div class="kpi"><div class="eti">${eti}</div><div class="r-cifra" style="font-size:34px">${cifra}</div><div class="det">${det}</div></div>`;
+  const conc=()=>filas.length===1?kpi("Probabilidad de emergencia",pctR(filas[0].prob_h1),`${etqSem(1)} en ${filas[0].distrito} · fase ${{alerta:"alerta",atencion:"atención",normal:"normal"}[fase(filas[0].prob_h1)]}`)
+    :!esp||!conRiesgo.length?kpi("Concentración","—","ningún distrito de la selección tiene personas en la zona inundable")
+    :conRiesgo.length<=10?kpi("Concentración",`${Math.round(100*conRiesgo[0].esp/esp)} %`,`del riesgo esperado está en ${conRiesgo[0].distrito}, el primero de ${conRiesgo.length} distritos con riesgo`)
+    :kpi("Concentración",`${Math.round(100*top10/esp)} %`,`del riesgo esperado está en los 10 primeros de ${conRiesgo.length} distritos con riesgo`);
   document.getElementById("p-kpis").innerHTML=`
     <div class="kpi"><div class="eti">Distritos en alerta</div><div class="r-cifra" style="font-size:34px;color:#b3261e">${al.length} <span style="font-size:18px;color:var(--ink-3)">de ${filas.length}</span></div><div class="det">probabilidad de ${pctR(F.alerta)} o más ${etqSem(1)}</div></div>
     <div class="kpi"><div class="eti">Personas en zona inundable de esos distritos</div><div class="r-cifra" style="font-size:34px">${nf(perAl)}</div><div class="det">${nf(d3.sum(al,d=>d.c.edad_0_4||0))} niños de 0 a 4 años y ${nf(d3.sum(al,d=>d.c.edad_65_mas||0))} de 65 o más (Censo 2025)</div></div>
     <div class="kpi"><div class="eti">Personas en riesgo esperado</div><div class="r-cifra" style="font-size:34px">${nf(esp)}</div><div class="det">suma de probabilidad × personas expuestas; sirve para comparar distritos, no es un pronóstico de afectados</div></div>
-    <div class="kpi"><div class="eti">Concentración</div><div class="r-cifra" style="font-size:34px">${esp?Math.round(100*top10/esp):0} %</div><div class="det">del riesgo esperado está en los ${Math.min(10,ord.length)} primeros distritos de la lista</div></div>`;
+    ${conc()}`;
   // ranking
   const mxE=d3.max(ord,d=>d.esp)||1;
   const cel=x=>x==null?"<10":nf(x);
@@ -979,6 +1016,7 @@ function alertaVista(P){
   const chipF=x=>{const f=fase(x);return f?`<span class="chip"><i style="background:${COL[f]}"></i>${pct(x)}</span>`:"–"};
   const n=P.distritos.filter(d=>fase(d.prob_h1)==="alerta").length, na=P.distritos.filter(d=>fase(d.prob_h1)==="atencion").length;
   document.getElementById("a-titular").textContent=`Alerta por distrito: ${n} de ${P.distritos.length} distritos en alerta para ${etqSem(1)}`;
+  avisoRango("a-rango");
   document.getElementById("a-t-mapa").textContent=`Probabilidad de emergencia en la semana del ${fechaTxt(P.semana_objetivo.h1)}`;
   document.getElementById("a-ley").innerHTML=[[`Normal (menos de ${pct(F.atencion)})`,COL.normal],[`Atención (${pct(F.atencion)} a ${pct(F.alerta)}) · ${na} distritos`,COL.atencion],[`Alerta (${pct(F.alerta)} o más) · ${n} distritos`,COL.alerta]].map(x=>`<span><i style="background:${x[1]}"></i>${x[0]}</span>`).join("");
   const dib=()=>{
@@ -987,7 +1025,7 @@ function alertaVista(P){
     const p=d3.geoMercator().fitExtent([[6,6],[w-6,h-6]],DIST), path=d3.geoPath(p);
     svg.append("g").selectAll("path").data(DIST.features).join("path").attr("d",path)
       .attr("fill",f=>{const d=dato(f);return d?COL[fase(d.prob_h1)]:"#e7e9eb"}).attr("stroke","#fff").attr("stroke-width",.8).style("cursor","pointer")
-      .on("mousemove",(ev,f)=>{const d=dato(f);mostrar(ev,`<b>${f.properties.distrito}</b> · ${f.properties.provincia}<br>`+(d?`Próxima semana: <b>${pct(d.prob_h1)}</b> · ${NOMF[fase(d.prob_h1)]}<br>En 2 semanas: ${pct(d.prob_h2)} · en 4: ${pct(d.prob_h4)}`+(d.senales&&d.senales.lluvia_30d!=null?`<br>Lluvia de 30 días: ${fmtN(d.senales.lluvia_30d,0)} mm`:"")+(d.senales&&d.senales.caudal_razon!=null?`<br>Río: ${fmtN(d.senales.caudal_razon,1)} veces su caudal normal`:"")+`<br><small>Clic para ver el distrito</small>`:"sin dato"))})
+      .on("mousemove",(ev,f)=>{const d=dato(f);mostrar(ev,`<b>${f.properties.distrito}</b> · ${f.properties.provincia}<br>`+(d?`Próxima semana: <b>${pct(d.prob_h1)}</b> · ${NOMF[fase(d.prob_h1)]}<br>En 2 semanas: ${pct(d.prob_h2)} · en 4: ${pct(d.prob_h4)}`+(d.senales&&d.senales.lluvia_30d!=null?`<br>Lluvia de 30 días: ${fmtN(d.senales.lluvia_30d,0)} mm`:"")+(d.senales&&d.senales.caudal_razon!=null?`<br>Río, semana del ${fechaTxt(P.semana_base)}: ${fmtN(d.senales.caudal_razon,1)} veces lo normal para la época`+(d.senales.caudal_sobre_p95?" · <b>pasó su nivel de crecida</b>":""):"")+`<br><small>Clic para ver el distrito</small>`:"sin dato"))})
       .on("mouseleave",ocultar).on("click",(ev,f)=>{ocultar();SEL.elegir&&SEL.elegir(f.properties.ubigeo)});
     const fs=selFeatures(); if(fs.length<DIST.features.length){
       svg.append("g").selectAll("path").data(DIST.features).join("path").attr("d",path).attr("fill","#fff").attr("opacity",f=>fs.includes(f)?0:.55).attr("pointer-events","none");
@@ -997,9 +1035,9 @@ function alertaVista(P){
   dib(); window.addEventListener("resize",debounce(()=>{if(visible("v-alerta"))dib()},150));
   const listaA=()=>{const ubs=new Set(selFeatures().map(f=>f.properties.ubigeo));
     const top=P.distritos.filter(d=>ubs.has(d.ubigeo)).sort((a,b)=>b.prob_h1-a.prob_h1).slice(0,12);
-    document.getElementById("a-nota-lista").textContent=`Probabilidad de emergencia ${etqSem(1)} y ${etqSem(2)}, lluvia de los últimos 30 días y caudal del río más cercano frente a lo normal. Clic en un distrito para ver su ficha.`;
-    document.getElementById("a-lista").innerHTML=`<table class="tabla"><tr><th>Distrito</th><th style="text-align:right">1 semana</th><th style="text-align:right">2 semanas</th><th style="text-align:right">Lluvia 30 d</th><th style="text-align:right">Río</th></tr>`+
-      top.map(d=>{const s=d.senales||{};return `<tr data-u="${d.ubigeo}" style="cursor:pointer"><td><b>${d.distrito}</b> <span style="color:var(--ink-3)">${d.provincia}</span></td><td class="n">${chipF(d.prob_h1)}</td><td class="n">${chipF(d.prob_h2)}</td><td class="n">${s.lluvia_30d!=null?fmtN(s.lluvia_30d,0)+" mm":"–"}</td><td class="n">${s.caudal_razon!=null?fmtN(s.caudal_razon,1)+"×":"–"}</td></tr>`}).join("")+`</table>`;
+    document.getElementById("a-nota-lista").textContent=`Probabilidad de emergencia ${etqSem(1)} y ${etqSem(2)}, lluvia de los últimos 30 días y caudal del río más cercano en la semana del ${fechaTxt(P.semana_base)}, frente a lo normal para esa época del año (la mediana de esa semana antes de 2021). En los meses secos lo normal es poco caudal, así que «veces lo normal» no basta para saber si hubo crecida: la marca «crecida» indica que el río pasó su nivel fuerte (percentil 95 del caudal diario 2001-2020) esa semana. Esta columna mira esa semana ya pasada; el aviso de lluvia y caudal de arriba mira los próximos días, por eso sus cifras pueden diferir. Clic en un distrito para ver su ficha.`;
+    document.getElementById("a-lista").innerHTML=`<table class="tabla"><tr><th>Distrito</th><th style="text-align:right">1 semana</th><th style="text-align:right">2 semanas</th><th style="text-align:right">Lluvia 30 d</th><th style="text-align:right" title="Caudal frente a la mediana de esa semana del año; «crecida» = pasó su percentil 95">Río, semana del ${fechaTxt(P.semana_base).replace(/ \d{4}$/,"")}</th></tr>`+
+      top.map(d=>{const s=d.senales||{};return `<tr data-u="${d.ubigeo}" style="cursor:pointer"><td><b>${d.distrito}</b> <span style="color:var(--ink-3)">${d.provincia}</span></td><td class="n">${chipF(d.prob_h1)}</td><td class="n">${chipF(d.prob_h2)}</td><td class="n">${s.lluvia_30d!=null?fmtN(s.lluvia_30d,0)+" mm":"–"}</td><td class="n">${s.caudal_razon!=null?fmtN(s.caudal_razon,1)+"×"+(s.caudal_sobre_p95?` <span class="chip" style="color:#b3261e"><i style="background:#d4472c"></i>crecida</span>`:""):"–"}</td></tr>`}).join("")+`</table>`;
     document.querySelectorAll("#a-lista tr[data-u]").forEach(tr=>tr.onclick=()=>SEL.elegir&&SEL.elegir(tr.dataset.u));
     document.querySelector('#a-lista').closest('.panel').querySelector('h2').textContent=SEL.dep||SEL.prov?'Distritos de tu selección, por probabilidad':'Distritos con más probabilidad';};
   listaA(); SEL.alDibujar.alertaLista=listaA;
@@ -1095,7 +1133,15 @@ function avisoVista(){
     return m==="lluvia y caudal"?`Lluvia y río ${r}`:m==="caudal"?`Río ${r}`:m==="lluvia"?"Lluvia":"—"};
   const rio=d=>{const c=d.caudal; if(!c||!c.rio)return `<span style="color:var(--muted)">solo lluvia</span>`;
     if(c.estado!=="ok")return `<span style="color:var(--muted)">${c.rio}: sin pronóstico</span>`;
-    return `${nf(c.m3s_max)} m³/s · ${f(c.fecha_max)}<br><span style="color:var(--muted)">fuerte desde ${nf(c.p95)}</span>`};
+    const pd_=picoDespues(c.rio);
+    return `${nf(c.m3s_max)} m³/s · ${f(c.fecha_max)}<br><span style="color:var(--muted)">fuerte desde ${nf(c.p95)}</span>`+
+      (pd_&&pd_.nivel!=="normal"?`<br><b style="color:${ET[pd_.nivel][1]}">luego ${nf(pd_.m3s)} m³/s el ${f(pd_.fecha)}</b>`:"")};
+  // Pico del río después de los días que cuentan para el nivel (JSON nuevos: pico_despues; anteriores: se calcula)
+  function picoDespues(r){const x=C&&C.rios&&C.rios[r]; if(!x||x.estado!=="ok")return null; if(x.pico_despues)return x.pico_despues;
+    if(!x.fechas||!x.m3s)return null; let b=null;
+    x.fechas.forEach((fe,i)=>{const q=x.m3s[i]; if(i>=A.ventana_dias&&q!=null&&(!b||q>b.m3s))b={m3s:q,fecha:fe}});
+    if(b)b.nivel=b.m3s>x.p99?"extremo":b.m3s>x.p95?"fuerte":"normal"; return b}
+  const despues=okC?Object.entries(C.rios||{}).map(([r,x])=>[r,x,picoDespues(r)]).filter(([r,x,p])=>p&&p.nivel!=="normal"):[];
   const hayS=SEL.dep||SEL.prov||SEL.dist, fsel=hayS?new Set(selFeatures().map(x=>sinT(x.properties.provincia)+"|"+sinT(x.properties.distrito))):null;
   const enS=d=>!hayS||fsel.has(sinT(d.provincia)+"|"+sinT(d.distrito));
   const lista=A.distritos.filter(d=>(d.nivel==="extremo"||d.nivel==="fuerte")&&enS(d));
@@ -1108,6 +1154,7 @@ function avisoVista(){
   <p class="nota">Para anticiparse: compara la lluvia pronosticada para cada distrito con lo que es extremo en ese mismo lugar (percentiles 95 y 99 de los días con lluvia de 1991 a 2020 en su provincia). En los distritos de los valles de los ríos Piura, Chira y Tumbes también compara el caudal pronosticado del río con su percentil 95 y 99 de 2001 a 2020: muchas crecidas vienen de la lluvia aguas arriba. Hoy: <b>${A.conteo.extremo}</b> distritos en nivel extremo y <b>${A.conteo.fuerte}</b> en fuerte${A.conteo_motivo?`; en <b>${porRio}</b> de ellos cuenta el río`:""}. Calculado el ${A.calculado.slice(0,10)}.</p>
   ${C&&!okC?`<p class="nota" style="color:#b3261e">Hoy no llegó el pronóstico de caudal (${C.estado.replace(/^sin dato: /,"")}). Los distritos de valle muestran solo el aviso por lluvia.</p>`:""}
   ${rios?`<p class="nota">Caudal pronosticado, día más alto de los próximos ${A.ventana_dias}: ${rios}.</p>`:""}
+  ${despues.length?`<div class="aviso-rango"><b>Atención a los días siguientes.</b> Pasados los ${A.ventana_dias} días que cuentan para el aviso, el pronóstico de caudal sube: ${despues.map(([r,x,p])=>`río ${r} a <b>${nf(p.m3s)} m³/s el ${f(p.fecha)}</b>, sobre su nivel ${p.nivel} (${p.nivel==="extremo"?"desde "+nf(x.p99):"desde "+nf(x.p95)})`).join("; ")}. Ese tramo del pronóstico es menos seguro y por eso no cambia el nivel de hoy, pero conviene seguirlo: el aviso se recalcula cada día.</div>`:""}
   <table class="tabla"><tr><th>Distrito</th><th>Aviso</th><th>Motivo</th><th style="text-align:right">Lluvia: día más alto</th><th style="text-align:right">Río: caudal más alto</th><th style="text-align:right">Personas en zona inundable</th></tr>${filas}</table>
   <p class="nota" style="margin-top:8px">${hayS?"Se muestran los distritos de tu selección. ":lista.length?"":"Ningún distrito supera los umbrales en los próximos días; se muestran los de más lluvia pronosticada. "}La lluvia intensa sobre ciudades (calles anegadas, quebradas) es el daño más frecuente y el radar no la ve: este aviso sirve para anticiparla. ${A.nota} Fuente: ${A.fuente}${C?" "+C.fuente:""}</p>`;
   el.hidden=false;
@@ -1217,7 +1264,10 @@ function panelInund(){
     ?`Mapa de peligro del JRC (Comisión Europea): zona que se inunda con una crecida de ríos que ocurre en promedio <b>una vez cada ${e.periodo_retorno} años</b> · <b>${fmtN(e.km2,1)} km²</b>`
     :`${e.periodo[0]} a ${e.periodo[1]} · ${e.imagenes.length} imágenes de radar Sentinel-1 · <b>${fmtN(e.km2,1)} km²</b> con agua nueva`;
   const s=e.salud||{},c=e.colegios||{};
-  const k=[["Población potencialmente expuesta",nf(e.personas),`${nf(e.personas_500m)} hasta 500 m (acumulado) · WorldPop, modelada`],
+  // Igual que el resumen y el mapa 2D: en los escenarios de peligro manda el Censo 2025; WorldPop queda como comparación
+  const CE=e.tipo==="peligro"&&D.VC&&D.VC.escenarios&&D.VC.escenarios[I3.ev]&&D.VC.escenarios[I3.ev].personas!=null?D.VC.escenarios[I3.ev]:null;
+  const k=[CE?["Personas en zona inundable",nf(CE.personas),`Censo 2025 (INEI) · WorldPop 2026 (modelada) estima ${nf(e.personas)}; ${nf(e.personas_500m)} hasta 500 m`]
+      :["Población potencialmente expuesta",nf(e.personas),`${nf(e.personas_500m)} hasta 500 m (acumulado) · WorldPop, modelada`],
     ["Edificaciones potencialmente expuestas",nf(e.edificaciones),`${nf(e.edificaciones_500m)} hasta 500 m (acumulado) · no son viviendas censales`],
     ["Colegios",nf(c.dentro),`dentro · acumulado ${nf(c.acum_500m)} hasta 500 m · ${nf(c.acum_1km)} hasta 1 km`],
     ...(c.alumnos?[["Alumnos en esos colegios",nf(c.alumnos.dentro),`dentro · acumulado ${nf(c.alumnos.acum_500m)} hasta 500 m · ${nf(c.alumnos.acum_1km)} hasta 1 km · Censo Educativo 2025`]]:[]),

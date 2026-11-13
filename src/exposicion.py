@@ -90,6 +90,17 @@ def viviendas(forzar: bool) -> None:
     print(f"  edificaciones: {len(df):,}")
 
 
+# Consultorios y servicios de una sola especialidad (odontología, oftalmología, psicología, laboratorio): están en
+# RENIPRESS con categoría I-1 a I-3, pero no atienden emergencias ni sirven de refugio, así que no cuentan como
+# «centro de salud en riesgo». Se filtran por nombre porque el corte de RENIPRESS no trae la especialidad.
+NO_EMERGENCIA = r"(?i)dental|dent\b|odont|oftalm|[oó]ptica|psicol[oó]g|laboratorio|est[eé]tic|consultorio"
+
+
+def solo_atencion_general(r: pd.DataFrame) -> pd.DataFrame:
+    """Quita los consultorios de una especialidad (NO_EMERGENCIA). Se aplica al escribir y al leer salud.csv."""
+    return r[~r["nombre"].fillna("").str.contains(NO_EMERGENCIA)].copy()
+
+
 def salud(forzar: bool) -> None:
     destino = CARPETA / "salud.csv"
     if destino.exists() and not forzar:
@@ -105,6 +116,7 @@ def salud(forzar: bool) -> None:
     r = r[r["tipo"] != "Otro"]
     r = r.rename(columns={"NOMBRE": "nombre", "CATEGORIA": "categoria", "INSTITUCION": "institucion",
                           "PROVINCIA": "provincia", "DISTRITO": "distrito", "DEPARTAMENTO": "departamento"})
+    r = solo_atencion_general(r)
     r[["nombre", "tipo", "categoria", "institucion", "departamento", "provincia", "distrito", "lat", "lon"]].to_csv(
         destino, index=False)
     print(f"  salud: {len(r)} establecimientos ({r['tipo'].value_counts().to_dict()})")

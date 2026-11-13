@@ -397,6 +397,7 @@ def prediccion_actual(res: pd.DataFrame, m: pd.DataFrame, pr: pd.DataFrame) -> d
                 d["viviendas_rango_historico"] = [None if np.isnan(lo) else round(float(lo)), None if np.isnan(hi) else round(float(hi))]
                 d["personas_si_ocurre"] = round(float(v * ppv))
                 d["personas_por_vivienda"] = round(float(ppv), 2)
+    salida["fuera_de_rango"] = fuera_de_rango(p, t)
     salida["distritos"] = sorted(salida["distritos"].values(), key=lambda d: -d["prob_h1"])
     salida["semana_objetivo"] = {f"h{h}": str((t + pd.Timedelta(weeks=h)).date()) for h in PLAZOS}
     # Capacidad de ordenar: PR-AUC del modelo sin calibrar (la calibración de Platt no cambia el orden dentro de un año;
@@ -436,7 +437,32 @@ def prediccion_actual(res: pd.DataFrame, m: pd.DataFrame, pr: pd.DataFrame) -> d
     salida["limites"] = ["El modelo no usa si hubo emergencia esta semana: el SINPAD publica cada seis meses y ese dato no existe en tiempo real.",
                          "La lluvia de NASA POWER llega con unos días de retraso; por eso la semana base puede ser anterior a hoy.",
                          "Ver docs/2_modelo/2.2_MODELO_POR_PLAZO.md para la calidad por plazo."]
+    if "nino12" in salida["fuera_de_rango"]:
+        x = salida["fuera_de_rango"]["nino12"]
+        coma = lambda v: f"{v:.1f}".replace(".", ",")  # noqa: E731
+        salida["limites"].insert(0, f"El mar (Niño 1+2) está en +{coma(x['hoy'])} °C y el modelo solo aprendió con valores de hasta "
+                                    f"+{coma(x['max_entrenamiento'])} °C: fuera de ese rango la regresión extrapola y sube la "
+                                    "probabilidad de todos los distritos a la vez. Sirve el orden entre distritos; la fase de "
+                                    "cada uno es menos confiable.")
     return salida
+
+
+# Variables que se comparan con lo visto en el entrenamiento (solo las que valen igual para toda la región o casi)
+RANGO = {"nino12": "mar (Niño 1+2, °C)"}
+
+
+def fuera_de_rango(p: pd.DataFrame, t: pd.Timestamp) -> dict:
+    """¿La semana base trae valores fuera de lo que el modelo vio al entrenar (semanas hasta FIN_ETIQUETA)?
+    Devuelve {variable: {hoy, max_entrenamiento, semana_max, nombre}} solo para las que superan el máximo."""
+    tr = p[p.semana <= FIN_ETIQUETA]
+    hoy = p[p.semana == t]
+    out = {}
+    for c, nombre in RANGO.items():
+        v, mx = hoy[c].median(), tr[c].max()
+        if pd.notna(v) and pd.notna(mx) and v > mx:
+            out[c] = {"nombre": nombre, "hoy": round(float(v), 2), "max_entrenamiento": round(float(mx), 2),
+                      "semana_max": str(tr.loc[tr[c].idxmax(), "semana"].date())}
+    return out
 
 
 def main(sin_anio: int | None, solo_actual: bool = False) -> None:

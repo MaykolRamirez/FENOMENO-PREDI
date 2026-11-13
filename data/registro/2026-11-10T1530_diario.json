@@ -1,17 +1,17 @@
 {
  "perfil": "diario",
  "inicio": "2026-11-10T15:30-05:00",
- "fin": "2026-11-10T15:30-05:00",
+ "fin": "2026-11-10T15:33-05:00",
  "pasos": [
   {
    "paso": "descargar_mar.py",
    "codigo": 0,
    "ok": true,
    "parcial": false,
-   "segundos": 1.7,
+   "segundos": 1.5,
    "salida_final": [
-    "Último día disponible: 2026-11-09. Faltan 2 de los últimos 20 días.",
-    "  ncdcOisst21NrtAgg_LonPM180: 2 días, 1388 celdas",
+    "Último día disponible: 2026-11-09. Faltan 1 de los últimos 20 días.",
+    "  ncdcOisst21NrtAgg_LonPM180: 1 días, 694 celdas",
     "Histórico: 27 días guardados."
    ],
    "error_final": []
@@ -21,7 +21,7 @@
    "codigo": 0,
    "ok": true,
    "parcial": false,
-   "segundos": 1.6,
+   "segundos": 1.8,
    "salida_final": [
     "noaa_semanal: 2358 filas",
     "  icen: 921 filas"
@@ -33,7 +33,7 @@
    "codigo": 0,
    "ok": true,
    "parcial": false,
-   "segundos": 3.3,
+   "segundos": 5.5,
    "salida_final": [
     "Lluvia: 1036 filas",
     "Caudal: 756 filas",
@@ -47,7 +47,7 @@
    "codigo": 0,
    "ok": true,
    "parcial": false,
-   "segundos": 0.9,
+   "segundos": 1.2,
    "salida_final": [
     "Histórico del mar: 27 días",
     "  indices.json: 28 KB",
@@ -63,8 +63,9 @@
    "codigo": 0,
    "ok": true,
    "parcial": false,
-   "segundos": 2.1,
+   "segundos": 142.3,
    "salida_final": [
+    "api.open-meteo.com: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=120)",
     "aviso: {'extremo': 0, 'fuerte': 2, 'normal': 76} · solo lluvia: {'extremo': 0, 'fuerte': 2, 'normal': 76} · motivo: {'lluvia': 2, 'caudal': 0, 'lluvia y caudal': 0} · caudal: ok {'Chira': ('normal', 1017.6, 1387.7), 'Piura': ('normal', 288.1, 305.9), 'Tumbes': ('normal', 362.9, 764.2)}"
    ],
    "error_final": []
@@ -74,10 +75,10 @@
    "codigo": 0,
    "ok": true,
    "parcial": false,
-   "segundos": 1.5,
+   "segundos": 1.6,
    "salida_final": [
     "RSS: 175 titulares",
-    "23 eventos (13 verificados); radar: {'detectado': 4, 'no detectado': 4, 'fuera de alcance': 15, 'sin pasada': 0, 'sin radar': 0}"
+    "24 eventos (13 verificados); radar: {'detectado': 4, 'no detectado': 4, 'fuera de alcance': 16, 'sin pasada': 0, 'sin radar': 0}"
    ],
    "error_final": []
   },

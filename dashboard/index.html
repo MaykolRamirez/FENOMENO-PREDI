@@ -183,7 +183,13 @@ footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;font-size:12px;color:v
 .sel-sug button{display:flex;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;background:none;padding:8px 11px;font:500 14px "Public Sans";cursor:pointer;color:var(--ink)}
 .sel-sug button:hover,.sel-sug button.foco{background:var(--accent-soft)}
 .sel-sug small{color:var(--ink-3)}
-@media (max-width:640px){.selector input[type=search]{width:100%}.sel-campo{flex:1 1 100%}.selector select{width:100%}.plazos4{grid-template-columns:1fr 1fr}.edades .f{grid-template-columns:84px minmax(0,1fr) 92px;gap:6px;font-size:12.5px}}
+.sel-mas{display:none}
+/* En celular el selector se reduce al buscador y un botón: la cifra principal tiene que verse en la primera pantalla */
+@media (max-width:640px){.selector{padding:10px 12px;gap:8px}.selector .tit,.sel-busca label{display:none}
+  .sel-mas{display:block;flex:1 1 100%;font:600 13px "Public Sans";color:var(--ink-2);background:none;border:0;padding:2px 0;text-align:left;cursor:pointer}
+  .selector:not(.abierto) .sel-campo:not(.sel-busca){display:none}
+  .barra .sub{display:none}
+  .selector input[type=search]{width:100%}.sel-campo{flex:1 1 100%}.selector select{width:100%}.plazos4{grid-template-columns:1fr 1fr}.edades .f{grid-template-columns:84px minmax(0,1fr) 92px;gap:6px;font-size:12.5px}}
 .ficha-corta{display:none;font-size:14px;color:var(--ink-2)}
 .ficha-corta b{color:var(--ink)}
 body:not([data-vista=resumen]) .ficha .completa{display:none}
@@ -258,8 +264,11 @@ body[data-vista=satelite] #selector,body[data-vista=mar] #selector,body[data-vis
   <div class="sel-campo"><label for="sel-dep">Departamento</label><select id="sel-dep"><option value="">Tumbes y Piura</option></select></div>
   <div class="sel-campo"><label for="sel-prov">Provincia</label><select id="sel-prov"><option value="">Todas</option></select></div>
   <div class="sel-campo"><label for="sel-dist">Distrito</label><select id="sel-dist"><option value="">Todos</option></select></div>
+  <button type="button" class="sel-mas" id="sel-mas" aria-expanded="false" aria-controls="selector" onclick="const s=document.getElementById('selector'),a=s.classList.toggle('abierto');this.setAttribute('aria-expanded',a);this.textContent=a?'▴ Ocultar filtros':'▾ Elegir por departamento, provincia o distrito'">▾ Elegir por departamento, provincia o distrito</button>
   <button class="btn sec" id="sel-limpiar" hidden>Ver todo</button>
 </div>
+<script>/* si el enlace ya trae un filtro, en celular los campos se muestran abiertos para que se vea qué está elegido */
+if(/[?&](dep|prov|dist)=/.test(location.search))document.getElementById("sel-mas").click();</script>
 <div class="panel ficha" id="ficha" hidden></div>
 
 

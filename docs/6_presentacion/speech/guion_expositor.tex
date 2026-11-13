@@ -1,0 +1,299 @@
+% Guion del expositor (no se proyecta). Requiere presentacion_proyecto.pdf compilado antes.
+% Compilar dos veces: pdflatex guion_expositor.tex  -> se copia como docs/speech_proyecto.pdf
+\documentclass[aspectratio=169,10pt]{beamer}
+\input{estilo.tex}
+\hypersetup{pdftitle={Guion del expositor — proyecto completo}}
+
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip\begin{beamercolorbox}[wd=\paperwidth,ht=5.2ex,dp=1.6ex,leftskip=1.2em]{frametitle}%
+  \usebeamerfont{frametitle}\insertframetitle\end{beamercolorbox}%
+  \vspace{-0.2ex}\hspace*{1.4em}{\color{naranja}\rule{\dimexpr\paperwidth-2.4em}{1.2pt}}\vspace{-1ex}}
+\setbeamertemplate{footline}{\hfill{\color{gris}\scriptsize Guion del expositor · NO se proyecta\quad\insertframenumber/\inserttotalframenumber}\hspace{1.2em}\vspace{1.2ex}}
+
+\newtcolorbox{decir}[1][Decir]{enhanced,colback=verde!7,colframe=verde,coltitle=white,fonttitle=\bfseries\small,
+  title={#1},boxrule=0.6pt,arc=2mm,left=4pt,right=4pt,top=2pt,bottom=2pt,fontupper=\small}
+\newtcolorbox{sipreguntan}{enhanced,colback=morado!7,colframe=morado,coltitle=white,fonttitle=\bfseries\small,
+  title={Si preguntan\dots},boxrule=0.6pt,arc=2mm,left=4pt,right=4pt,top=2pt,bottom=2pt,fontupper=\footnotesize}
+\newtcolorbox{tiempo}{enhanced,colback=grisclaro,colframe=gris,boxrule=0.6pt,arc=2mm,halign=center,fontupper=\small,top=2pt,bottom=2pt}
+
+% \lamina{número}{título}{tiempo}{decir}{si preguntan}
+\newcommand{\lamina}[5]{%
+\begin{frame}{Lámina #1 \ · \ #2}
+\begin{columns}[c]
+\begin{column}{0.36\textwidth}
+\fbox{\includegraphics[page=#1,width=0.95\textwidth]{presentacion_proyecto.pdf}}\par\vspace{0.6em}
+\begin{tiempo}\textbf{Tiempo:} #3\end{tiempo}
+\end{column}
+\begin{column}{0.6\textwidth}
+\begin{decir}#4\end{decir}
+\begin{sipreguntan}#5\end{sipreguntan}
+\end{column}
+\end{columns}
+\end{frame}}
+% \cambio{número}{título}{decir}
+\newcommand{\cambio}[3]{%
+\begin{frame}{Lámina #1 \ · \ #2}
+\begin{columns}[c]
+\begin{column}{0.36\textwidth}\fbox{\includegraphics[page=#1,width=0.95\textwidth]{presentacion_proyecto.pdf}}\end{column}
+\begin{column}{0.6\textwidth}\begin{decir}[Decir (5 segundos)]#3\end{decir}\end{column}
+\end{columns}
+\end{frame}}
+
+\begin{document}
+
+% ------------------------------------------------------------------ portada
+{\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+\fill[verde] (current page.north west) rectangle ([yshift=-0.48\paperheight]current page.north east);
+\node[anchor=north west,text width=0.9\paperwidth,color=white,align=left] at ([xshift=2.2em,yshift=-2.6em]current page.north west)
+ {{\LARGE\bfseries Guion del expositor}\\[1.2em]
+  {\small Presentación del proyecto completo: qué decir en cada una de las 41 láminas\\(este archivo es para el equipo: \textbf{no se proyecta}) · versión del 10 de noviembre de 2026}};
+\node[anchor=north west,text width=0.9\paperwidth,align=left] at ([xshift=2.2em,yshift=-0.55\paperheight]current page.north west)
+ {\small\textbf{Cómo usarlo}
+ \begin{itemize}\small
+ \item A la izquierda, la lámina que se proyecta. A la derecha, lo que se dice.
+ \item Duración total: \textbf{25 a 30 minutos}. Si hay menos tiempo, ver la última página.
+ \item Las cajas \textcolor{morado}{\textbf{moradas}} son la respuesta corta si hay preguntas.
+ \item No se lee palabra por palabra: se dicen las \textbf{ideas en negrita}.
+ \end{itemize}};
+\end{tikzpicture}
+\end{frame}}
+
+% ------------------------------------------------------------------ reglas
+\begin{frame}{Antes de empezar: reparto y reglas}
+\begin{columns}[T]
+\begin{column}{0.46\textwidth}\small
+\textbf{Reparto sugerido (ajústenlo ustedes)}\\[4pt]
+\begin{tabular}{@{}ll@{}}
+Láminas 1–10 & Problema y cómo se construyó\\
+Láminas 11–19 & Exposición, radar y aviso\\
+Láminas 20–33 & El modelo (variables y fórmulas)\\
+Láminas 34–41 & Temporada 2026, tablero y cierre\\
+\end{tabular}\\[6pt]
+Una persona por bloque. Los demás no interrumpen.
+\end{column}
+\begin{column}{0.5\textwidth}\small
+\textbf{Reglas}
+\begin{enumerate}\footnotesize
+\item Si no se sabe algo: «No lo tenemos verificado; lo revisamos y se lo enviamos». No inventar.
+\item Sobre la IA: decir con naturalidad qué hizo el equipo y qué hizo el asistente.
+\item «Expuesto» no es «afectado».
+\item Ahora el modelo da una \textbf{probabilidad calibrada}: 15 \% es casi 5 veces lo normal (3,1 \%).
+\item «9 de 10 eventos» es del aviso de lluvia, no del modelo.
+\item El mar de 2026 (+5,6 °C) está fuera de lo que el modelo vio: decirlo siempre.
+\end{enumerate}
+\end{column}
+\end{columns}
+\end{frame}
+
+\lamina{1}{Portada}{20 s}
+{«Buenas tardes. Somos Christopher, Luz Ángela, Maykol y Marcia. Les presentamos nuestro proyecto: un sistema que \textbf{anticipa emergencias por inundación en Tumbes y Piura}. Vamos a contar cómo lo construimos: qué datos usamos, qué modelo armamos, \textbf{cómo comprobamos que funciona} y cómo se está usando en la temporada 2026.»}
+{—}
+
+\lamina{2}{El problema}{1 min}
+{«Cuando el mar frente a Tumbes y Piura se calienta, llueve en una costa que normalmente es desierto y los ríos se desbordan. En \textbf{2017} el INDECI registró casi \textbf{86 mil viviendas afectadas} y en \textbf{2023}, con el ciclón Yaku, más de \textbf{118 mil}. Y hoy, en noviembre de 2026, el mar está \textbf{5,6 grados por encima de lo normal}.\\
+Nuestra pregunta: qué tan probable es una emergencia en cada distrito en las \textbf{próximas 1 a 4 semanas}, mejor que su propia historia, y \textbf{a cuántas personas alcanzaría}.»}
+{\textbf{¿De dónde salen las viviendas afectadas?} Del SINPAD del INDECI, datos abiertos. Coincide con la cifra publicada por OCHA para 2017 con una diferencia de 0,3 \%.}
+
+\lamina{3}{Objetivos}{40 s}
+{«El objetivo general es estimar, para los \textbf{78 distritos}, la probabilidad de emergencia a una y cuatro semanas y cuántas personas están expuestas.\\
+Los específicos: medir la exposición con el censo, un aviso de corto plazo, un modelo validado contra referencias simples, \textbf{probabilidades calibradas con fases de aviso} y un tablero que se actualiza solo.»}
+{\textbf{¿Antes no eran 76 distritos?} Sí: dos distritos nuevos se unían al distrito del que salieron. Ahora se usa el mapa del INEI con los 78.}
+
+\lamina{4}{La idea en un dibujo}{50 s}
+{«El sistema funciona en tres tiempos. \textbf{Anticipar}: un aviso para los próximos días y un modelo de probabilidad para las próximas semanas. \textbf{Confirmar}: el radar satelital muestra dónde hubo agua. \textbf{Comprobar}: lo contrastamos con el INDECI, las noticias y el mapa oficial de 2017.\\
+Debajo está la \textbf{base común}: cuántas personas, viviendas, colegios y centros de salud hay en la zona inundable.»}
+{—}
+
+\cambio{5}{Cambio de parte}{«Primero, cómo se construyó.»}
+
+\lamina{6}{Línea de tiempo}{1 min}
+{«Del 3 al 6 de noviembre armamos la base: monitor del mar, fuentes, auditoría de cifras, el Censo 2025, el aviso de lluvia y la variable del SINPAD.\\
+Después de la reunión con el profesor cambiamos el modelo: de un índice a una \textbf{probabilidad por plazo}, de 1 a 4 semanas. Entre el 7 y el 9 hicimos el \textbf{test de realidad}, la calibración, las fases de aviso, los intervalos de confianza y el informe final.»}
+{\textbf{¿Qué cambió tras la reunión?} Definimos la Y semana a semana, quitamos lo que no se sabe en tiempo real y medimos a cuántas semanas el modelo sí aporta.}
+
+\lamina{7}{Cómo trabajamos}{1 min 15 s}
+{«Queremos ser transparentes: el proyecto se construyó en equipo con un asistente de inteligencia artificial, \textbf{Claude}. Nosotros planteábamos la pregunta, se probaba la fuente, el asistente escribía el código que revisábamos, luego venía una prueba automática, una validación contra un dato oficial y el documento.\\
+La regla: \textbf{ninguna cifra se publica si no sale de un código que se pueda volver a correr}.»}
+{\textbf{¿Lo hizo la IA?} Escribió buena parte del código; las preguntas, las decisiones, los datos del INEI y la revisión son del equipo. Cada cambio en GitHub tiene autor y fecha.}
+
+\lamina{8}{El proyecto en números}{40 s}
+{«En números: \textbf{46 programas} en Python con unas \textbf{8 mil líneas}, \textbf{87 pruebas automáticas}, 6 tareas que corren solas en GitHub, 52 documentos técnicos y más de 15 fuentes públicas. Trabajamos con \textbf{78 distritos} y 1 200 semanas, de 2003 a 2025.»}
+{\textbf{¿Qué es una prueba automática?} Un programa que revisa que las cifras cuadren; si alguna falla, no se publica nada.}
+
+\lamina{9}{Arquitectura}{1 min}
+{«Así viajan los datos. A la izquierda, las fuentes. Los programas de la carpeta src descargan y calculan; los corre \textbf{GitHub Actions} solo: el aviso cada día y el modelo cada lunes. Antes de publicar, \textbf{87 pruebas} revisan que todo cuadre; si fallan, no se publica. Y el resultado va al tablero.\\
+Si una descarga falla, se queda la última versión válida y la capa se marca como rezagada.»}
+{\textbf{¿Qué revisan las pruebas?} Que las sumas concilien, que los distritos no se repitan, que el modelo no use datos del futuro y que el sitio cargue.}
+
+\lamina{10}{Fuentes de datos}{1 min}
+{«Todas las fuentes son públicas u oficiales. Las \textbf{emergencias}, del SINPAD del INDECI. Las \textbf{personas y viviendas}, de los Censos Nacionales 2025 que nos entregó el INEI. La zona inundable, del JRC europeo. La lluvia, de NASA POWER y Open-Meteo. Los ríos, de GloFAS. El mar, de la NOAA. El satélite, de las misiones Sentinel. Y para validar, el mapa oficial de Copernicus de 2017.»}
+{\textbf{¿Qué satélites usan?} Sentinel-1 (radar) y Sentinel-2 (fotos). La lluvia de NASA POWER y el mar de NOAA se construyen con datos satelitales, pero no procesamos imágenes para eso.}
+
+\cambio{11}{Cambio de parte}{«Pasemos a la exposición: a quién alcanzaría una inundación.»}
+
+\lamina{12}{Zona inundable}{1 min}
+{«Para saber a quién alcanzaría el agua usamos el mapa del JRC: dice hasta dónde llegaría una crecida de \textbf{1 en 10 años} y de \textbf{1 en 100 años}.\\
+Ojo: 1 en 100 no quiere decir que pase cada 100 años. En 30 años, la probabilidad de vivir al menos una es de \textbf{26 \%}.\\
+Y algo importante: \textbf{expuesto no es afectado}. Expuesto es quien vive donde podría llegar el agua.»}
+{\textbf{¿El mapa JRC es realista?} Cubre el 84,5 \% de lo inundado en Piura en 2017, pero no considera diques ni la inundación por lluvia en la ciudad.}
+
+\lamina{13}{Cruce con el Censo 2025}{1 min 15 s}
+{«Con los Censos Nacionales 2025 ubicamos cada manzana por un punto, leímos la profundidad del agua y sumamos por distrito.\\
+En la zona de 1 en 100 años viven \textbf{408 mil personas} en casi \textbf{110 mil viviendas}: el 17 \% de ambos departamentos. Hay 30 mil niños pequeños, 35 mil adultos mayores y más de 37 mil viviendas de material frágil. Además, \textbf{685 colegios} y \textbf{146 establecimientos de salud}.\\
+Solo publicamos totales por distrito.»}
+{\textbf{¿Y WorldPop?} Lo usamos como control: difiere en 1,9 \% del censo. \textbf{¿Es confidencial?} El INEI autorizó el uso; no publicamos cifras menores de 10.}
+
+\cambio{14}{Cambio de parte}{«Ahora, cómo confirmamos con el radar satelital.»}
+
+\lamina{15}{Cómo el radar ve el agua}{1 min}
+{«El radar \textbf{Sentinel-1} emite microondas y mide el eco. El agua calma actúa como un espejo: la señal rebota lejos y el agua se ve \textbf{oscura}. Funciona de noche y con nubes.\\
+La regla: un píxel es agua si su señal está por debajo de \textbf{menos 17 decibeles} y además bajó más de 3 respecto a la temporada seca.»}
+{\textbf{¿Por qué $-17$ dB?} Es un umbral usado en la literatura para agua abierta; también se probó un umbral automático (Otsu) como control.}
+
+\lamina{16}{Reglas y validación}{1 min}
+{«Quitamos las falsas alarmas: agua permanente, lo que está a más de 250 metros de altura, pendientes fuertes y manchas pequeñas.\\
+Frente al mapa oficial de Copernicus de 2017, el radar detectó el \textbf{42 \%} del área inundada y el \textbf{63 \%} de lo que marcó era correcto. La zona del JRC cubre el \textbf{85 \%}.»}
+{\textbf{¿Por qué solo 42 \%?} El radar no ve el agua entre casas ni bajo vegetación, y no pasa todos los días.}
+
+\lamina{17}{Por qué el radar no basta}{50 s}
+{«El radar pasa cada varios días y el agua en la costa escurre en uno o dos. Si la lluvia cae entre dos pasadas, ve todo seco: detectó solo \textbf{4 de 13 eventos} de la prensa.\\
+Por eso \textbf{el radar se queda para confirmar} y no entra al modelo. Para anticipar usamos lo que se sabe antes: lluvia, ríos, mar y época del año.»}
+{\textbf{¿Y con imágenes diarias?} Hay radar comercial, pero cuesta del orden de mil dólares por escena.}
+
+\cambio{18}{Cambio de parte}{«Primero, cómo anticipamos a corto plazo: el aviso de lluvia y caudal.»}
+
+\lamina{19}{Aviso de lluvia y caudal}{1 min 15 s}
+{«El aviso compara el pronóstico de lluvia de los próximos días con lo que es extremo en cada provincia: sobre el \textbf{percentil 95} es «fuerte»; sobre el \textbf{99}, «extremo». En los distritos ribereños también mira el caudal pronosticado.\\
+Con pronósticos reales, \textbf{9 de 10} inundaciones recientes tuvieron aviso antes. En 24 años del SINPAD, una semana con aviso tiene \textbf{10 a 21 veces} más probabilidad de daño. Y el 43 \% de los avisos fue seguido de daño, frente al 18 \% al azar. No es un aviso oficial.»}
+{\textbf{¿Cuál falló?} El desborde del río Tumbes de febrero de 2025: la lluvia cayó aguas arriba, en Ecuador.}
+
+\cambio{20}{Cambio de parte}{«Ahora, el corazón del proyecto: el modelo que anticipa semanas antes.»}
+
+\lamina{21}{Planteamiento del modelo}{1 min}
+{«Para cada distrito, cada semana y cada plazo de \textbf{1 a 4 semanas}, el modelo estima la \textbf{probabilidad} de que el INDECI registre una emergencia exactamente en esa semana futura, con lo que se sabe hoy.\\
+Son 78 distritos y 1 200 semanas. En la prueba, de 2008 a 2025, hay unas 73 mil filas por plazo, y solo el \textbf{3,1 \%} tiene emergencia: es un evento raro.»}
+{\textbf{¿Por qué cuatro modelos y no uno?} Uno por plazo: así se ve a cuántas semanas el modelo deja de aportar.}
+
+\lamina{22}{Variable dependiente Y}{1 min 30 s}
+{«La Y sale del \textbf{SINPAD}, el registro oficial del INDECI. De 151 mil registros del país, 8 556 son de Tumbes y Piura y \textbf{3 363} son de lluvia o inundación: 2 691 distrito-semanas.\\
+E vale 1 si esa semana hubo al menos un registro. Y la Y del plazo h es \textbf{la E de la semana t más h}. Antes teníamos una sola Y que miraba las cuatro semanas juntas; ahora hay una por plazo.\\
+El SINPAD registra cuándo ocurre la emergencia, no cuándo termina: el 0 es la ausencia de registros nuevos.»}
+{\textbf{¿Quién avisa que terminó?} Nadie: la Y mide si ocurre una emergencia nueva, no si el distrito sigue inundado. \textbf{¿Por qué no DesInventar?} Termina en 2015 y no tiene 2017 ni 2023.}
+
+\lamina{23}{Y en los 78 distritos}{50 s}
+{«Esta es la Y completa: cada fila es un distrito y cada columna una semana; en rojo, las semanas con emergencia.\\
+Se ven claramente \textbf{2017 y 2023}, y que todos los años las emergencias se concentran de \textbf{enero a abril}: ahí cae el 90 \% de los registros.»}
+{\textbf{¿Por qué hay más rojo en los años recientes?} En parte porque el registro mejoró. Lo corregimos al calibrar con los años recientes.}
+
+\lamina{24}{Variables independientes}{1 min 15 s}
+{«Las variables se conocen todas al cerrar la semana: \textbf{no usamos nada del futuro}. Lluvia de 30 y de 7 días, si algún día pasó el percentil 95 o 99; el caudal del río frente a lo normal; el \textbf{Niño 1+2}; la época del año; la historia del distrito; y la exposición del censo.\\
+Y algo que \textbf{quitamos}: si hubo emergencia esa semana. El SINPAD se publica cada seis meses, así que en la realidad ese dato no existe a tiempo.»}
+{\textbf{¿Cuánto costó quitarla?} Poco: el PR-AUC a una semana bajó de 0,227 a 0,219.}
+
+\lamina{25}{Cómo se calcula cada variable}{1 min 15 s}
+{«La lluvia de 30 días es la suma de las últimas cuatro semanas, en \textbf{logaritmo}. El día extremo es un 1 si algún día pasó el percentil 95 del distrito. El caudal relativo es el caudal entre su mediana de esa semana del año. La historia usa solo los años de entrenamiento. Y la época se convierte en un ángulo, con \textbf{seno y coseno}.\\
+Como NASA POWER llega con días de retraso, los días que faltan se completan con Open-Meteo y quedan marcados.»}
+{\textbf{¿La historia del distrito no es trampa?} No: para predecir 2017 solo se usa la historia hasta 2016.}
+
+\lamina{26}{El modelo}{1 min 30 s}
+{«El modelo es una \textbf{regresión logística}: combina las variables estandarizadas y las convierte en un número entre 0 y 1. Usamos una penalización para evitar coeficientes exagerados y, a diferencia de antes, \textbf{sin pesos de clase}, para que la salida se pueda leer como probabilidad.\\
+Para las viviendas hay una \textbf{segunda etapa}: si ocurre, una regresión Gamma estima cuántas. Las viviendas esperadas son la probabilidad por esa cantidad.»}
+{\textbf{¿Por qué no una red neuronal?} Con tan pocas emergencias se sobreajustaría; la logística se explica variable por variable.}
+
+\lamina{27}{Validación}{1 min 15 s}
+{«Para validar de forma honesta, \textbf{cada año se predice con un modelo entrenado solo con los años anteriores}, como pasaría en la realidad. Así nunca se mezclan semanas de un mismo año.\\
+Medimos con \textbf{PR-AUC}, que mide cuántas emergencias encontramos y cuántas alertas eran reales; un modelo sin información saca la tasa, 0,031. Y con el \textbf{BSS}, que mide la calidad de la probabilidad. Lo comparamos con cuatro referencias, sobre todo la \textbf{climatología}: la historia del distrito en ese mes.»}
+{\textbf{¿Por qué no validan al azar?} Las semanas seguidas se parecen: mezclarlas al azar inflaría los resultados.}
+
+\lamina{28}{Resultados por plazo}{1 min 15 s}
+{«A una semana, el modelo llega a \textbf{0,219}: siete veces la tasa y por encima de la climatología, que saca 0,161. A dos semanas, 0,198. La ventaja \textbf{se reduce con el plazo y desaparece a cuatro semanas}.\\
+LightGBM saca un poco más, pero es más difícil de explicar y no mejora las viviendas; por eso publicamos la logística.»}
+{\textbf{¿0,219 es bajo?} Hay que compararlo con la tasa, 0,031: es 7 veces. Un trabajo parecido (DELUGE, 2026) obtiene 0,23–0,24 con una tasa mucho menor.}
+
+\lamina{29}{¿La ventaja es real?}{1 min 15 s}
+{«¿Es suerte? Sorteamos \textbf{años completos} 2 000 veces. A una semana, el intervalo de la ventaja va de 0,024 a 0,083: \textbf{no incluye el cero}. A dos semanas, tampoco. A tres y cuatro, sí: ahí empata.\\
+Además hicimos un \textbf{test de realidad}: usar solo los datos de la semana anterior y umbrales sin años futuros. El modelo baja a 0,198, pero \textbf{sigue ganando a una semana}.»}
+{\textbf{¿Por qué por años y no por semanas?} Porque en un mismo año todos los distritos se mojan juntos: un año no aporta 78 datos independientes.}
+
+\lamina{30}{Calibración}{1 min}
+{«Antes, el modelo ordenaba bien pero sus probabilidades eran bajas: decía 2 \% cuando la tasa real era 3,2 \%. La causa: el SINPAD registra más en los años recientes.\\
+Aplicamos la \textbf{calibración de Platt}, ajustada cada año solo con los cinco años anteriores. Ahora el promedio es \textbf{3,0 \% frente a 3,2 \%}, y cada rango se acerca a lo que ocurrió.»}
+{\textbf{¿La calibración cambia el orden?} No: solo corrige el nivel. Por eso el PR-AUC se mide sin calibrar y el BSS calibrado.}
+
+\lamina{31}{Fases de aviso}{1 min}
+{«Con la probabilidad calibrada definimos dos fases. \textbf{Atención}, desde 5 \%: avisa antes de \textbf{7 de cada 10} emergencias, con unos 8 avisos por distrito al año. \textbf{Alerta}, desde 15 \%: acierta \textbf{1 de cada 4} avisos, ocho veces la tasa, con unos 2 avisos al año.\\
+Así funcionan los protocolos de la Cruz Roja: primero avisar, y actuar cuando hay más certeza.»}
+{\textbf{¿Por qué 5 y 15 \%?} Se eligieron mirando la validación, para equilibrar captura y falsas alarmas; la regla queda fija para la temporada.}
+
+\lamina{32}{2017 y 2023}{1 min}
+{«Reconstruimos lo que habría dicho el sistema en 2017 y 2023 con un modelo que nunca vio esos años. En 2017, el \textbf{82 \%} de las semanas con emergencia tuvo aviso de atención la semana anterior; en 2023, el 76 \%.\\
+En Catacaos, 2017, la probabilidad sube desde fines de enero y llega a su máximo, \textbf{40 \%}, la semana del gran desborde. Lo más difícil es la \textbf{primera emergencia} de cada distrito: 41 de 78.»}
+{\textbf{¿Por qué cuesta la primera?} Antes de ella todavía no hay lluvia acumulada ni ríos altos: la señal llega tarde.}
+
+\lamina{33}{Viviendas afectadas}{50 s}
+{«La segunda etapa estima cuántas viviendas se afectarían. Su punto débil: \textbf{subestima los años extremos}, 35 \% menos en 2017 y 66 \% menos en 2023, porque hay pocos años parecidos para aprender.\\
+Por eso recomendamos usar la \textbf{exposición del censo como techo} y el modelo como piso.»}
+{\textbf{¿Qué modelos probaron?} Poisson, binomial negativa, ceros inflados, boosting y dos etapas; dos etapas se equivoca menos en el total.}
+
+\cambio{34}{Cambio de parte}{«Para terminar: cómo se está usando en la temporada 2026.»}
+
+\lamina{35}{La temporada 2026}{1 min}
+{«Comparamos la semana 45, del 2 al 8 de noviembre, con la misma semana de 2017 y 2023. En 2017 el mar estaba frío y no llovía. En 2026 el mar está \textbf{5,6 grados sobre lo normal}, la lluvia de 30 días ya pasa los \textbf{240 mm en Piura y 400 en Tumbes}, y el río Piura lleva \textbf{8 veces} su caudal normal. El ENFEN lo califica como extraordinario.»}
+{\textbf{¿Ya hubo emergencias?} La prensa reportó inundaciones a inicios de noviembre; el SINPAD de esta temporada aún no se publica.}
+
+\lamina{36}{¿Dónde actuar primero?}{1 min 15 s}
+{«Para esta semana, el modelo pone \textbf{62 de 78 distritos en alerta}. No se pueden atender todos a la vez, así que los ordenamos por \textbf{personas en riesgo esperado}: probabilidad por personas en la zona inundable.\\
+Encabezan \textbf{Castilla, Catacaos y Piura}, por delante de Tumbes, que tiene la probabilidad más alta pero menos gente expuesta.\\
+Y lo decimos claro: el mar está por encima de todo lo que el modelo vio, así que estas cifras son una \textbf{extrapolación}.»}
+{\textbf{¿Tumbes con 68 \% es creíble?} Es coherente con la lluvia y el caudal observados, pero el Niño 1+2 de hoy (+5,6 °C) supera el máximo de entrenamiento (3,5 °C).}
+
+\lamina{37}{El tablero}{1 min}
+{«Todo se ve en el \textbf{tablero público}: resumen, mapa de inundación, fotos de antes y después, la alerta por distrito con la probabilidad a 1–4 semanas y por qué, dónde actuar primero, lluvia y ríos, el mar y El Niño, y método y fuentes. Se actualiza solo.»}
+{\raggedright\textbf{¿Se puede ver ahora?} Sí, en \texttt{maykolramirez.github.io/FENOMENO-PREDI}. Tener el navegador abierto por si lo piden.\par}
+
+\lamina{38}{Cómo se comprobó todo}{1 min}
+{«Cada parte se comparó con algo independiente. El radar y la zona inundable, con el mapa oficial de 2017. La exposición, con los afectados del INDECI. El aviso, con pronósticos reales. El modelo, año por año, con \textbf{intervalos de confianza} y un \textbf{test de realidad}. Y el código, con 87 pruebas.\\
+Cada resultado tiene su programa y su salida guardada: \textbf{cualquiera puede repetirlo}.»}
+{\textbf{¿Qué es el 0,41 de Spearman?} Que los distritos con más edificaciones en zona inundable tienden a ser los que más afectados registra el INDECI.}
+
+\lamina{39}{Limitaciones}{1 min}
+{«Reconocemos las limitaciones. En los datos: el SINPAD mide lo \textbf{registrado} y se publica cada seis meses; la lluvia viene en celdas de 50 km; y el mapa del JRC no considera diques.\\
+En los métodos: a \textbf{3 y 4 semanas} el modelo no supera a la climatología, la primera emergencia es la más difícil, subestima las viviendas en años extremos y \textbf{2026 está fuera del rango} de entrenamiento.»}
+{—}
+
+\lamina{40}{Aporte y próximos pasos}{1 min}
+{«Nuestro aporte al INEI: pasar de \textbf{cuántos viven en el distrito} a \textbf{cuántos viven donde el agua llega y qué tan probable es que llegue}.\\
+Próximos pasos: tablas de exposición para todo el país, lluvia de mayor resolución, \textbf{caudal pronosticado} para mejorar las 3–4 semanas, un SINPAD más oportuno y una \textbf{prueba prospectiva}: guardar las predicciones de enero a abril de 2027 y compararlas con lo que pase.»}
+{\textbf{¿Por qué la prueba prospectiva?} Es la única sin ninguna duda de fuga de información: el modelo predice antes de que exista el dato.}
+
+\lamina{41}{Cierre}{20 s}
+{«En resumen: con datos públicos y del censo estimamos la probabilidad de emergencia por distrito, con una \textbf{ventaja significativa a una semana}, la convertimos en \textbf{fases de aviso} y la cruzamos con las personas expuestas para decidir \textbf{dónde actuar primero}.\\
+Muchas gracias. ¿Tienen alguna pregunta?»}
+{—}
+
+% ------------------------------------------------------------------ versión corta
+\begin{frame}{Si hay poco tiempo: versión de 10 minutos}
+\begin{columns}[T]
+\begin{column}{0.46\textwidth}\small
+\textbf{Láminas imprescindibles}\\
+1 · 2 · 4 · 13 · 17 · 21 · 22 · 24 · 26 · 28 · 29 · 31 · 36 · 39 · 41\\[6pt]
+\textbf{Se pueden pasar rápido}\\
+6, 7, 8, 9, 10, 12, 15, 16, 19, 23, 25, 27, 30, 32, 33, 35, 37, 38, 40
+\end{column}
+\begin{column}{0.5\textwidth}\small
+\textbf{Las 6 cifras de memoria}\\[3pt]
+\begin{tabular}{@{}rl@{}}
+\textbf{408 mil} & personas en zona de 1 en 100 años\\
+\textbf{9 de 10} & eventos con aviso de lluvia previo\\
+\textbf{3,1 \%} & semanas-distrito con emergencia\\
+\textbf{0,219 vs 0,161} & modelo vs climatología a 1 semana\\
+\textbf{7 de 10} & emergencias con aviso de atención\\
+\textbf{+5,6 °C} & mar en 2026: fuera de rango\\
+\end{tabular}
+\end{column}
+\end{columns}
+\end{frame}
+
+\end{document}

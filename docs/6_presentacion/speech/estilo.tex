@@ -1,0 +1,38 @@
+% Estilo común de la presentación y del guion (mismos colores que el guion del 6/11/2026)
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage{booktabs,tabularx,array,amsmath,amssymb,bbm}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,decorations.pathreplacing}
+\tikzset{bx/.style={draw=#1,fill=#1!8,rounded corners=2mm,minimum width=3.6cm,minimum height=1.5cm,align=center,text width=3.4cm},
+  barra/.style={fill=azul!#1,minimum height=0.5cm,anchor=west}}
+\usepackage[most]{tcolorbox}
+\graphicspath{{figuras/}}
+
+\definecolor{azul}{HTML}{1F5F99}
+\definecolor{naranja}{HTML}{DF7A27}
+\definecolor{verde}{HTML}{2D8B57}
+\definecolor{morado}{HTML}{6D3584}
+\definecolor{rojo}{HTML}{C8372D}
+\definecolor{gris}{HTML}{5B6770}
+\definecolor{grisclaro}{HTML}{F2F3F4}
+
+\usetheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{structure}{fg=azul}
+\setbeamercolor{frametitle}{fg=white,bg=azul}
+\setbeamertemplate{itemize item}{\color{naranja}$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\color{naranja}\textbullet}
+\setbeamertemplate{enumerate item}{\color{azul}\insertenumlabel.}
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
+
+% caja con título de color (como en el guion antiguo)
+\newtcolorbox{caja}[2][azul]{enhanced,colback=#1!7,colframe=#1,coltitle=white,
+  fonttitle=\bfseries\small,title={#2},boxrule=0.6pt,arc=2mm,left=4pt,right=4pt,top=2pt,bottom=2pt,fontupper=\small}
+\newtcolorbox{cajasin}[1][azul]{enhanced,colback=#1!6,colframe=#1!70,boxrule=0.6pt,arc=2mm,left=5pt,right=5pt,top=3pt,bottom=3pt,fontupper=\small}
+% cifra grande
+\newcommand{\cifra}[3][azul]{\begin{tcolorbox}[enhanced,colback=#1!6,colframe=#1!45,boxrule=0.5pt,arc=1.5mm,halign=center,top=1pt,bottom=1pt,left=2pt,right=2pt]
+  {\Large\bfseries\color{black}#2}\\[-1pt]{\footnotesize\color{black!80}#3}\end{tcolorbox}}
+\newcommand{\ind}{\mathbbm{1}}

@@ -39,7 +39,7 @@ import pandas as pd
 
 from comun import ahora_lima, escribir_json, registrar_version
 from config import DASH_DATA, DATA
-from exposicion import CAJA, CARPETA as EXPO, solo_atencion_general
+from exposicion import CAJA, CARPETA as EXPO
 from huellas import CARPETA as HUELLAS, eventos
 
 LAT0 = (CAJA[1] + CAJA[3]) / 2
@@ -199,8 +199,6 @@ def main() -> None:
     DESCARGAS.mkdir(parents=True, exist_ok=True)
     edif = pd.read_parquet(EXPO / "viviendas.parquet")      # nombre de archivo heredado: son edificaciones
     tablas = {n: pd.read_csv(EXPO / f"{n}.csv") for n in ("salud", "colegios") if (EXPO / f"{n}.csv").exists()}
-    if "salud" in tablas:   # salud.csv guardado antes del filtro puede traer consultorios dentales y similares
-        tablas["salud"] = solo_atencion_general(tablas["salud"])
     ubi = tabla_ubigeo()
     salida = {"caja": CAJA, "eventos": {}, "validacion": VALIDACION, "calculado": ahora_lima(),
               "definiciones": {

@@ -1,6 +1,6 @@
 {
- "generado": "2026-11-13T15:32-05:00",
- "hoy": "2026-11-13",
+ "generado": "2026-11-14T13:47-05:00",
+ "hoy": "2026-11-14",
  "fuentes": {
   "noticias": "Google Noticias (RSS), últimos 14 días, titulares con palabras de inundación y «Piura» o «Tumbes»; acumulados en data/eventos/noticias_registro.csv",
   "verificados": "data/eventos/catalogo_verificado.csv (revisión manual del equipo)",
@@ -550,16 +550,16 @@
      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxPSy1VQTZSOFhySEwtM2F0T0dDTjk2bDhveVIwakNxbFpUd2l1d3lsbWR1eUstbFBhclB3Uk1xdWQwcEZUU0hfcjFiYm1nS2loNUJySURNSmxWQnF0LVpJR2RndEtWUHZQZE1tck9CQTVfRUg5eDA2UGd1M3pmenhmaE9mZjFvUEcxZ2dyRkRLQ0QwbGUxaWFhYW9Hd1lCanhUQ2xNcWdFNEFJbUJvZ3V4SDN3VHZQY2pNcXVHRzRsbmpHNlZfVHI1d3llY3hSS3V3MlZrU1V3?oc=5"
     },
     {
-     "titulo": "Fenómeno El Niño: Keiko Fujimori lleva ayuda humanitaria a afectados por lluvias en Tumbes",
-     "medio": "El Comercio Perú",
-     "fecha": "2026-11-06",
-     "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxONFZMUGtLZlA4X2lXdTl2aHc2QjhwME9hdXJIVUVaVFROeUpDV0RoZUZUUmVhaEUwZEhLYkpHSjdNa0xZd0RXejF1SU83azdJMlNYLVVsTUdaRkdxREFVSTZ1Rlo4RXpacDUybnBCaTNZSzgxLXdvMGp5OFRMV3JHZGlEWHVLc2NTU0Q4aDhhOGx6WnB4WDRYT3BrVUxDRmJiNmlxVURrWE82MUUydmd0N1hEOWRNS1BMYkpVM0hIcTlxdWJhblcyaHlTYmFxbTMydUhORU5WME1kNlozMVBpRTQ3eEzSAfgBQVVfeXFMUFdHb1o1a3lqM3gySVZSQjBrUVpmcEVyVzRCcWxQaFNiTldITFdUZXduWU16S2tWaTUzYXVGWHMwZ2hsV0d2MEdWRzFuWU53TGdJZXRGSnh6VVhucXZuUDhodHVncWxKY1hRY0pnVEpuTXpFNjRUQ0xldlpkdWlMVUJPVE9ISko5VlBuQzJpN3BadXAtVG02dHJKb2VTWVBOMzAxYk5yM1BwSHNiYUl6bkNCb0VBNWZUNGxTSGNXcHRMQnB0TlpkT2stVGlNZktuN3JUa1JIclQ4RmNzdXZiOUloMXpfNURRc19uOFVrQmZkbnVuRjNicXA?oc=5"
-    },
-    {
      "titulo": "Fenómeno El Niño: lluvias intensas en región Tumbes dejan 324 damnificados y 808 afectados",
      "medio": "Agencia Andina",
      "fecha": "2026-11-06",
      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxQQnp1aUd1SGVVSUdqS1dUR01BcDVPekF6b3lyVG15b0xoa3FfNk1LMzUxR3VoaEJSbW13LUk4Q0s3dm1jMVlDMnRRX2xZa01pLVJBS0lwX00yRmN6Q1hFQ1ZLS2MxVTZDNXU4UGpXZ25Ta3I3UEU5dlBQRkVKQ2Q2S3JOOC03dGhOU185ZGhYTEV1N3VpUTk1MURZQk9BSjRMYk52UXB0bFRxZ1dYV1F3QjY5WUhKem04eE9kYWpfaFQ0Qy1rTHpIRWRR?oc=5"
+    },
+    {
+     "titulo": "Fenómeno El Niño: Keiko Fujimori lleva ayuda humanitaria a afectados por lluvias en Tumbes",
+     "medio": "El Comercio Perú",
+     "fecha": "2026-11-06",
+     "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxONFZMUGtLZlA4X2lXdTl2aHc2QjhwME9hdXJIVUVaVFROeUpDV0RoZUZUUmVhaEUwZEhLYkpHSjdNa0xZd0RXejF1SU83azdJMlNYLVVsTUdaRkdxREFVSTZ1Rlo4RXpacDUybnBCaTNZSzgxLXdvMGp5OFRMV3JHZGlEWHVLc2NTU0Q4aDhhOGx6WnB4WDRYT3BrVUxDRmJiNmlxVURrWE82MUUydmd0N1hEOWRNS1BMYkpVM0hIcTlxdWJhblcyaHlTYmFxbTMydUhORU5WME1kNlozMVBpRTQ3eEzSAfgBQVVfeXFMUFdHb1o1a3lqM3gySVZSQjBrUVpmcEVyVzRCcWxQaFNiTldITFdUZXduWU16S2tWaTUzYXVGWHMwZ2hsV0d2MEdWRzFuWU53TGdJZXRGSnh6VVhucXZuUDhodHVncWxKY1hRY0pnVEpuTXpFNjRUQ0xldlpkdWlMVUJPVE9ISko5VlBuQzJpN3BadXAtVG02dHJKb2VTWVBOMzAxYk5yM1BwSHNiYUl6bkNCb0VBNWZUNGxTSGNXcHRMQnB0TlpkT2stVGlNZktuN3JUa1JIclQ4RmNzdXZiOUloMXpfNURRc19uOFVrQmZkbnVuRjNicXA?oc=5"
     },
     {
      "titulo": "Keiko Fujimori anuncia reubicación de familias afectadas por las lluvias durante visita a Tumbes",

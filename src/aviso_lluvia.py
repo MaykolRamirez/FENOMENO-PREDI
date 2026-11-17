@@ -186,16 +186,9 @@ def resumen_caudal(fechas: list, valores: list, u: dict) -> dict:
     if not v:
         return {"estado": "sin dato: el pronóstico de caudal vino vacío", "nivel": None}
     f, q = max(v, key=lambda t: t[1])
-    out = {"estado": "ok", "nivel": nivel(q, u["p95"], u["p99"]), "m3s_max": round(q, 1), "fecha_max": f,
-           "p95": u["p95"], "p99": u["p99"], "fechas": fechas, "m3s": [None if x is None else round(x, 1) for x in valores],
-           "veces_p95": round(q / u["p95"], 2) if u["p95"] else None}
-    # Pico después de la ventana (días VENTANA+1 a DIAS): no cambia el nivel del aviso (el pronóstico de más días es
-    # menos confiable), pero se informa para que una crecida al día 4 o 5 no quede oculta detrás de un «normal».
-    w = [(f2, q2) for f2, q2 in zip(fechas[VENTANA:], valores[VENTANA:]) if q2 is not None]
-    if w:
-        f2, q2 = max(w, key=lambda t: t[1])
-        out["pico_despues"] = {"m3s": round(q2, 1), "fecha": f2, "nivel": nivel(q2, u["p95"], u["p99"])}
-    return out
+    return {"estado": "ok", "nivel": nivel(q, u["p95"], u["p99"]), "m3s_max": round(q, 1), "fecha_max": f,
+            "p95": u["p95"], "p99": u["p99"], "fechas": fechas, "m3s": [None if x is None else round(x, 1) for x in valores],
+            "veces_p95": round(q / u["p95"], 2) if u["p95"] else None}
 
 
 def motivo_de(n_lluvia: str, n_caudal: str | None) -> str | None:

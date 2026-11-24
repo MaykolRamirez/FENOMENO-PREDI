@@ -90,3 +90,7 @@ fecha,etiqueta,archivo,bytes,sha256,cambio
 2026-11-19T17:36-05:00,impacto,exposicion_distritos.csv,32416,0f38b78e38767638bbdf0c64dead7bc8091cd88ad6cc210bb1b7d011d5cb2266,modificado
 2026-11-19T17:36-05:00,panel,panel_distritos.csv,66800,505b47b42fdb0129e662cc559dc912682f82b77b30c83003fe939675def1b97c,igual
 2026-11-19T17:36-05:00,panel,panel_distritos.json,110822,eac4961da6d6e5e4d15af722b0bf0adb655be79551abca95395f0fe55f4d5405,modificado
+2026-11-23T21:01-05:00,impacto,inundacion.json,3433297,4ab3ed841caa4efa336d939d354235acf2a2305144557b38cebed7dfd8d22f39,modificado
+2026-11-23T21:01-05:00,impacto,exposicion_distritos.csv,32416,0f38b78e38767638bbdf0c64dead7bc8091cd88ad6cc210bb1b7d011d5cb2266,igual
+2026-11-23T21:01-05:00,panel,panel_distritos.csv,66800,505b47b42fdb0129e662cc559dc912682f82b77b30c83003fe939675def1b97c,igual
+2026-11-23T21:01-05:00,panel,panel_distritos.json,110822,30481866e15023bbfa5e7129fb4c5d340835aa7c9b966830d2822c3638f82f5a,modificado
